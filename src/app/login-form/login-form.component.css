@@ -1,0 +1,22 @@
+.login-btn {
+    @apply py-2 px-3 m-2;
+    @apply bg-blue-500 hover:bg-blue-700;
+    @apply rounded-md;
+    @apply text-white;
+}
+
+.login-field-label {
+    @apply block;
+    /* @apply text-grey-darker; */
+    @apply text-sm;
+    @apply font-bold;
+    @apply mb-2;
+}
+
+.login-field-input {
+    @apply shadow;
+    @apply appearance-none;
+    @apply border rounded w-full;
+    @apply py-2 px-3;
+    /* @apply text-grey-darker; */
+}

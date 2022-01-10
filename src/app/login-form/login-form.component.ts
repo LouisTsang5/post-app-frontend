@@ -21,4 +21,8 @@ export class LoginFormComponent implements OnInit {
     });
   }
 
+  onSubmit() {
+    alert('submitted');
+  }
+
 }

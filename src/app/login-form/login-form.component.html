@@ -1,17 +1,21 @@
-<form [formGroup]="loginForm">
-    value {{ loginForm.value | json }}
-
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
     <div>
-        <label for="email">Email</label>
-        <input type="text" formControlName="email">
+        <label class="login-field-label" for="email">
+            Email
+        </label>
+        <input class="login-field-input" type="text" formControlName="email">
     </div>
 
     <div>
-        <label for="password">Password</label>
-        <input type="password" formControlName="password">
+        <label class="login-field-label" for="password">
+            Password
+        </label>
+        <input class="login-field-input" type="password" formControlName="password">
     </div>
 
     <div>
-        <button>Login</button>
+        <button class="login-btn">
+            Login
+        </button>
     </div>
 </form>
