@@ -1,0 +1,17 @@
+<form [formGroup]="loginForm">
+    value {{ loginForm.value | json }}
+
+    <div>
+        <label for="email">Email</label>
+        <input type="text" formControlName="email">
+    </div>
+
+    <div>
+        <label for="password">Password</label>
+        <input type="password" formControlName="password">
+    </div>
+
+    <div>
+        <button>Login</button>
+    </div>
+</form>
