@@ -1,21 +1,23 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-    <div>
-        <label class="login-field-label" for="email">
-            Email
-        </label>
-        <input class="login-field-input" type="text" formControlName="email">
-    </div>
-
-    <div>
-        <label class="login-field-label" for="password">
-            Password
-        </label>
-        <input class="login-field-input" type="password" formControlName="password">
-    </div>
-
-    <div>
-        <button class="login-btn">
-            Login
-        </button>
-    </div>
-</form>
+<div class="login-form-wrapper">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div>
+            <label class="login-field-label" for="email">
+                Email
+            </label>
+            <input class="login-field-input" type="text" formControlName="email">
+        </div>
+    
+        <div>
+            <label class="login-field-label" for="password">
+                Password
+            </label>
+            <input class="login-field-input" type="password" formControlName="password">
+        </div>
+    
+        <div>
+            <button class="login-btn">
+                Login
+            </button>
+        </div>
+    </form>
+</div>
