@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
+import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
   selector: 'app-login-form',
@@ -9,9 +11,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginFormComponent implements OnInit {
 
   loginForm: FormGroup;
+  loading = false;
+  errorMessage = '';
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -21,8 +26,32 @@ export class LoginFormComponent implements OnInit {
     });
   }
 
+  public get formValue() {
+    return this.loginForm.controls;
+  }
+
   onSubmit() {
-    alert('submitted');
+    this.loading = true;
+
+    this.authenticationService
+    .login(this.formValue['email'].value, this.formValue['password'].value)
+    .pipe(first())
+    .subscribe({
+      next: (res) => {
+        console.log(res);
+        this.errorMessage = '';
+        this.loading = false;
+      },
+      error: (err) => {
+        if (err.status === 400) { 
+          this.errorMessage = 'Incorrect email or password';
+          this.loading = false;
+        }
+        else { 
+          throw err 
+        }
+      }
+    });
   }
 
 }

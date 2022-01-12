@@ -18,6 +18,12 @@
             <button class="login-btn">
                 Login
             </button>
+            <p class="inline" *ngIf="loading">
+                Loading...
+            </p>
+            <p class="inline text-red-500" *ngIf="errorMessage">
+                {{ errorMessage }} 
+            </p>
         </div>
     </form>
 </div>
