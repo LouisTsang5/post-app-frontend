@@ -1,4 +1,4 @@
 export class AccessToken {
     token: string;
-    expireDate: Date;
+    expireDate: string;
 }
