@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { finalize, first } from 'rxjs/operators';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -13,10 +14,13 @@ export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   errorMessage = '';
+  returnUrl = '/';
 
   constructor(
     private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -24,6 +28,7 @@ export class LoginFormComponent implements OnInit {
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
   }
 
   public get formValue() {
@@ -35,20 +40,23 @@ export class LoginFormComponent implements OnInit {
 
     this.authenticationService
     .login(this.formValue['email'].value, this.formValue['password'].value)
-    .pipe(first())
+    .pipe(
+      first(),
+      finalize(() => { this.loading = false; }) // always turn loading false
+    )
     .subscribe({
       next: (res) => {
         console.log(res);
         this.errorMessage = '';
-        this.loading = false;
+        this.router.navigate([this.returnUrl]);
       },
       error: (err) => {
         if (err.status === 401) { 
           this.errorMessage = 'Incorrect email or password';
-          this.loading = false;
         }
         else { 
-          throw err 
+          console.log(err);
+          this.errorMessage = 'Login failed. Please read the console log.';
         }
       }
     });
