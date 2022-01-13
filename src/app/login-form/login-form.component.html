@@ -5,6 +5,9 @@
                 Email
             </label>
             <input class="login-field-input" type="text" formControlName="email">
+            <div class="error-message" *ngIf="submitted && formValue['email'].errors">
+                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
+            </div>
         </div>
     
         <div>
@@ -12,6 +15,9 @@
                 Password
             </label>
             <input class="login-field-input" type="password" formControlName="password">
+            <div class="error-message" *ngIf="submitted && formValue['password'].errors">
+                <div *ngIf="formValue['password'].errors['required']">Please enter password</div>
+            </div>
         </div>
     
         <div>
@@ -21,7 +27,7 @@
             <p class="inline" *ngIf="loading">
                 Loading...
             </p>
-            <p class="inline text-red-500" *ngIf="errorMessage">
+            <p class="inline error-message" *ngIf="errorMessage">
                 {{ errorMessage }} 
             </p>
         </div>

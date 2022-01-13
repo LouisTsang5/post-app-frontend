@@ -34,3 +34,7 @@
     @apply py-2 px-3;
     /* @apply text-grey-darker; */
 }
+
+.error-message {
+    @apply text-red-500;
+}

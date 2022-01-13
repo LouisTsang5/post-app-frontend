@@ -12,6 +12,7 @@ import { AuthenticationService } from '../_services/authentication.service';
 export class LoginFormComponent implements OnInit {
 
   loginForm: FormGroup;
+  submitted = false;
   loading = false;
   errorMessage = '';
   returnUrl = '/';
@@ -36,6 +37,9 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitted = true;
+    if (this.loginForm.invalid) return;
+
     this.loading = true;
 
     this.authenticationService
