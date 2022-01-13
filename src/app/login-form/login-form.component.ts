@@ -43,7 +43,7 @@ export class LoginFormComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        if (err.status === 400) { 
+        if (err.status === 401) { 
           this.errorMessage = 'Incorrect email or password';
           this.loading = false;
         }
