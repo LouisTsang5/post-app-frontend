@@ -17,12 +17,9 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('home page');
     if (!(this.authenticaionService.currentUser && this.authenticaionService.accessToken)) {
-      console.log('not logged');
       this.router.navigate(['login'], { queryParams: { returnUrl: '/' } });
     }
-    console.log('already logged in');
   }
 
 }
