@@ -32,8 +32,9 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }
 
-    public get accessToken(): AccessToken {
-        return this.accessTokenSubject.value;
+    public get accessToken(): AccessToken | null {
+        const accessToken = this.accessTokenSubject.value;
+        return accessToken.expireDate > new Date() ? accessToken : null; //return null if token has expired
     }
 
     public login(email: string, password: string): Observable<AccessToken> {
