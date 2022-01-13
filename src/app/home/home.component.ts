@@ -11,6 +11,8 @@ import { User } from '../_models/user.model';
 })
 export class HomeComponent implements OnInit {
 
+  currentUser: User;
+
   constructor(
     private authenticaionService: AuthenticationService,
     private router: Router
@@ -20,6 +22,7 @@ export class HomeComponent implements OnInit {
     if (!(this.authenticaionService.currentUser && this.authenticaionService.accessToken)) {
       this.router.navigate(['login'], { queryParams: { returnUrl: '/' } });
     }
+    this.currentUser = this.authenticaionService.currentUser;
   }
 
 }
