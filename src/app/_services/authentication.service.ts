@@ -34,7 +34,7 @@ export class AuthenticationService {
 
     public get accessToken(): AccessToken | null {
         const accessToken = this.accessTokenSubject.value;
-        return accessToken.expireDate > new Date() ? accessToken : null; //return null if token has expired
+        return accessToken && accessToken.expireDate > new Date() ? accessToken : null; //return null if token has expired or no token at all
     }
 
     public login(email: string, password: string): Observable<AccessToken> {
