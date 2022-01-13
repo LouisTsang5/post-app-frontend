@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from 'rxjs/operators';
-import { User } from "../_user/user.model";
+import { User } from "../_models/user.model";
 import { environment } from "src/environments/environment";
-import { AccessToken } from "../_user/accessToken.model";
+import { AccessToken } from "../_models/accessToken.model";
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -34,7 +34,8 @@ export class AuthenticationService {
 
     public get accessToken(): AccessToken | null {
         const accessToken = this.accessTokenSubject.value;
-        return accessToken && accessToken.expireDate > new Date() ? accessToken : null; //return null if token has expired or no token at all
+        const currentDate = new Date();
+        return accessToken && Date.parse(accessToken.expireDate) > Date.parse(currentDate.toDateString()) ? accessToken : null; //return null if token has expired or no token at all
     }
 
     public login(email: string, password: string): Observable<AccessToken> {
