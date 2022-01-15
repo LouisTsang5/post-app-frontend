@@ -38,3 +38,8 @@
 .error-message {
     @apply text-red-500;
 }
+
+.register {
+    @apply text-blue-500 hover:text-blue-700;
+    @apply cursor-pointer;
+}

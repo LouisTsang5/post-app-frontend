@@ -65,4 +65,7 @@ export class LoginFormComponent implements OnInit {
     });
   }
 
+  onRegister() {
+    this.router.navigate(['register'], { queryParams: { returnUrl: this.returnUrl } });
+  }
 }
