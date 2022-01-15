@@ -104,8 +104,8 @@ export class AuthenticationService {
         const registrationInfo = {
             email: userInfo.email,
             alias: userInfo.alias,
-            first_name: userInfo.firstName,
-            last_name: userInfo.lastName,
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
             password: password,
         };
         return this.http.post(url, registrationInfo)
