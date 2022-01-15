@@ -32,10 +32,30 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }
 
+    public set currentUser(user: User | null) {
+        if (!user)
+            throw new Error('Cannot set user as null');
+        
+        localStorage.setItem(this.currentUserKey, JSON.stringify(user));
+        this.currentUserSubject.next(user);
+    }
+
     public get accessToken(): AccessToken | null {
         const accessToken = this.accessTokenSubject.value;
         const currentDate = new Date();
         return accessToken && Date.parse(accessToken.expireDate) > Date.parse(currentDate.toDateString()) ? accessToken : null; //return null if token has expired or no token at all
+    }
+
+    public set accessToken(token: AccessToken | null) {
+        if (!token)
+            throw new Error('Cannot set access token as null');
+        
+        const currentDate = new Date();
+        if (Date.parse(token.expireDate) <= Date.parse(currentDate.toDateString()))
+            throw new Error('Cannot set expired access token');
+
+        localStorage.setItem(this.accessTokenKey, JSON.stringify(token));
+        this.accessTokenSubject.next(token);
     }
 
     public login(email: string, password: string): Observable<AccessToken> {
@@ -48,14 +68,12 @@ export class AuthenticationService {
                     throw new Error('Unable to obtain access token');
                 }
 
+                //Set access token
                 const token = {
                     token: res.token,
                     expireDate: res.expiryDate,
                 } as AccessToken;
-
-                //Set access token
-                localStorage.setItem(this.accessTokenKey, JSON.stringify(token));
-                this.accessTokenSubject.next(token);
+                this.accessToken = token;
 
                 return token;
             }),
@@ -63,12 +81,11 @@ export class AuthenticationService {
             map((token) => {
                 const userUrl = `${environment.apiURL}/user/self`;
                 const headers = new HttpHeaders({ 'x-access-token': token.token });
+                
                 this.http.get(userUrl, { headers }).subscribe({
                     next: (res: any) => {
                         const { email, alias, firstName, lastName } = res;
-                        const user = { email, alias, firstName, lastName } as User;
-                        localStorage.setItem(this.currentUserKey, JSON.stringify(user));
-                        this.currentUserSubject.next(user);
+                        this.currentUser = { email, alias, firstName, lastName } as User;
                     }
                 })
                 return token;
@@ -100,22 +117,18 @@ export class AuthenticationService {
                 }
 
                 //Set access token
-                const token = {
+                this.accessToken = {
                     token: res.accessToken.token,
                     expireDate: res.accessToken.expiryDate,
                 } as AccessToken;
-                localStorage.setItem(this.accessTokenKey, JSON.stringify(token));
-                this.accessTokenSubject.next(token);
 
                 //Set user info
-                const user = {
+                this.currentUser = {
                     alias: res.userInfo.alias,
                     email: res.userInfo.email,
                     firstName: res.userInfo.firstName,
                     lastName: res.userInfo.lastName,
                 } as User;
-                localStorage.setItem(this.currentUserKey, JSON.stringify(user));
-                this.currentUserSubject.next(user);
 
                 return res;
             })
