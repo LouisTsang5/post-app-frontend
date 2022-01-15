@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { HomeComponent } from './home/home.component';
 import { TopUtilityBarComponent } from './top-utility-bar/top-utility-bar.component';
+import { RegistrationFormComponent } from './registration-form/registration-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
     HomeComponent,
-    TopUtilityBarComponent
+    TopUtilityBarComponent,
+    RegistrationFormComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +25,7 @@ import { TopUtilityBarComponent } from './top-utility-bar/top-utility-bar.compon
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
       {path: 'login', component: LoginFormComponent},
+      {path: 'register', component: RegistrationFormComponent},
     ]),
     ReactiveFormsModule,
     HttpClientModule,
