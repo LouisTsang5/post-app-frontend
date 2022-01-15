@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -7,7 +8,9 @@ import { AuthenticationService } from '../_services/authentication.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  accessTokenSubscription: Subscription;
 
   constructor(
     private authenticaionService: AuthenticationService,
@@ -15,9 +18,17 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (!this.authenticaionService.accessToken) {
-      this.router.navigate(['login'], { queryParams: { returnUrl: '/' } });
-    }
+    this.accessTokenSubscription = this.authenticaionService.accessTokenObservable.subscribe({
+      next: (token) => {
+        if (!token) {
+          this.router.navigate(['login'], { queryParams: { returnUrl: '/' } });
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.accessTokenSubscription.unsubscribe();
   }
 
 }
