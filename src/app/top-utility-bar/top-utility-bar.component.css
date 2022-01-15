@@ -1,0 +1,15 @@
+.top-bar {
+    @apply flex;
+    @apply bg-teal-500;
+}
+
+.top-bar-button {
+    @apply inline-block;
+    @apply text-sm text-white hover:text-teal-500;
+    @apply px-4 py-2;
+    @apply leading-none;
+    @apply border rounded;
+    @apply border-white hover:border-transparent;
+    @apply hover:bg-white;
+    @apply mt-4 lg:mt-0;
+}
