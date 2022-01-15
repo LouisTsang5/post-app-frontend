@@ -2,33 +2,33 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from 'rxjs/operators';
-import { User } from "../_models/user.model";
+import { User } from "../_models/user";
 import { environment } from "src/environments/environment";
-import { AccessToken } from "../_models/accessToken.model";
+import { AccessToken } from "../_models/accessToken";
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUserObservable: Observable<User>;
+    private currentUserSubject: BehaviorSubject<User | null>;
+    public currentUserObservable: Observable<User | null>;
     private currentUserKey = 'currentUser';
 
-    private accessTokenSubject: BehaviorSubject<AccessToken>;
-    public accessTokenObservable: Observable<AccessToken>;
+    private accessTokenSubject: BehaviorSubject<AccessToken | null>;
+    public accessTokenObservable: Observable<AccessToken | null>;
     private accessTokenKey = 'accessToken';
 
     constructor(
         private http: HttpClient
     ) {
         //Initialize current user from local storage
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem(this.currentUserKey) as string));
+        this.currentUserSubject = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem(this.currentUserKey) as string));
         this.currentUserObservable = this.currentUserSubject.asObservable();
 
         //Initialize access token from local storage
-        this.accessTokenSubject = new BehaviorSubject<AccessToken>(JSON.parse(localStorage.getItem(this.accessTokenKey) as string));
+        this.accessTokenSubject = new BehaviorSubject<AccessToken | null>(JSON.parse(localStorage.getItem(this.accessTokenKey) as string));
         this.accessTokenObservable = this.accessTokenSubject.asObservable();
     }
 
-    public get currentUser(): User {
+    public get currentUser(): User | null {
         return this.currentUserSubject.value;
     }
 
@@ -74,5 +74,12 @@ export class AuthenticationService {
                 return token;
             })
         );
+    }
+
+    public logout() {
+        localStorage.removeItem(this.currentUserKey);
+        this.currentUserSubject.next(null);
+        localStorage.removeItem(this.accessTokenKey);
+        this.accessTokenSubject.next(null);
     }
 }
