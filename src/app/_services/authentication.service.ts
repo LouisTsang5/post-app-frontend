@@ -43,7 +43,7 @@ export class AuthenticationService {
         return this.http.post(url, {email, password})
         .pipe(
             //Get response and return token
-            map(res => {
+            map((res) => {
                 if (!res || !((res as any).token && (res as any).expiryDate)) {
                     throw new Error('Unable to obtain access token');
                 }
@@ -60,7 +60,7 @@ export class AuthenticationService {
                 return token;
             }),
             //Get user info from token
-            map(token => {
+            map((token) => {
                 const userUrl = `${environment.apiURL}/user/self`;
                 const headers = new HttpHeaders({ 'x-access-token': token.token });
                 this.http.get(userUrl, { headers }).subscribe({
@@ -81,5 +81,44 @@ export class AuthenticationService {
         this.currentUserSubject.next(null);
         localStorage.removeItem(this.accessTokenKey);
         this.accessTokenSubject.next(null);
+    }
+
+    public register(userInfo: User, password: string) {
+        const url = `${environment.apiURL}/user/register`;
+        const registrationInfo = {
+            email: userInfo.email,
+            alias: userInfo.alias,
+            first_name: userInfo.firstName,
+            last_name: userInfo.lastName,
+            password: password,
+        };
+        return this.http.post(url, registrationInfo)
+        .pipe(
+            map((res: any) => {
+                if (!res || res.userInfo || res.accessToken) {
+                    throw new Error('unable to register user');
+                }
+
+                //Set access token
+                const token = {
+                    token: res.accessToken.token,
+                    expireDate: res.accessToken.expiryDate,
+                } as AccessToken;
+                localStorage.setItem(this.accessTokenKey, JSON.stringify(token));
+                this.accessTokenSubject.next(token);
+
+                //Set user info
+                const user = {
+                    alias: res.userInfo.alias,
+                    email: res.userInfo.email,
+                    firstName: res.userInfo.firstName,
+                    lastName: res.userInfo.lastName,
+                } as User;
+                localStorage.setItem(this.currentUserKey, JSON.stringify(user));
+                this.currentUserSubject.next(user);
+
+                return res;
+            })
+        );
     }
 }
