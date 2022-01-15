@@ -43,14 +43,14 @@ export class AuthenticationService {
         return this.http.post(url, {email, password})
         .pipe(
             //Get response and return token
-            map((res) => {
-                if (!res || !((res as any).token && (res as any).expiryDate)) {
+            map((res: any) => {
+                if (!res || !(res.token && res.expiryDate)) {
                     throw new Error('Unable to obtain access token');
                 }
 
                 const token = {
-                    token: (res as any).token,
-                    expireDate: (res as any).expiryDate,
+                    token: res.token,
+                    expireDate: res.expiryDate,
                 } as AccessToken;
 
                 //Set access token
@@ -64,8 +64,8 @@ export class AuthenticationService {
                 const userUrl = `${environment.apiURL}/user/self`;
                 const headers = new HttpHeaders({ 'x-access-token': token.token });
                 this.http.get(userUrl, { headers }).subscribe({
-                    next: (res) => {
-                        const { email, alias, firstName, lastName } = res as any;
+                    next: (res: any) => {
+                        const { email, alias, firstName, lastName } = res;
                         const user = { email, alias, firstName, lastName } as User;
                         localStorage.setItem(this.currentUserKey, JSON.stringify(user));
                         this.currentUserSubject.next(user);
