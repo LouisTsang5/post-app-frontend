@@ -1,4 +1,4 @@
-export class AccessToken {
+export interface AccessToken {
     token: string;
     expireDate: string;
 }
