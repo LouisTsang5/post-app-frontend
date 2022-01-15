@@ -58,7 +58,7 @@ export class AuthenticationService {
         this.accessTokenSubject.next(token);
     }
 
-    public login(email: string, password: string): Observable<AccessToken> {
+    public login(email: string, password: string): Observable<void> {
         const url = `${environment.apiURL}/user/login`;
         return this.http.post(url, {email, password})
         .pipe(
@@ -88,7 +88,6 @@ export class AuthenticationService {
                         this.currentUser = { email, alias, firstName, lastName } as User;
                     }
                 })
-                return token;
             })
         );
     }
@@ -100,7 +99,7 @@ export class AuthenticationService {
         this.accessTokenSubject.next(null);
     }
 
-    public register(userInfo: User, password: string) {
+    public register(userInfo: User, password: string): Observable<void> {
         const url = `${environment.apiURL}/user/register`;
         const registrationInfo = {
             email: userInfo.email,
@@ -129,8 +128,6 @@ export class AuthenticationService {
                     firstName: res.userInfo.firstName,
                     lastName: res.userInfo.lastName,
                 } as User;
-
-                return res;
             })
         );
     }

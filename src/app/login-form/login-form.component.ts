@@ -49,8 +49,7 @@ export class LoginFormComponent implements OnInit {
       finalize(() => { this.loading = false; }) // always turn loading false
     )
     .subscribe({
-      next: (res) => {
-        console.log(res);
+      next: () => {
         this.errorMessage = '';
         this.router.navigate([this.returnUrl]);
       },
