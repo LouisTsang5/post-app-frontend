@@ -9,11 +9,11 @@ import { AccessToken } from "../_models/accessToken.model";
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
-    private currentUserObservable: Observable<User>;
+    public currentUserObservable: Observable<User>;
     private currentUserKey = 'currentUser';
 
     private accessTokenSubject: BehaviorSubject<AccessToken>;
-    private accessTokenObservable: Observable<AccessToken>;
+    public accessTokenObservable: Observable<AccessToken>;
     private accessTokenKey = 'accessToken';
 
     constructor(
