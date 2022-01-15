@@ -1,8 +1,6 @@
-import { Token } from '@angular/compiler/src/ml_parser/tokens';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
-import { User } from '../_models/user.model';
 
 @Component({
   selector: 'app-home',
@@ -11,18 +9,15 @@ import { User } from '../_models/user.model';
 })
 export class HomeComponent implements OnInit {
 
-  currentUser: User;
-
   constructor(
     private authenticaionService: AuthenticationService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    if (!(this.authenticaionService.currentUser && this.authenticaionService.accessToken)) {
+    if (!this.authenticaionService.accessToken) {
       this.router.navigate(['login'], { queryParams: { returnUrl: '/' } });
     }
-    this.currentUser = this.authenticaionService.currentUser;
   }
 
 }
