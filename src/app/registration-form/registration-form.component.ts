@@ -10,6 +10,7 @@ import { AuthenticationService } from '../_services/authentication.service';
 export class RegistrationFormComponent implements OnInit {
 
   registrationForm: FormGroup;
+  submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,6 +26,14 @@ export class RegistrationFormComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
     });
+  }
+
+  public get formValue() {
+    return this.registrationForm.controls;
+  }
+
+  onSubmit() {
+    this.submitted = true;
   }
 
 }
