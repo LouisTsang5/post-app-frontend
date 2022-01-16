@@ -111,7 +111,7 @@ export class AuthenticationService {
         return this.http.post(url, registrationInfo)
         .pipe(
             map((res: any) => {
-                if (!res || res.userInfo || res.accessToken) {
+                if (!res || !res.userInfo || !res.accessToken) {
                     throw new Error('unable to register user');
                 }
 
