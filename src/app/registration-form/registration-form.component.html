@@ -1,12 +1,12 @@
 <div class="form-wrapper">
-    <form [formGroup]="registrationForm" class="registration-form">
+    <form [formGroup]="registrationForm" class="registration-form" (submit)="onSubmit()">
         <div>
             <label for="firstName" class="field-label">
                 First Name
             </label>
             <input type="text" formControlName="firstName" class="field-input">
-            <div *ngIf="submitted && formValue['email'].errors">
-                <div *ngIf="formValue['email'].errors['required']">Please enter your first name</div>
+            <div class="error-message" *ngIf="submitted && formValue['firstName'].errors">
+                <div *ngIf="formValue['firstName'].errors['required']">Please enter your first name</div>
             </div>
         </div>
 
@@ -15,9 +15,9 @@
                 Last Name
             </label>
             <input type="text" formControlName="lastName" class="field-input">
-            <!-- <div *ngIf="submitted && formValue['email'].errors">
-                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
-            </div> -->
+            <div class="error-message" *ngIf="submitted && formValue['lastName'].errors">
+                <div *ngIf="formValue['lastName'].errors['required']">Please enter your last name</div>
+            </div>
         </div>
         
         <div>
@@ -25,9 +25,9 @@
                 Alias
             </label>
             <input type="text" formControlName="alias" class="field-input">
-            <!-- <div *ngIf="submitted && formValue['email'].errors">
-                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
-            </div> -->
+            <div class="error-message" *ngIf="submitted && formValue['alias'].errors">
+                <div *ngIf="formValue['alias'].errors['required']">Please enter an alias for your account</div>
+            </div>
         </div>
         
         <div>
@@ -35,9 +35,9 @@
                 Email
             </label>
             <input type="text" formControlName="email" class="field-input">
-            <!-- <div *ngIf="submitted && formValue['email'].errors">
-                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
-            </div> -->
+            <div class="error-message" *ngIf="submitted && formValue['email'].errors">
+                <div *ngIf="formValue['email'].errors['required']">Please enter your email address</div>
+            </div>
         </div>
 
         <div>
@@ -45,9 +45,9 @@
                 Password
             </label>
             <input type="password" formControlName="password" class="field-input">
-            <!-- <div *ngIf="submitted && formValue['email'].errors">
-                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
-            </div> -->
+            <div class="error-message" *ngIf="submitted && formValue['password'].errors">
+                <div *ngIf="formValue['password'].errors['required']">Please enter a password</div>
+            </div>
         </div>
 
         <div>
@@ -55,9 +55,21 @@
                 Confirm Password
             </label>
             <input type="password" formControlName="passwordConfirm" class="field-input">
-            <!-- <div *ngIf="submitted && formValue['email'].errors">
-                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
-            </div> -->
+            <div class="error-message" *ngIf="submitted && formValue['passwordConfirm'].errors">
+                <div *ngIf="formValue['passwordConfirm'].errors['required']">Please re-enter your password</div>
+            </div>
+        </div>
+
+        <div>
+            <button class="submit-btn">
+                Register
+            </button>
+            <p class="inline" *ngIf="loading">
+                Loading...
+            </p>
+            <!-- <p class="inline error-message" *ngIf="errorMessage">
+                {{ errorMessage }} 
+            </p> -->
         </div>
     </form>
 </div>

@@ -11,6 +11,7 @@ export class RegistrationFormComponent implements OnInit {
 
   registrationForm: FormGroup;
   submitted = false;
+  loading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,6 +35,7 @@ export class RegistrationFormComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.loading = true;
   }
 
 }
