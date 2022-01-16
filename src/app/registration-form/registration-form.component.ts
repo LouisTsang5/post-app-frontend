@@ -81,9 +81,6 @@ export class RegistrationFormComponent implements OnInit {
       error: (err) => {
         console.log(err);
         this.errorMessage = 'Registration failed. Please read the console log.';
-      },
-      complete: () => {
-        console.log('completed');
       }
     });
   }
