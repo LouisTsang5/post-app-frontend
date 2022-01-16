@@ -67,7 +67,10 @@
             <input type="password" formControlName="passwordConfirm" class="field-input">
             <div class="error-message" *ngIf="submitted">
                 <div *ngIf="formValue['passwordConfirm'].errors?.['required']">
-                    Please re-enter your password
+                    Please enter your password again
+                </div>
+                <div *ngIf="formValue['passwordConfirm'].value && registrationForm.hasError('passwordNotSame')">
+                    Password values do not match
                 </div>
             </div>
         </div>

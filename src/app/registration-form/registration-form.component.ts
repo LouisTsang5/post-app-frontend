@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -12,6 +12,13 @@ export class RegistrationFormComponent implements OnInit {
   registrationForm: FormGroup;
   submitted = false;
   loading = false;
+
+  passwordAndConfirmValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+    console.log('va');
+    const password = group.get('password')?.value;
+    const passwordConfirm = group.get('passwordConfirm')?.value;
+    return password === passwordConfirm ? null : { passwordNotSame: true };
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,7 +33,7 @@ export class RegistrationFormComponent implements OnInit {
       passwordConfirm: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-    });
+    }, { validator: this.passwordAndConfirmValidator });
   }
 
   public get formValue() {
