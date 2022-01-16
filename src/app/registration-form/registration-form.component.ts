@@ -37,7 +37,22 @@ export class RegistrationFormComponent implements OnInit {
     return this.userService.getUser(alias)
     .pipe(
       map((res) => {
-        return res? {userExists: true} : null;
+        return res? {aliasExists: true} : null;
+      }),
+      catchError((err) => {
+        if (err.status === 404)
+          return EMPTY;
+        throw err;
+      })
+    );
+  }
+
+  emailExistsValidator: AsyncValidatorFn = (emailControl: AbstractControl): Observable<ValidationErrors | null> => {
+    const email = emailControl.value;
+    return this.userService.getUser('', email)
+    .pipe(
+      map((res) => {
+        return res? {emailExists: true} : null;
       }),
       catchError((err) => {
         if (err.status === 404)
@@ -58,7 +73,7 @@ export class RegistrationFormComponent implements OnInit {
   ngOnInit(): void {
     this.registrationForm = this.formBuilder.group({
       alias: ['', Validators.required, this.aliasExistsValidator],
-      email: ['', Validators.required],
+      email: ['', Validators.required, this.emailExistsValidator],
       password: ['', Validators.required],
       passwordConfirm: ['', Validators.required],
       firstName: ['', Validators.required],

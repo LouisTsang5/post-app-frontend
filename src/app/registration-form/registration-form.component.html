@@ -33,8 +33,8 @@
                 <div *ngIf="formValue['alias'].errors?.['required']">
                     Please enter an alias for your account
                 </div>
-                <div *ngIf="formValue['alias'].errors?.['userExists']">
-                    The alias has been used
+                <div *ngIf="formValue['alias'].errors?.['aliasExists']">
+                    This alias has already been used
                 </div>
             </div>
         </div>
@@ -47,6 +47,9 @@
             <div class="error-message" *ngIf="submitted">
                 <div *ngIf="formValue['email'].errors?.['required']">
                     Please enter your email address
+                </div>
+                <div *ngIf="formValue['email'].errors?.['emailExists']">
+                    This email has already been used
                 </div>
             </div>
         </div>
