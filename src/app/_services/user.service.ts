@@ -22,7 +22,7 @@ export class UserService {
     const query = {} as any;
     if (alias) query['alias'] = alias;
     if (email) query['email'] = email;
-    return this.http.get(url, query)
+    return this.http.post(url, query)
     .pipe(
         map((res: any) => {
             if (res) {
