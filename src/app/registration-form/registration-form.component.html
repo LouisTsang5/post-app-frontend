@@ -33,6 +33,9 @@
                 <div *ngIf="formValue['alias'].errors?.['required']">
                     Please enter an alias for your account
                 </div>
+                <div *ngIf="formValue['alias'].errors?.['userExists']">
+                    The alias has been used
+                </div>
             </div>
         </div>
         

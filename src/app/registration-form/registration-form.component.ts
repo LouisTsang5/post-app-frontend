@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize, first } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, finalize, first, map } from 'rxjs/operators';
 import { User } from '../_models/user';
 import { AuthenticationService } from '../_services/authentication.service';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-registration-form',
@@ -24,22 +26,38 @@ export class RegistrationFormComponent implements OnInit {
   }
 
   //Validators
-  passwordAndConfirmValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
-    const password = group.get('password')?.value;
-    const passwordConfirm = group.get('passwordConfirm')?.value;
+  passwordAndConfirmValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const password = control.get('password')?.value;
+    const passwordConfirm = control.get('passwordConfirm')?.value;
     return password === passwordConfirm ? null : { passwordNotSame: true };
+  }
+
+  aliasExistsValidator: AsyncValidatorFn = (aliasControl: AbstractControl): Observable<ValidationErrors | null> => {
+    const alias = aliasControl.value;
+    return this.userService.getUser(alias)
+    .pipe(
+      map((res) => {
+        return res? {userExists: true} : null;
+      }),
+      catchError((err) => {
+        if (err.status === 404)
+          return EMPTY;
+        throw err;
+      })
+    );
   }
 
   constructor(
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.registrationForm = this.formBuilder.group({
-      alias: ['', Validators.required],
+      alias: ['', Validators.required, this.aliasExistsValidator],
       email: ['', Validators.required],
       password: ['', Validators.required],
       passwordConfirm: ['', Validators.required],
