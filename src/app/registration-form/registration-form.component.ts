@@ -38,11 +38,6 @@ export class RegistrationFormComponent implements OnInit {
     .pipe(
       map((res) => {
         return res? {aliasExists: true} : null;
-      }),
-      catchError((err) => {
-        if (err.status === 404)
-          return EMPTY;
-        throw err;
       })
     );
   }
@@ -53,11 +48,6 @@ export class RegistrationFormComponent implements OnInit {
     .pipe(
       map((res) => {
         return res? {emailExists: true} : null;
-      }),
-      catchError((err) => {
-        if (err.status === 404)
-          return EMPTY;
-        throw err;
       })
     );
   }
