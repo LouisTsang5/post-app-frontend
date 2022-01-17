@@ -39,6 +39,6 @@
     @apply text-red-500;
 }
 
-.ng-submitted .ng-invalid:not(form) {
+.ng-submitted .ng-invalid:not(form), .ng-touched.ng-invalid:not(form){
     @apply bg-red-100;
 }

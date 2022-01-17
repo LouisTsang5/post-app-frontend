@@ -5,7 +5,7 @@
                 First Name
             </label>
             <input type="text" formControlName="firstName" class="field-input">
-            <div class="error-message" *ngIf="submitted">
+            <div class="error-message" *ngIf="submitted || formValue['firstName'].touched">
                 <div *ngIf="formValue['firstName'].errors?.['required']">
                     Please enter your first name
                 </div>
@@ -17,7 +17,7 @@
                 Last Name
             </label>
             <input type="text" formControlName="lastName" class="field-input">
-            <div class="error-message" *ngIf="submitted">
+            <div class="error-message" *ngIf="submitted || formValue['lastName'].touched">
                 <div *ngIf="formValue['lastName'].errors?.['required']">
                     Please enter your last name
                 </div>
@@ -29,7 +29,7 @@
                 Alias
             </label>
             <input type="text" formControlName="alias" class="field-input">
-            <div class="error-message" *ngIf="submitted">
+            <div class="error-message" *ngIf="submitted || formValue['alias'].touched">
                 <div *ngIf="formValue['alias'].errors?.['required']">
                     Please enter an alias for your account
                 </div>
@@ -44,7 +44,7 @@
                 Email
             </label>
             <input type="text" formControlName="email" class="field-input">
-            <div class="error-message" *ngIf="submitted">
+            <div class="error-message" *ngIf="submitted || formValue['email'].touched">
                 <div *ngIf="formValue['email'].errors?.['required']">
                     Please enter your email address
                 </div>
@@ -59,7 +59,7 @@
                 Password
             </label>
             <input type="password" formControlName="password" class="field-input">
-            <div class="error-message" *ngIf="submitted">
+            <div class="error-message" *ngIf="submitted || formValue['password'].touched">
                 <div *ngIf="formValue['password'].errors?.['required']">
                     Please enter a password
                 </div>
@@ -71,7 +71,7 @@
                 Confirm Password
             </label>
             <input type="password" formControlName="passwordConfirm" class="field-input">
-            <div class="error-message" *ngIf="submitted">
+            <div class="error-message" *ngIf="submitted || formValue['passwordConfirm'].touched">
                 <div *ngIf="formValue['passwordConfirm'].errors?.['required']">
                     Please enter your password again
                 </div>
