@@ -6,14 +6,14 @@
     </div> -->
 
     <div class="dropdown">
-        <button class="btn">
-        <span class="mr-1">Dropdown</span>
+        <button class="dropdown-btn">
+        <span class="mr-1">{{ currentUser.alias }}</span>
         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
         </button>
         <ul class="dropdown-menu absolute hidden pt-1">
         <!-- <li><a class="first-item menu-item" href="#">One</a></li>
         <li><a class="menu-item" href="#">Two</a></li> -->
-        <li><button class="first-item last-item menu-item">Logout</button></li>
+        <li><button class="first-item last-item menu-item" (click)="onLogout()">Logout</button></li>
         </ul>
     </div>
 </div>

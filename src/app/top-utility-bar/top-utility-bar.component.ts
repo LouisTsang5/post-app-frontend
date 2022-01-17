@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../_models/user';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -8,11 +9,19 @@ import { AuthenticationService } from '../_services/authentication.service';
 })
 export class TopUtilityBarComponent implements OnInit {
 
+  currentUser: User;
+
   constructor(
     private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
+    this.authenticationService.currentUserObservable.subscribe({
+      next: (user?) => {
+        if (user)
+          this.currentUser = user;
+      }
+    });
   }
 
   public onLogout() {
