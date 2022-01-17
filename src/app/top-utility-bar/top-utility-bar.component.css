@@ -3,9 +3,9 @@
     @apply bg-blue-500;
 }
 
-.top-bar .line-wrap {
-    @apply block;
-    @apply py-2;
+.title-wrap {
+    @apply text-white text-lg;
+    @apply flex items-center;
 }
 
 .dropdown-btn {
