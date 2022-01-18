@@ -27,6 +27,9 @@ export class PostService {
     return this.http.get(url, {headers: headers})
     .pipe(
       map((res: any) => {
+        if (!res)
+          return [];
+
         const posts: Post[] = [];
         for (let i = 0; i < res.length; i++) {
           posts.push({
