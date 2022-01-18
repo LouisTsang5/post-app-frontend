@@ -10,7 +10,6 @@ import { PostService } from '../_services/post.service';
 })
 export class PostsPageComponent implements OnInit, OnDestroy {
 
-  accessTokenSubscription: Subscription;
   postsSubscription: Subscription;
   posts: Post[];
 
@@ -28,7 +27,6 @@ export class PostsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.accessTokenSubscription.unsubscribe();
     this.postsSubscription.unsubscribe();
   }
 
