@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Post } from '../_models/post';
+import { AuthenticationService } from '../_services/authentication.service';
 import { PostService } from '../_services/post.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private postService: PostService,
+    private authenticationService: AuthenticationService
   ) { }
   
   ngOnInit(): void {
@@ -23,7 +25,8 @@ export class PostsPageComponent implements OnInit, OnDestroy {
         this.posts = post;
       }
     });
-    this.postService.getUserPosts().subscribe();
+    if (this.authenticationService.accessToken)
+      this.postService.getUserPosts();
   }
 
   ngOnDestroy(): void {
