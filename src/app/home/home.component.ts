@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Post } from '../_models/post';
 import { AuthenticationService } from '../_services/authentication.service';
 import { PostService } from '../_services/post.service';
 
@@ -13,6 +14,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   accessTokenSubscription: Subscription;
   postsSubscription: Subscription;
+  posts: Post[];
 
   constructor(
     private authenticaionService: AuthenticationService,
@@ -28,7 +30,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       }
     });
-    this.postsSubscription = this.postService.userPostsObservable.subscribe();
+    this.postsSubscription = this.postService.userPostsObservable.subscribe({
+      next: (post) => {
+        this.posts = post;
+      }
+    });
     this.postService.getUserPosts().subscribe();
   }
 
