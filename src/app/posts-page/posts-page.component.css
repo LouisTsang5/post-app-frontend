@@ -1,0 +1,10 @@
+.post-wrapper {
+    @apply border border-black border-2 rounded;
+    @apply m-2;
+}
+
+.post-title {
+    @apply p-2;
+    @apply bg-gray-200;
+    @apply text-lg;
+}

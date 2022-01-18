@@ -13,12 +13,9 @@ import { PostService } from '../_services/post.service';
 export class HomeComponent implements OnInit, OnDestroy {
 
   accessTokenSubscription: Subscription;
-  postsSubscription: Subscription;
-  posts: Post[];
 
   constructor(
     private authenticaionService: AuthenticationService,
-    private postService: PostService,
     private router: Router
   ) { }
 
@@ -30,17 +27,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       }
     });
-    this.postsSubscription = this.postService.userPostsObservable.subscribe({
-      next: (post) => {
-        this.posts = post;
-      }
-    });
-    this.postService.getUserPosts().subscribe();
   }
 
   ngOnDestroy(): void {
     this.accessTokenSubscription.unsubscribe();
-    this.postsSubscription.unsubscribe();
   }
 
 }
