@@ -10,6 +10,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { HomeComponent } from './home/home.component';
 import { TopUtilityBarComponent } from './top-utility-bar/top-utility-bar.component';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
+import { PostsPageComponent } from './posts-page/posts-page.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { RegistrationFormComponent } from './registration-form/registration-form
     LoginFormComponent,
     HomeComponent,
     TopUtilityBarComponent,
-    RegistrationFormComponent
+    RegistrationFormComponent,
+    PostsPageComponent
   ],
   imports: [
     BrowserModule,
