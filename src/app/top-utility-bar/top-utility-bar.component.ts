@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { User } from '../_models/user';
 import { AuthenticationService } from '../_services/authentication.service';
 
@@ -7,21 +8,26 @@ import { AuthenticationService } from '../_services/authentication.service';
   templateUrl: './top-utility-bar.component.html',
   styleUrls: ['./top-utility-bar.component.css']
 })
-export class TopUtilityBarComponent implements OnInit {
+export class TopUtilityBarComponent implements OnInit, OnDestroy {
 
   currentUser: User;
+  currentUserSubscription: Subscription;
 
   constructor(
     private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
-    this.authenticationService.currentUserObservable.subscribe({
+    this.currentUserSubscription = this.authenticationService.currentUserObservable.subscribe({
       next: (user?) => {
         if (user)
           this.currentUser = user;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+      this.currentUserSubscription.unsubscribe();
   }
 
   public onLogout() {
