@@ -1,4 +1,10 @@
-<div *ngFor="let post of posts" class="post-wrapper">
-    <h1 class="post-title">{{ post.title }}</h1>
-    <p class="post-content">{{ post.content }}</p>
+<div class="cmp-wrapper">
+    <div class="cmp-title">
+        Your Posts
+    </div>
+
+    <div *ngFor="let post of posts" class="post-wrapper">
+        <h1 class="post-title">{{ post.title }}</h1>
+        <p class="post-content">{{ post.content }}</p>
+    </div>
 </div>

@@ -1,10 +1,24 @@
+.cmp-wrapper {
+    @apply border rounded;
+    @apply p-2;
+}
+
+.cmp-title {
+    @apply text-3xl;
+}
+
 .post-wrapper {
-    @apply border border-black border-2 rounded;
+    @apply border-2 border-black rounded;
     @apply m-2;
+    @apply shadow;
 }
 
 .post-title {
     @apply p-2;
-    @apply bg-gray-200;
-    @apply text-lg;
+    @apply bg-blue-200;
+    @apply text-lg text-center capitalize;
+}
+
+.post-content {
+    @apply p-5;
 }
