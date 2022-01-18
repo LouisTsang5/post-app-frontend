@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../_models/post';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class PostService {
   public userPostsObservable: Observable<Post[]>;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private authenticationService: AuthenticationService
   ) { 
     this.userPostsSubject = new BehaviorSubject<Post[]>([]);
     this.userPostsObservable = this.userPostsSubject.asObservable();
@@ -21,7 +23,8 @@ export class PostService {
 
   getUserPosts(): Observable<Post[]> {
     const url = `${environment.apiURL}/post`;
-    return this.http.get(url)
+    const headers = new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
+    return this.http.get(url, {headers: headers})
     .pipe(
       map((res: any) => {
         const posts: Post[] = [];
