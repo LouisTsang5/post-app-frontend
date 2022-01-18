@@ -21,10 +21,13 @@ export class PostService {
     this.userPostsObservable = this.userPostsSubject.asObservable();
   }
 
-  getUserPosts(): Observable<Post[]> {
+  getUserPosts() {
+    if (!this.authenticationService.accessToken)
+      throw new Error('No access token available');
+
     const url = `${environment.apiURL}/post`;
     const headers = new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
-    return this.http.get(url, {headers: headers})
+    this.http.get(url, {headers: headers})
     .pipe(
       map((res: any) => {
         if (!res)
@@ -43,6 +46,6 @@ export class PostService {
         this.userPostsSubject.next(posts);
         return posts;
       })
-    );
+    ).subscribe();
   }
 }
