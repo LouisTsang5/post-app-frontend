@@ -9,9 +9,15 @@ import { Post } from '../_models/post';
 })
 export class PostService {
 
+  private userPostsSubject: BehaviorSubject<Post[]>;
+  public userPostsObservable: Observable<Post[]>;
+
   constructor(
     private http: HttpClient
-  ) { }
+  ) { 
+    this.userPostsSubject = new BehaviorSubject<Post[]>([]);
+    this.userPostsObservable = this.userPostsSubject.asObservable();
+  }
 
   getUserPosts(): Observable<Post[]> {
     const url = `${environment.apiURL}/post`;
@@ -25,6 +31,10 @@ export class PostService {
             content: res[i].content
           });
         }
+        return posts;
+      }),
+      map((posts) => {
+        this.userPostsSubject.next(posts);
         return posts;
       })
     );
