@@ -14,6 +14,8 @@ export class PostsPageComponent implements OnInit, OnDestroy {
   postsSubscription: Subscription;
   posts: Post[];
 
+  displayCreatePostForm = false;
+
   constructor(
     private postService: PostService,
     private authenticationService: AuthenticationService
@@ -33,4 +35,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
     this.postsSubscription.unsubscribe();
   }
 
+  onCreatePost() {
+    this.displayCreatePostForm = true;
+  }
 }

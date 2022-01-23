@@ -4,7 +4,7 @@
             Your Posts
         </div>
         <div class="util-bar">
-            <svg width="30" height="30" class="util-btn">
+            <svg width="30" height="30" class="util-btn" (click)="onCreatePost()">
                 <rect width="30" height="30"/>
                 <polygon points="5,15 25,15"/>
                 <polygon points="15,5 15,25"/>
@@ -17,5 +17,5 @@
         <p class="post-content">{{ post.content }}</p>
     </div>
 
-    <app-create-posts-form class="create-form"></app-create-posts-form>
+    <app-create-posts-form class="create-form" *ngIf="displayCreatePostForm"></app-create-posts-form>
 </div>
