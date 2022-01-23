@@ -1,8 +1,17 @@
 <div class="cmp-wrapper">
-    <div class="cmp-title">
-        Your Posts
+    <div class="flex">
+        <div class="cmp-title">
+            Your Posts
+        </div>
+        <div class="util-bar">
+            <svg width="30" height="30" class="util-btn">
+                <rect width="30" height="30"/>
+                <polygon points="5,15 25,15"/>
+                <polygon points="15,5 15,25"/>
+            </svg>
+        </div>
     </div>
-
+    
     <div *ngFor="let post of posts" class="post-wrapper">
         <h1 class="post-title">{{ post.title }}</h1>
         <p class="post-content">{{ post.content }}</p>

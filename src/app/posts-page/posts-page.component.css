@@ -6,6 +6,7 @@
 
 .cmp-title {
     @apply text-3xl;
+    @apply w-full;
 }
 
 .post-wrapper {
@@ -24,9 +25,21 @@
     @apply p-5;
 }
 
+.util-bar {
+    @apply flex justify-end;
+    @apply w-full;
+}
+
+.util-btn {
+    @apply fill-white hover:fill-blue-500;
+    @apply stroke-blue-500 hover:stroke-white;
+    @apply stroke-[3];
+}
+
 .create-form {
     position: absolute;
-    display: flex;
+    display: none; 
+    /* flex; */
     justify-content: center;
     align-items: center;
     margin: auto;
