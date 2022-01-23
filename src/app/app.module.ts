@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { TopUtilityBarComponent } from './top-utility-bar/top-utility-bar.component';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { PostsPageComponent } from './posts-page/posts-page.component';
+import { CreatePostsFormComponent } from './create-posts-form/create-posts-form.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PostsPageComponent } from './posts-page/posts-page.component';
     HomeComponent,
     TopUtilityBarComponent,
     RegistrationFormComponent,
-    PostsPageComponent
+    PostsPageComponent,
+    CreatePostsFormComponent
   ],
   imports: [
     BrowserModule,
