@@ -22,20 +22,20 @@ export class PostsPageComponent implements OnInit, OnDestroy {
   ) { }
   
   ngOnInit(): void {
+    if (!this.authenticationService.accessToken) return;
     this.postsSubscription = this.postService.userPostsObservable.subscribe({
       next: (post) => {
         this.posts = post;
       }
     });
-    if (this.authenticationService.accessToken)
-      this.postService.getUserPosts();
+    this.postService.getUserPosts();
   }
 
   ngOnDestroy(): void {
-    this.postsSubscription.unsubscribe();
+    if (this.postsSubscription) this.postsSubscription.unsubscribe();
   }
 
-  onCreatePost() {
+  onClickCreatePost() {
     this.displayCreatePostForm = true;
   }
 }
