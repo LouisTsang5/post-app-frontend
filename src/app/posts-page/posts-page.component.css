@@ -1,6 +1,7 @@
 .cmp-wrapper {
     @apply border rounded;
     @apply p-2;
+    position: relative;
 }
 
 .cmp-title {
@@ -21,4 +22,18 @@
 
 .post-content {
     @apply p-5;
+}
+
+.create-form {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    @apply bg-blue-200;
+    opacity: 0.9;
 }
