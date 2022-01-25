@@ -10,6 +10,8 @@ import { Post } from '../_models/post';
 export class CreatePostsFormComponent implements OnInit {
 
   createPostForm: FormGroup;
+  submitted = false;
+  submitting = false;
 
   @Input() onCancelCreatePost: () => void;
   @Input() onSubmitCreatePostForm: (post: Post) => void;
@@ -30,10 +32,20 @@ export class CreatePostsFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitted = true;
+    this.submitting = true;
+
+    if (this.createPostForm.invalid) {
+      this.submitting = false;
+      return;
+    }
+
     const post: Post = {
       title: this.formValue['title'].value,
       content: this.formValue['content'].value
     };
     this.onSubmitCreatePostForm(post);
+
+    this.submitting = false;
   }
 }

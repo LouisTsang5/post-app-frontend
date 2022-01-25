@@ -1,35 +1,41 @@
 <div class="form-wrapper">
     <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()" class="form">
-        <div class="flex justify-end">
-            <svg width="20" height="20" class="cancel-btn" (click)="onCancelCreatePost()">
-                <rect width="20" height="20"/>
-                <polygon points="5,15 15,5"/>
-                <polygon points="15,15 5,5"/>
-            </svg>
-        </div>
+        
 
-        <div class="form-title">
+        <div class="form-title relative">
             Create a post
+
+            <div class="flex justify-end absolute top-0 right-0">
+                <svg width="20" height="20" class="cancel-btn" (click)="onCancelCreatePost()">
+                    <rect width="20" height="20"/>
+                    <polygon points="5,15 15,5"/>
+                    <polygon points="15,15 5,5"/>
+                </svg>
+            </div>
         </div>
 
         <div class="field-wrapper">
             <label for="title" class="field-label">
-                Title
+                <div class="inline-block w-[50%]">Title</div>
+                <div class="inline-block w-[50%]">
+                    <div class="error-message flex justify-end" *ngIf="submitted && formValue['title'].errors">
+                        <div *ngIf="formValue['title'].errors['required']">Please enter a title for this post.</div>
+                    </div>
+                </div>
             </label>
             <input class="field-input" type="text" formControlName="title">
-            <!-- <div class="error-message" *ngIf="submitted && formValue['email'].errors">
-                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
-            </div> -->
         </div>
 
         <div class="field-wrapper">
             <label for="content" class="field-label">
-                Content
+                <div class="inline-block w-[50%]">Content</div>
+                <div class="inline-block w-[50%]">
+                    <div class="error-message flex justify-end" *ngIf="submitted && formValue['content'].errors">
+                        <div *ngIf="formValue['content'].errors['required']">Please enter contents for this post.</div>
+                    </div>
+                </div>
             </label>
-            <textarea class="field-input h-[200px]" formControlName="content" cols="40"></textarea>
-            <!-- <div class="error-message" *ngIf="submitted && formValue['email'].errors">
-                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
-            </div> -->
+            <textarea class="field-input h-[220px]" formControlName="content" cols="40"></textarea>
         </div>
 
         <button class="submit-btn">Submit</button>

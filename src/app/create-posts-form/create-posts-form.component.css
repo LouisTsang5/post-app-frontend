@@ -5,6 +5,7 @@
 
 .form-title {
     @apply text-xl text-center font-bold;
+    @apply mb-[5px];
 }
 
 .form {
