@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Post } from '../_models/post';
 
 @Component({
   selector: 'app-create-posts-form',
@@ -11,6 +12,7 @@ export class CreatePostsFormComponent implements OnInit {
   createPostForm: FormGroup;
 
   @Input() onCancelCreatePost: () => void;
+  @Input() onSubmitCreatePostForm: (post: Post) => void;
 
   constructor(
     private formBuilder: FormBuilder
@@ -28,6 +30,10 @@ export class CreatePostsFormComponent implements OnInit {
   }
 
   onSubmit() {
-
+    const post: Post = {
+      title: this.formValue['title'].value,
+      content: this.formValue['content'].value
+    };
+    this.onSubmitCreatePostForm(post);
   }
 }
