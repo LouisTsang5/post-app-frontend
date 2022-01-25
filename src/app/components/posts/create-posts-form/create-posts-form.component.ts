@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Post } from '../_models/post';
+import { Post } from '../../../_models/post';
 
 @Component({
   selector: 'app-create-posts-form',

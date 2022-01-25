@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { User } from '../_models/user';
-import { AuthenticationService } from '../_services/authentication.service';
+import { User } from '../../_models/user';
+import { AuthenticationService } from '../../_services/authentication.service';
 
 @Component({
   selector: 'app-top-utility-bar',

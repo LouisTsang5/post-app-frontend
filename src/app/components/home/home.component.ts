@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Post } from '../_models/post';
-import { AuthenticationService } from '../_services/authentication.service';
-import { PostService } from '../_services/post.service';
+import { Post } from '../../_models/post';
+import { AuthenticationService } from '../../_services/authentication.service';
+import { PostService } from '../../_services/post.service';
 
 @Component({
   selector: 'app-home',

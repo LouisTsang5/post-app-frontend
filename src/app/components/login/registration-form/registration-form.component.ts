@@ -3,9 +3,9 @@ import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationEr
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, finalize, first, map } from 'rxjs/operators';
-import { User } from '../_models/user';
-import { AuthenticationService } from '../_services/authentication.service';
-import { UserService } from '../_services/user.service';
+import { User } from '../../../_models/user';
+import { AuthenticationService } from '../../../_services/authentication.service';
+import { UserService } from '../../../_services/user.service';
 
 @Component({
   selector: 'app-registration-form',

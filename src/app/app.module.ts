@@ -6,12 +6,12 @@ import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginFormComponent } from './login-form/login-form.component';
-import { HomeComponent } from './home/home.component';
-import { TopUtilityBarComponent } from './top-utility-bar/top-utility-bar.component';
-import { RegistrationFormComponent } from './registration-form/registration-form.component';
-import { PostsPageComponent } from './posts-page/posts-page.component';
-import { CreatePostsFormComponent } from './create-posts-form/create-posts-form.component';
+import { LoginFormComponent } from './components/login/login-form/login-form.component';
+import { HomeComponent } from './components/home/home.component';
+import { TopUtilityBarComponent } from './components/top-utility-bar/top-utility-bar.component';
+import { RegistrationFormComponent } from './components/login/registration-form/registration-form.component';
+import { PostsPageComponent } from './components/posts/posts-page/posts-page.component';
+import { CreatePostsFormComponent } from './components/posts/create-posts-form/create-posts-form.component';
 
 @NgModule({
   declarations: [
