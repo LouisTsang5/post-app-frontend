@@ -1,0 +1,53 @@
+.form-wrapper {
+    @apply bg-white;
+    @apply opacity-100;
+}
+
+.form-title {
+    @apply text-xl text-center font-bold;
+}
+
+.form {
+    @apply border-2 border-black rounded;
+    @apply shadow-md;
+    @apply rounded;
+    @apply p-3;
+    @apply w-[500px];
+    @apply h-[430px];
+}
+
+.field-wrapper {
+    @apply mb-[5px];
+}
+
+.field-label {
+    @apply block;
+    @apply text-sm;
+    @apply font-bold;
+    @apply mb-2;
+}
+
+.field-input {
+    @apply shadow;
+    @apply appearance-none;
+    @apply border rounded;
+    @apply w-full;
+    @apply py-2 px-3;
+    @apply border-2 border-gray-300;
+}
+
+.submit-btn {
+    @apply py-2 px-2;
+    @apply bg-blue-500 hover:bg-blue-700;
+    @apply rounded-md;
+    @apply text-white;
+}
+
+.error-message {
+    @apply text-red-500;
+}
+
+.register {
+    @apply text-blue-500 hover:text-blue-700;
+    @apply cursor-pointer;
+}

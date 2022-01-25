@@ -1,1 +1,29 @@
-<p>create-posts-form works!</p>
+<div class="form-wrapper">
+    <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()" class="form">
+        <div class="form-title">
+            Create a post
+        </div>
+
+        <div class="field-wrapper">
+            <label for="title" class="field-label">
+                Title
+            </label>
+            <input class="field-input" type="text" formControlName="title">
+            <!-- <div class="error-message" *ngIf="submitted && formValue['email'].errors">
+                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
+            </div> -->
+        </div>
+
+        <div class="field-wrapper">
+            <label for="content" class="field-label">
+                Content
+            </label>
+            <textarea class="field-input h-[200px]" formControlName="content" cols="40"></textarea>
+            <!-- <div class="error-message" *ngIf="submitted && formValue['email'].errors">
+                <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
+            </div> -->
+        </div>
+
+        <button class="submit-btn">Submit</button>
+    </form>
+</div>
