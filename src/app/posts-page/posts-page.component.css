@@ -46,6 +46,5 @@
     bottom: 0;
     left: 0;
     right: 0;
-    @apply bg-blue-200;
-    opacity: 0.9;
+    @apply bg-blue-200/90;
 }
