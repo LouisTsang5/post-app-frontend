@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, first, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../_models/post';
 import { AuthenticationService } from './authentication.service';
@@ -29,6 +29,7 @@ export class PostService {
     const headers = new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
     this.http.get(url, {headers: headers})
     .pipe(
+      first(),
       map((res: any) => {
         if (!res)
           return [];
@@ -45,6 +46,21 @@ export class PostService {
       map((posts) => {
         this.userPostsSubject.next(posts);
         return posts;
+      })
+    ).subscribe();
+  }
+
+  createPost(post: Post) {
+    if (!this.authenticationService.accessToken)
+      throw new Error('No access token available');
+
+    const url = `${environment.apiURL}/post`;
+    const headers = new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
+    this.http.post(url, post, {headers: headers})
+    .pipe(
+      first(),
+      map((res) => {
+        this.getUserPosts();
       })
     ).subscribe();
   }
