@@ -17,5 +17,9 @@
         <p class="post-content">{{ post.content }}</p>
     </div>
 
-    <app-create-posts-form class="create-form" *ngIf="displayCreatePostForm"></app-create-posts-form>
+    <app-create-posts-form 
+        class="create-form" 
+        *ngIf="displayCreatePostForm"
+        [onCancelCreatePost]="onCancelCreatePost"
+    ></app-create-posts-form>
 </div>

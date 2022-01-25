@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -9,6 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CreatePostsFormComponent implements OnInit {
 
   createPostForm: FormGroup;
+
+  @Input() onCancelCreatePost: () => void;
 
   constructor(
     private formBuilder: FormBuilder
@@ -26,6 +28,6 @@ export class CreatePostsFormComponent implements OnInit {
   }
 
   onSubmit() {
-    
+
   }
 }

@@ -43,6 +43,13 @@
     @apply text-white;
 }
 
+.cancel-btn {
+    @apply fill-white hover:fill-red-500;
+    @apply stroke-red-500 hover:stroke-white;
+    @apply stroke-[3];
+    @apply cursor-pointer;
+}
+
 .error-message {
     @apply text-red-500;
 }

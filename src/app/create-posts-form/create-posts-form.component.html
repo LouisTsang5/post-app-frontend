@@ -1,5 +1,13 @@
 <div class="form-wrapper">
     <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()" class="form">
+        <div class="flex justify-end">
+            <svg width="20" height="20" class="cancel-btn" (click)="onCancelCreatePost()">
+                <rect width="20" height="20"/>
+                <polygon points="5,15 15,5"/>
+                <polygon points="15,15 5,5"/>
+            </svg>
+        </div>
+
         <div class="form-title">
             Create a post
         </div>
