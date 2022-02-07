@@ -9,6 +9,11 @@
     @apply w-full;
 }
 
+.posts-container {
+    @apply sm:grid sm:grid-cols-2;
+    @apply lg:grid lg:grid-cols-3;
+}
+
 .post-wrapper {
     @apply border-2 border-black rounded;
     @apply m-2;
