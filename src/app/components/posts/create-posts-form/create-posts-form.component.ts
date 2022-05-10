@@ -49,7 +49,8 @@ export class CreatePostsFormComponent implements OnInit {
 
         const post: Post = {
             title: this.formValue['title'].value,
-            content: this.formValue['content'].value
+            content: this.formValue['content'].value,
+            multimedia: this.formValue['file'].value,
         };
         this.postService.createPost(post);
 

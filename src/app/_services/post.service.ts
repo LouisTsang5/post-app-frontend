@@ -56,7 +56,11 @@ export class PostService {
 
     const url = `${environment.apiURL}/post`;
     const headers = new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
-    this.http.post(url, post, {headers: headers})
+    const formData = new FormData();
+    formData.append('title', post.title);
+    formData.append('content', post.content);
+    if (post.multimedia) post.multimedia.map((file) => formData.append('multimedia', file, file.name));
+    this.http.post(url, formData, {headers: headers})
     .pipe(
       first(),
       map((res) => {

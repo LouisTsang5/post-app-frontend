@@ -1,4 +1,5 @@
 export interface Post {
     title: string,
-    content: string
+    content: string,
+    multimedia?: File[],
 }
