@@ -24,8 +24,8 @@ export class PostsPageComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         if (!this.authenticationService.accessToken) return;
         this.postsSubscription = this.postService.userPostsObservable.subscribe({
-            next: (post) => {
-                this.posts = post;
+            next: (posts) => {
+                this.posts = posts;
             }
         });
         this.postService.getUserPosts();
