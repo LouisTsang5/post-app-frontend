@@ -5,24 +5,23 @@
         </div>
         <div class="util-bar">
             <svg width="30" height="30" class="util-btn" (click)="onClickCreatePost()">
-                <rect width="30" height="30"/>
-                <polygon points="5,15 25,15"/>
-                <polygon points="15,5 15,25"/>
+                <rect width="30" height="30" />
+                <polygon points="5,15 25,15" />
+                <polygon points="15,5 15,25" />
             </svg>
         </div>
     </div>
-    
+
     <div class="posts-container">
         <div *ngFor="let post of posts" class="post-wrapper">
             <h1 class="post-title">{{ post.title }}</h1>
             <p class="post-content">{{ post.content }}</p>
-        </div>    
+        </div>
     </div>
-    
-    <app-create-posts-form 
-        class="create-form" 
-        *ngIf="displayCreatePostForm"
-        [onCancelCreatePost]="onCancelCreatePost"
-        [onSubmitCreatePostForm] = "onSubmitCreatePostForm"
-    ></app-create-posts-form>
+
+    <div class="overlay" *ngIf="displayCreatePostForm">
+        <app-create-posts-form class="create-form" [onCancelCreatePost]="onCancelCreatePost"
+            [onSubmitCreatePostForm]="onSubmitCreatePostForm">
+        </app-create-posts-form>
+    </div>
 </div>
