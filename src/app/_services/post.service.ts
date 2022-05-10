@@ -71,8 +71,9 @@ export class PostService {
   }
 
   deletePost(id: string) {
-    const url = new URL(id, this.requestUrl).toString();
-    this.http.delete(this.requestUrl, {headers: this.requestHeader})
+    const apiUrl = new URL(this.requestUrl);
+    const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
+    this.http.delete(url, {headers: this.requestHeader})
     .pipe(
       first(),
       map(() => this.getUserPosts())
