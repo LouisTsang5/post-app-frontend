@@ -41,6 +41,13 @@
     @apply stroke-[3];
 }
 
+.delete-btn {
+    @apply fill-white hover:fill-blue-500;
+    @apply stroke-blue-500 hover:stroke-white;
+    @apply stroke-[3];
+    @apply cursor-pointer;
+}
+
 .overlay {
     position: fixed; /* Sit on top of the page content */
     width: 100%; /* Full width (cover the whole page) */
