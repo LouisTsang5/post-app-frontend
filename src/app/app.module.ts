@@ -12,29 +12,31 @@ import { TopUtilityBarComponent } from './components/top-utility-bar/top-utility
 import { RegistrationFormComponent } from './components/login/registration-form/registration-form.component';
 import { PostsPageComponent } from './components/posts/posts-page/posts-page.component';
 import { CreatePostsFormComponent } from './components/posts/create-posts-form/create-posts-form.component';
+import { FileUploadComponent } from './components/utils/file-upload/file-upload.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginFormComponent,
-    HomeComponent,
-    TopUtilityBarComponent,
-    RegistrationFormComponent,
-    PostsPageComponent,
-    CreatePostsFormComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    RouterModule.forRoot([
-      {path: '', component: HomeComponent},
-      {path: 'login', component: LoginFormComponent},
-      {path: 'register', component: RegistrationFormComponent},
-    ]),
-    ReactiveFormsModule,
-    HttpClientModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        LoginFormComponent,
+        HomeComponent,
+        TopUtilityBarComponent,
+        RegistrationFormComponent,
+        PostsPageComponent,
+        CreatePostsFormComponent,
+        FileUploadComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        RouterModule.forRoot([
+            { path: '', component: HomeComponent },
+            { path: 'login', component: LoginFormComponent },
+            { path: 'register', component: RegistrationFormComponent },
+        ]),
+        ReactiveFormsModule,
+        HttpClientModule,
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
