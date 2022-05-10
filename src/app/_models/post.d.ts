@@ -2,7 +2,7 @@ export interface Post {
     id: string,
     title: string,
     content: string,
-    multimedia?: MultiMedia[],
+    multiMedia?: MultiMedia[],
 }
 
 export interface PostFormData {

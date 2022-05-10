@@ -36,12 +36,8 @@ export class PostService {
 
         const posts: Post[] = [];
         for (let i = 0; i < res.length; i++) {
-          const post = res[i];
-          posts.push({
-            id: post.id,
-            title: post.title,
-            content: post.content
-          });
+          const post = res[i] as Post;
+          posts.push(post);
         }
         return posts;
       }),
