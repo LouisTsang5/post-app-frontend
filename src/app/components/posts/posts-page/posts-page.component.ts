@@ -5,46 +5,45 @@ import { AuthenticationService } from '../../../_services/authentication.service
 import { PostService } from '../../../_services/post.service';
 
 @Component({
-  selector: 'app-posts-page',
-  templateUrl: './posts-page.component.html',
-  styleUrls: ['./posts-page.component.css']
+    selector: 'app-posts-page',
+    templateUrl: './posts-page.component.html',
+    styleUrls: ['./posts-page.component.css']
 })
 export class PostsPageComponent implements OnInit, OnDestroy {
 
-  postsSubscription: Subscription;
-  posts: Post[];
+    postsSubscription: Subscription;
+    posts: Post[];
 
-  displayCreatePostForm = false;
+    displayCreatePostForm = false;
 
-  constructor(
-    private postService: PostService,
-    private authenticationService: AuthenticationService
-  ) { }
-  
-  ngOnInit(): void {
-    if (!this.authenticationService.accessToken) return;
-    this.postsSubscription = this.postService.userPostsObservable.subscribe({
-      next: (post) => {
-        this.posts = post;
-      }
-    });
-    this.postService.getUserPosts();
-  }
+    constructor(
+        private postService: PostService,
+        private authenticationService: AuthenticationService
+    ) { }
 
-  ngOnDestroy(): void {
-    if (this.postsSubscription) this.postsSubscription.unsubscribe();
-  }
+    ngOnInit(): void {
+        if (!this.authenticationService.accessToken) return;
+        this.postsSubscription = this.postService.userPostsObservable.subscribe({
+            next: (post) => {
+                this.posts = post;
+            }
+        });
+        this.postService.getUserPosts();
+    }
 
-  onClickCreatePost() {
-    this.displayCreatePostForm = true;
-  }
+    ngOnDestroy(): void {
+        if (this.postsSubscription) this.postsSubscription.unsubscribe();
+    }
 
-  onCancelCreatePost = () => {
-    this.displayCreatePostForm = false;
-  }
+    onClickCreatePost() {
+        this.displayCreatePostForm = true;
+    }
 
-  onSubmitCreatePostForm = (post: Post) => {
-    this.postService.createPost(post);
-    this.displayCreatePostForm = false;
-  }
+    onCancelCreatePost = () => {
+        this.displayCreatePostForm = false;
+    }
+
+    onSubmitCreatePostForm = () => {
+        this.displayCreatePostForm = false;
+    }
 }
