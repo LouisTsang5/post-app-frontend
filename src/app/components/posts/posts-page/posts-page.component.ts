@@ -48,6 +48,6 @@ export class PostsPageComponent implements OnInit, OnDestroy {
     }
 
     onClickDelete(post: Post) {
-        this.postService.deletePost(post.id);
+        if (confirm(`Are you sure you want to delete the post titled ${post.title}?`)) this.postService.deletePost(post.id);
     }
 }
