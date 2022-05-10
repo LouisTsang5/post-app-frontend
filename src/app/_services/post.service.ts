@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, first, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Post } from '../_models/post';
+import { Post, PostFormData } from '../_models/post';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
@@ -36,9 +36,11 @@ export class PostService {
 
         const posts: Post[] = [];
         for (let i = 0; i < res.length; i++) {
+          const post = res[i];
           posts.push({
-            title: res[i].title,
-            content: res[i].content
+            id: post.id,
+            title: post.title,
+            content: post.content
           });
         }
         return posts;
@@ -50,7 +52,7 @@ export class PostService {
     ).subscribe();
   }
 
-  createPost(post: Post) {
+  createPost(post: PostFormData) {
     if (!this.authenticationService.accessToken)
       throw new Error('No access token available');
 

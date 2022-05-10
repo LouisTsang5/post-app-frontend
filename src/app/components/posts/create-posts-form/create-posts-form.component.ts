@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PostService } from 'src/app/_services/post.service';
-import { Post } from '../../../_models/post';
+import { PostFormData } from '../../../_models/post';
 
 @Component({
     selector: 'app-create-posts-form',
@@ -47,7 +47,7 @@ export class CreatePostsFormComponent implements OnInit {
             return;
         }
 
-        const post: Post = {
+        const post: PostFormData = {
             title: this.formValue['title'].value,
             content: this.formValue['content'].value,
             multimedia: this.formValue['file'].value,
