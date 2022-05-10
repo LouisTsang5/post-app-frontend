@@ -42,7 +42,7 @@
 }
 
 .delete-btn {
-    @apply fill-white hover:fill-blue-500;
+    @apply fill-transparent hover:fill-blue-500;
     @apply stroke-blue-500 hover:stroke-white;
     @apply stroke-[3];
     @apply cursor-pointer;
