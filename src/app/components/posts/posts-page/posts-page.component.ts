@@ -46,4 +46,8 @@ export class PostsPageComponent implements OnInit, OnDestroy {
     onSubmitCreatePostForm = () => {
         this.displayCreatePostForm = false;
     }
+
+    onClickDelete(post: Post) {
+        this.postService.deletePost(post.id);
+    }
 }
