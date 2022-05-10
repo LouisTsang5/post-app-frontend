@@ -14,7 +14,7 @@
     @apply rounded;
     @apply p-3;
     @apply w-[500px];
-    @apply h-[430px];
+    @apply h-[480px];
 }
 
 .field-wrapper {
