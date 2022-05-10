@@ -1,0 +1,5 @@
+<div class="dropzone">
+    <span *ngIf="!files.length">Click or drag and drop files here</span>
+    <span *ngFor="let file of files">{{ file.name }}</span>
+    <input type="file" multiple>
+</div>
