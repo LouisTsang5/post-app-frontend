@@ -21,13 +21,18 @@ export class PostService {
     this.userPostsObservable = this.userPostsSubject.asObservable();
   }
 
-  getUserPosts() {
+  private get requestUrl() {
+    return `${environment.apiURL}/post`;
+  }
+
+  private get requestHeader() {
     if (!this.authenticationService.accessToken)
       throw new Error('No access token available');
+    return new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
+  }
 
-    const url = `${environment.apiURL}/post`;
-    const headers = new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
-    this.http.get(url, {headers: headers})
+  getUserPosts() {
+    this.http.get(this.requestUrl, {headers: this.requestHeader})
     .pipe(
       first(),
       map((res: any) => {
@@ -49,21 +54,28 @@ export class PostService {
   }
 
   createPost(post: PostFormData) {
-    if (!this.authenticationService.accessToken)
-      throw new Error('No access token available');
-
-    const url = `${environment.apiURL}/post`;
-    const headers = new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
+    //Transform post form data to form data
     const formData = new FormData();
     formData.append('title', post.title);
     formData.append('content', post.content);
     if (post.multimedia) post.multimedia.map((file) => formData.append('multimedia', file, file.name));
-    this.http.post(url, formData, {headers: headers})
+
+    //Post to api
+    this.http.post(this.requestUrl, formData, {headers: this.requestHeader})
     .pipe(
       first(),
       map((res) => {
         this.getUserPosts();
       })
+    ).subscribe();
+  }
+
+  deletePost(id: string) {
+    const url = new URL(id, this.requestUrl).toString();
+    this.http.delete(this.requestUrl, {headers: this.requestHeader})
+    .pipe(
+      first(),
+      map(() => this.getUserPosts())
     ).subscribe();
   }
 }
