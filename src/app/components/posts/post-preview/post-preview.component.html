@@ -1,4 +1,4 @@
-<div class="post-wrapper relative">
+<div class="post-wrapper relative" (click)="onClickPost()">
     <h1 class="post-title">{{ post.title }}</h1>
     <p class="post-content whitespace-pre-line">{{ post.content }}</p>
     <svg width="20" height="20" class="delete-btn absolute top-1 right-1" (click)="onClickDelete()">
