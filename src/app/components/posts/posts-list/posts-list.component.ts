@@ -5,11 +5,11 @@ import { AuthenticationService } from '../../../_services/authentication.service
 import { PostService } from '../../../_services/post.service';
 
 @Component({
-    selector: 'app-posts-page',
-    templateUrl: './posts-page.component.html',
-    styleUrls: ['./posts-page.component.css']
+    selector: 'app-posts-list',
+    templateUrl: './posts-list.component.html',
+    styleUrls: ['./posts-list.component.css']
 })
-export class PostsPageComponent implements OnInit, OnDestroy {
+export class PostsListComponent implements OnInit, OnDestroy {
 
     postsSubscription: Subscription;
     posts: Post[];

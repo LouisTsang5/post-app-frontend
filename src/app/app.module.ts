@@ -10,7 +10,7 @@ import { LoginFormComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { TopUtilityBarComponent } from './components/top-utility-bar/top-utility-bar.component';
 import { RegistrationFormComponent } from './pages/register/register.component';
-import { PostsPageComponent } from './components/posts/posts-page/posts-page.component';
+import { PostsListComponent } from './components/posts/posts-list/posts-list.component';
 import { CreatePostsFormComponent } from './components/posts/create-posts-form/create-posts-form.component';
 import { FileUploadComponent } from './components/utils/file-upload/file-upload.component';
 import { PostPreviewComponent } from './components/posts/post-preview/post-preview.component';
@@ -23,7 +23,7 @@ import { PostComponent } from './pages/post/post.component';
         HomeComponent,
         TopUtilityBarComponent,
         RegistrationFormComponent,
-        PostsPageComponent,
+        PostsListComponent,
         CreatePostsFormComponent,
         FileUploadComponent,
         PostPreviewComponent,
