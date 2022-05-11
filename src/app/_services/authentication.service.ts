@@ -19,18 +19,16 @@ export class AuthenticationService {
     constructor(
         private http: HttpClient
     ) {
-        //Initialize access token from local storage
-        const accessTokenStr = localStorage.getItem(this.accessTokenKey);
-        let accessToken = accessTokenStr ? JSON.parse(accessTokenStr) as AccessToken : undefined;
-        if (accessToken && this.isAccessTokenExpired(accessToken)) accessToken = undefined;
-        this.accessTokenSubject = new BehaviorSubject<AccessToken | undefined>(accessToken);
+        //Initialize with empty access token value
+        this.accessTokenSubject = new BehaviorSubject<AccessToken | undefined>(undefined);
         this.accessTokenObservable = this.accessTokenSubject.asObservable();
 
-        //Initialize current user from local storage
-        const currentUserStr = accessToken ? localStorage.getItem(this.currentUserKey) : undefined;
-        const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
-        this.currentUserSubject = new BehaviorSubject<User | undefined>(currentUser);
+        //Initialize with empty current user value
+        this.currentUserSubject = new BehaviorSubject<User | undefined>(undefined);
         this.currentUserObservable = this.currentUserSubject.asObservable();
+
+        //Set access token value
+        this.accessToken = this.accessToken;
     }
 
     public get currentUser() {
@@ -46,7 +44,7 @@ export class AuthenticationService {
 
     public set currentUser(user: User | undefined) {
         if (!user) {
-            this.accessTokenSubject.next(undefined);
+            this.currentUserSubject.next(undefined);
             localStorage.removeItem(this.currentUserKey);
             return;
         }
@@ -62,7 +60,7 @@ export class AuthenticationService {
         if (!isTokenValid) accessToken = undefined;
 
         //Set the access token if the token is not the same
-        if (this.accessTokenSubject && this.accessTokenSubject.value != accessToken) this.accessToken = accessToken;
+        if (!this.isTokenSame(this.accessTokenSubject.value, accessToken)) this.accessToken = accessToken;
 
         return accessToken;
     }
@@ -71,12 +69,14 @@ export class AuthenticationService {
         if (!token) {
             this.accessTokenSubject.next(undefined);
             localStorage.removeItem(this.accessTokenKey);
+            this.currentUser = undefined;
             return;
         }
 
         if (this.isAccessTokenExpired(token)) throw new Error('Cannot set expired access token');
         localStorage.setItem(this.accessTokenKey, JSON.stringify(token));
         this.accessTokenSubject.next(token);
+        this.setCurrentUserFromServer();
     }
 
     private get requestUrl() {
@@ -101,6 +101,13 @@ export class AuthenticationService {
         return user as User;
     }
 
+    private isTokenSame(tokenA?: AccessToken, tokenB?: AccessToken) {
+        if (!tokenA && !tokenB) return true;
+        if (!tokenA || !tokenB) return false;
+        if (tokenA.token === tokenB.token && tokenA.expireDate === tokenB.expireDate) return true;
+        return false;
+    }
+
     private async setCurrentUserFromServer(token?: AccessToken) {
         this.currentUser = await this.getCurrentUserFromServer(token);
     }
@@ -121,21 +128,12 @@ export class AuthenticationService {
                         expireDate: res.expiryDate,
                     } as AccessToken;
                     this.accessToken = token;
-
-                    return token;
-                }),
-                //Get user info from token
-                map((token) => {
-                    this.getCurrentUserFromServer(token).then((user) => this.currentUser = user);
                 })
             );
     }
 
     public logout() {
-        localStorage.removeItem(this.currentUserKey);
-        this.currentUserSubject.next(undefined);
-        localStorage.removeItem(this.accessTokenKey);
-        this.accessTokenSubject.next(undefined);
+        this.accessToken = undefined;
     }
 
     public register(userInfo: User, password: string): Observable<void> {
@@ -159,14 +157,6 @@ export class AuthenticationService {
                         token: res.accessToken.token,
                         expireDate: res.accessToken.expiryDate,
                     } as AccessToken;
-
-                    //Set user info
-                    this.currentUser = {
-                        alias: res.userInfo.alias,
-                        email: res.userInfo.email,
-                        firstName: res.userInfo.firstName,
-                        lastName: res.userInfo.lastName,
-                    } as User;
                 })
             );
     }
