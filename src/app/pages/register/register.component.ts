@@ -12,7 +12,7 @@ import { UserService } from '../../_services/user.service';
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.css']
 })
-export class RegistrationFormComponent implements OnInit {
+export class RegistrationComponent implements OnInit {
 
     registrationForm: FormGroup;
     submitted = false;

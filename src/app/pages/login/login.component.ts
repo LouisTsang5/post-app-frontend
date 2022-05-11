@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../_services/authentication.service';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
 })
-export class LoginFormComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
     loginForm: FormGroup;
     submitted = false;

@@ -6,10 +6,10 @@ import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginFormComponent } from './pages/login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { TopUtilityBarComponent } from './components/top-utility-bar/top-utility-bar.component';
-import { RegistrationFormComponent } from './pages/register/register.component';
+import { RegistrationComponent } from './pages/register/register.component';
 import { PostsListComponent } from './components/posts/posts-list/posts-list.component';
 import { CreatePostsFormComponent } from './components/posts/create-posts-form/create-posts-form.component';
 import { FileUploadComponent } from './components/utils/file-upload/file-upload.component';
@@ -19,10 +19,10 @@ import { PostComponent } from './pages/post/post.component';
 @NgModule({
     declarations: [
         AppComponent,
-        LoginFormComponent,
+        LoginComponent,
         HomeComponent,
         TopUtilityBarComponent,
-        RegistrationFormComponent,
+        RegistrationComponent,
         PostsListComponent,
         CreatePostsFormComponent,
         FileUploadComponent,
@@ -34,8 +34,8 @@ import { PostComponent } from './pages/post/post.component';
         AppRoutingModule,
         RouterModule.forRoot([
             { path: '', component: HomeComponent },
-            { path: 'login', component: LoginFormComponent },
-            { path: 'register', component: RegistrationFormComponent },
+            { path: 'login', component: LoginComponent },
+            { path: 'register', component: RegistrationComponent },
             { path: 'post', component: PostComponent },
         ]),
         ReactiveFormsModule,
