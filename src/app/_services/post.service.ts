@@ -15,7 +15,7 @@ export class PostService {
 
     constructor(
         private http: HttpClient,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
     ) {
         this.userPostsSubject = new BehaviorSubject<Post[]>([]);
         this.userPostsObservable = this.userPostsSubject.asObservable();
@@ -56,7 +56,6 @@ export class PostService {
     async getPost(id: string) {
         const url = new URL(`${this.requestUrl.pathname}/${id}`, this.requestUrl.origin);
         const post = await firstValueFrom(this.http.get(url.toString(), { headers: this.requestHeader })) as Post;
-        console.log(post);
         return post;
     }
 
@@ -85,5 +84,17 @@ export class PostService {
                 first(),
                 map(() => this.getUserPosts())
             ).subscribe();
+    }
+
+    async getMedia(postId: string, index: number) {
+        const url = new URL(`${this.requestUrl.pathname}/${postId}/media/${index}`, this.requestUrl.origin);
+        const res = await firstValueFrom(this.http.get(
+            url.toString(), 
+            {
+                headers: this.requestHeader, 
+                responseType: 'blob',
+            }
+        ));
+        return URL.createObjectURL(res);
     }
 }
