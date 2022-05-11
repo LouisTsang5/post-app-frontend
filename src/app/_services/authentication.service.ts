@@ -31,28 +31,6 @@ export class AuthenticationService {
         this.accessToken = this.accessToken;
     }
 
-    public get currentUser() {
-        // return this.currentUserSubject.value;
-        const currentUserStr = this.accessToken ? localStorage.getItem(this.currentUserKey) : undefined;
-        const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
-
-        //Set the current user if the users are not the same
-        if (this.currentUserSubject.value != currentUser) this.currentUser = currentUser;
-
-        return currentUser;
-    }
-
-    public set currentUser(user: User | undefined) {
-        if (!user) {
-            this.currentUserSubject.next(undefined);
-            localStorage.removeItem(this.currentUserKey);
-            return;
-        }
-
-        localStorage.setItem(this.currentUserKey, JSON.stringify(user));
-        this.currentUserSubject.next(user);
-    }
-
     public get accessToken(): AccessToken | undefined {
         const accessTokenStr = localStorage.getItem(this.accessTokenKey);
         let accessToken = accessTokenStr ? JSON.parse(accessTokenStr) as AccessToken : undefined;
@@ -77,6 +55,28 @@ export class AuthenticationService {
         localStorage.setItem(this.accessTokenKey, JSON.stringify(token));
         this.accessTokenSubject.next(token);
         this.setCurrentUserFromServer();
+    }
+
+    public get currentUser() {
+        // return this.currentUserSubject.value;
+        const currentUserStr = this.accessToken ? localStorage.getItem(this.currentUserKey) : undefined;
+        const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
+
+        //Set the current user if the users are not the same
+        if (this.currentUserSubject.value != currentUser) this.currentUser = currentUser;
+
+        return currentUser;
+    }
+
+    public set currentUser(user: User | undefined) {
+        if (!user) {
+            this.currentUserSubject.next(undefined);
+            localStorage.removeItem(this.currentUserKey);
+            return;
+        }
+
+        localStorage.setItem(this.currentUserKey, JSON.stringify(user));
+        this.currentUserSubject.next(user);
     }
 
     private get requestUrl() {
