@@ -3,6 +3,7 @@
     @apply hover:bg-gray-100;
     @apply m-2;
     @apply shadow;
+    @apply cursor-pointer;
 }
 
 .post-title {
