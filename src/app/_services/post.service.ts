@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, first, map, Observable } from 'rxjs';
+import { BehaviorSubject, first, firstValueFrom, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post, PostFormData } from '../_models/post';
 import { AuthenticationService } from './authentication.service';
@@ -51,6 +51,13 @@ export class PostService {
                     return posts;
                 })
             ).subscribe();
+    }
+
+    async getPost(id: string) {
+        const url = new URL(`${this.requestUrl.pathname}/${id}`, this.requestUrl.origin);
+        const post = await firstValueFrom(this.http.get(url.toString(), { headers: this.requestHeader })) as Post;
+        console.log(post);
+        return post;
     }
 
     createPost(post: PostFormData) {
