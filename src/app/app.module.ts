@@ -13,6 +13,7 @@ import { RegistrationFormComponent } from './components/login/registration-form/
 import { PostsPageComponent } from './components/posts/posts-page/posts-page.component';
 import { CreatePostsFormComponent } from './components/posts/create-posts-form/create-posts-form.component';
 import { FileUploadComponent } from './components/utils/file-upload/file-upload.component';
+import { PostPreviewComponent } from './components/posts/post-preview/post-preview.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { FileUploadComponent } from './components/utils/file-upload/file-upload.
         RegistrationFormComponent,
         PostsPageComponent,
         CreatePostsFormComponent,
-        FileUploadComponent
+        FileUploadComponent,
+        PostPreviewComponent
     ],
     imports: [
         BrowserModule,
