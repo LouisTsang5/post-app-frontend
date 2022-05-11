@@ -90,8 +90,7 @@ export class AuthenticationService {
     }
 
     private isAccessTokenExpired(accessToken: AccessToken) {
-        const currentDate = new Date();
-        return Date.parse(accessToken.expireDate) <= Date.parse(currentDate.toDateString());
+        return Date.parse(accessToken.expireDate) <= Date.parse(new Date().toISOString());
     }
 
     private async getCurrentUserFromServer(token?: AccessToken) {
