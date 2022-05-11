@@ -27,7 +27,8 @@ export class AuthenticationService {
 
         //Initialize access token from local storage
         const accessTokenStr = localStorage.getItem(this.accessTokenKey);
-        const accessToken = accessTokenStr ? JSON.parse(accessTokenStr) as AccessToken : undefined;
+        let accessToken = accessTokenStr ? JSON.parse(accessTokenStr) as AccessToken : undefined;
+        if (accessToken && this.isAccessTokenExpired(accessToken)) accessToken = undefined;
         this.accessTokenSubject = new BehaviorSubject<AccessToken | undefined>(accessToken);
         this.accessTokenObservable = this.accessTokenSubject.asObservable();
     }
