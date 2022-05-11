@@ -20,11 +20,15 @@ export class AuthenticationService {
         private http: HttpClient
     ) {
         //Initialize current user from local storage
-        this.currentUserSubject = new BehaviorSubject<User | undefined>(JSON.parse(localStorage.getItem(this.currentUserKey) as string));
+        const currentUserStr = localStorage.getItem(this.currentUserKey);
+        const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
+        this.currentUserSubject = new BehaviorSubject<User | undefined>(currentUser);
         this.currentUserObservable = this.currentUserSubject.asObservable();
 
         //Initialize access token from local storage
-        this.accessTokenSubject = new BehaviorSubject<AccessToken | undefined>(JSON.parse(localStorage.getItem(this.accessTokenKey) as string));
+        const accessTokenStr = localStorage.getItem(this.accessTokenKey);
+        const accessToken = accessTokenStr ? JSON.parse(accessTokenStr) as AccessToken : undefined;
+        this.accessTokenSubject = new BehaviorSubject<AccessToken | undefined>(accessToken);
         this.accessTokenObservable = this.accessTokenSubject.asObservable();
     }
 
