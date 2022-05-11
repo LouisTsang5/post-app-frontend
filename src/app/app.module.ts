@@ -14,6 +14,7 @@ import { PostsPageComponent } from './components/posts/posts-page/posts-page.com
 import { CreatePostsFormComponent } from './components/posts/create-posts-form/create-posts-form.component';
 import { FileUploadComponent } from './components/utils/file-upload/file-upload.component';
 import { PostPreviewComponent } from './components/posts/post-preview/post-preview.component';
+import { PostComponent } from './pages/post/post.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { PostPreviewComponent } from './components/posts/post-preview/post-previ
         PostsPageComponent,
         CreatePostsFormComponent,
         FileUploadComponent,
-        PostPreviewComponent
+        PostPreviewComponent,
+        PostComponent
     ],
     imports: [
         BrowserModule,
@@ -34,6 +36,7 @@ import { PostPreviewComponent } from './components/posts/post-preview/post-previ
             { path: '', component: HomeComponent },
             { path: 'login', component: LoginFormComponent },
             { path: 'register', component: RegistrationFormComponent },
+            { path: 'post', component: PostComponent },
         ]),
         ReactiveFormsModule,
         HttpClientModule,
