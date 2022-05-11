@@ -1,5 +1,6 @@
 .post-wrapper {
     @apply border-2 border-black rounded;
+    @apply hover:bg-gray-100;
     @apply m-2;
     @apply shadow;
 }
