@@ -34,23 +34,46 @@ export class AuthenticationService {
     }
 
     public get currentUser() {
-        return this.currentUserSubject.value;
+        // return this.currentUserSubject.value;
+        const currentUserStr = this.accessToken ? localStorage.getItem(this.currentUserKey) : undefined;
+        const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
+
+        //Set the current user if the users are not the same
+        if (this.currentUserSubject.value != currentUser) this.currentUser = currentUser;
+
+        return currentUser;
     }
 
     public set currentUser(user: User | undefined) {
+        if (!user) {
+            this.accessTokenSubject.next(undefined);
+            localStorage.removeItem(this.currentUserKey);
+            return;
+        }
+
         localStorage.setItem(this.currentUserKey, JSON.stringify(user));
         this.currentUserSubject.next(user);
     }
 
     public get accessToken(): AccessToken | undefined {
-        const accessToken = this.accessTokenSubject.value;
+        const accessTokenStr = localStorage.getItem(this.accessTokenKey);
+        let accessToken = accessTokenStr ? JSON.parse(accessTokenStr) as AccessToken : undefined;
         const isTokenValid = accessToken && !this.isAccessTokenExpired(accessToken);
-        if (!isTokenValid) this.currentUser = undefined;
-        return isTokenValid ? accessToken : undefined;
+        if (!isTokenValid) accessToken = undefined;
+
+        //Set the access token if the token is not the same
+        if (this.accessTokenSubject && this.accessTokenSubject.value != accessToken) this.accessToken = accessToken;
+
+        return accessToken;
     }
 
     public set accessToken(token: AccessToken | undefined) {
-        if (!token) throw new Error('Cannot set access token as null');
+        if (!token) {
+            this.accessTokenSubject.next(undefined);
+            localStorage.removeItem(this.accessTokenKey);
+            return;
+        }
+
         if (this.isAccessTokenExpired(token)) throw new Error('Cannot set expired access token');
         localStorage.setItem(this.accessTokenKey, JSON.stringify(token));
         this.accessTokenSubject.next(token);
@@ -71,11 +94,15 @@ export class AuthenticationService {
         return Date.parse(accessToken.expireDate) <= Date.parse(currentDate.toDateString());
     }
 
-    private async getCurrentUser(token?: AccessToken) {
+    private async getCurrentUserFromServer(token?: AccessToken) {
         const url = new URL(`${this.requestUrl.pathname}/self`, this.requestUrl.origin);
         const headers = token ? new HttpHeaders({ 'x-access-token': token.token as string }) : this.requestHeader;
         const user: User = await firstValueFrom(this.http.get(url.toString(), { headers }) as Observable<User>)
         return user as User;
+    }
+
+    private async setCurrentUserFromServer(token?: AccessToken) {
+        this.currentUser = await this.getCurrentUserFromServer(token);
     }
 
     public login(email: string, password: string): Observable<void> {
@@ -99,7 +126,7 @@ export class AuthenticationService {
                 }),
                 //Get user info from token
                 map((token) => {
-                    this.getCurrentUser(token).then((user) => this.currentUser = user);
+                    this.getCurrentUserFromServer(token).then((user) => this.currentUser = user);
                 })
             );
     }
