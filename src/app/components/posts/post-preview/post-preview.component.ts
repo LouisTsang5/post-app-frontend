@@ -21,12 +21,18 @@ export class PostPreviewComponent implements OnInit {
         return;
     }
 
-    onClickDelete() {
+    onClickDelete(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+
         const post = this.post;
         if (confirm(`Are you sure you want to delete the post titled ${post.title}?`)) this.postService.deletePost(post.id);
     }
 
-    onClickPost() {
+    onClickPost(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+
         this.router.navigate(['post'], { queryParams: { id: this.post.id } });
     }
 }

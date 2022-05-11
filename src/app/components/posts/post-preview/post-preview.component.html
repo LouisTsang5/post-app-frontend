@@ -1,7 +1,7 @@
-<div class="post-wrapper relative" (click)="onClickPost()">
+<div class="post-wrapper relative" (click)="onClickPost($event)">
     <h1 class="post-title">{{ post.title }}</h1>
     <p class="post-content whitespace-pre-line">{{ post.content }}</p>
-    <svg width="20" height="20" class="delete-btn absolute top-1 right-1" (click)="onClickDelete()">
+    <svg width="20" height="20" class="delete-btn absolute top-1 right-1" (click)="onClickDelete($event)">
         <rect width="20" height="20" />
         <polygon points="5,15 15,5" />
         <polygon points="15,15 5,5" />
