@@ -38,16 +38,15 @@ export class AuthenticationService {
     }
 
     public set currentUser(user: User | undefined) {
-        if (!user)
-            throw new Error('Cannot set user as null');
-
         localStorage.setItem(this.currentUserKey, JSON.stringify(user));
         this.currentUserSubject.next(user);
     }
 
     public get accessToken(): AccessToken | undefined {
         const accessToken = this.accessTokenSubject.value;
-        return accessToken && !this.isAccessTokenExpired(accessToken) ? accessToken : undefined;
+        const isTokenValid = accessToken && !this.isAccessTokenExpired(accessToken);
+        if (!isTokenValid) this.currentUser = undefined;
+        return isTokenValid ? accessToken : undefined;
     }
 
     public set accessToken(token: AccessToken | undefined) {
@@ -69,7 +68,7 @@ export class AuthenticationService {
 
     private isAccessTokenExpired(accessToken: AccessToken) {
         const currentDate = new Date();
-        return Date.parse(accessToken.expireDate) <= Date.parse(currentDate.toDateString())
+        return Date.parse(accessToken.expireDate) <= Date.parse(currentDate.toDateString());
     }
 
     private async getCurrentUser(token?: AccessToken) {
