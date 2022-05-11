@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, firstValueFrom, Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 import { User } from "../_models/user";
 import { environment } from "src/environments/environment";
@@ -19,23 +19,18 @@ export class AuthenticationService {
     constructor(
         private http: HttpClient
     ) {
-        //Initialize current user from local storage
-        const currentUserStr = localStorage.getItem(this.currentUserKey);
-        const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
-        this.currentUserSubject = new BehaviorSubject<User | undefined>(currentUser);
-        this.currentUserObservable = this.currentUserSubject.asObservable();
-
         //Initialize access token from local storage
         const accessTokenStr = localStorage.getItem(this.accessTokenKey);
         let accessToken = accessTokenStr ? JSON.parse(accessTokenStr) as AccessToken : undefined;
         if (accessToken && this.isAccessTokenExpired(accessToken)) accessToken = undefined;
         this.accessTokenSubject = new BehaviorSubject<AccessToken | undefined>(accessToken);
         this.accessTokenObservable = this.accessTokenSubject.asObservable();
-    }
 
-    private isAccessTokenExpired(accessToken: AccessToken) {
-        const currentDate = new Date();
-        return Date.parse(accessToken.expireDate) <= Date.parse(currentDate.toDateString())
+        //Initialize current user from local storage
+        const currentUserStr = accessToken ? localStorage.getItem(this.currentUserKey) : undefined;
+        const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
+        this.currentUserSubject = new BehaviorSubject<User | undefined>(currentUser);
+        this.currentUserObservable = this.currentUserSubject.asObservable();
     }
 
     public get currentUser() {
@@ -62,6 +57,28 @@ export class AuthenticationService {
         this.accessTokenSubject.next(token);
     }
 
+    private get requestUrl() {
+        return new URL(`${environment.apiURL}/user`);
+    }
+
+    private get requestHeader() {
+        if (!this.accessToken)
+            throw new Error('No access token available');
+        return new HttpHeaders({ 'x-access-token': this.accessToken.token as string });
+    }
+
+    private isAccessTokenExpired(accessToken: AccessToken) {
+        const currentDate = new Date();
+        return Date.parse(accessToken.expireDate) <= Date.parse(currentDate.toDateString())
+    }
+
+    private async getCurrentUser(token?: AccessToken) {
+        const url = new URL(`${this.requestUrl.pathname}/self`, this.requestUrl.origin);
+        const headers = token ? new HttpHeaders({ 'x-access-token': token.token as string }) : this.requestHeader;
+        const user: User = await firstValueFrom(this.http.get(url.toString(), { headers }) as Observable<User>)
+        return user as User;
+    }
+
     public login(email: string, password: string): Observable<void> {
         const url = `${environment.apiURL}/user/login`;
         return this.http.post(url, { email, password })
@@ -83,15 +100,7 @@ export class AuthenticationService {
                 }),
                 //Get user info from token
                 map((token) => {
-                    const userUrl = `${environment.apiURL}/user/self`;
-                    const headers = new HttpHeaders({ 'x-access-token': token.token });
-
-                    this.http.get(userUrl, { headers }).subscribe({
-                        next: (res: any) => {
-                            const { email, alias, firstName, lastName } = res;
-                            this.currentUser = { email, alias, firstName, lastName } as User;
-                        }
-                    })
+                    this.getCurrentUser(token).then((user) => this.currentUser = user);
                 })
             );
     }
