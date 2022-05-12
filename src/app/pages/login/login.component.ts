@@ -51,7 +51,10 @@ export class LoginComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.errorMessage = '';
-                    this.router.navigate([this.returnUrl]);
+                    const url = new URL(this.returnUrl, window.location.origin);
+                    const params: { [key: string]: string } = {};
+                    url.searchParams.forEach((value, key) => params[key] = value);
+                    this.router.navigate([url.pathname], { queryParams: params });
                 },
                 error: (err) => {
                     if (err.status === 401) {
@@ -66,6 +69,6 @@ export class LoginComponent implements OnInit {
     }
 
     onRegister() {
-        this.router.navigate(['register'], { queryParams: { returnUrl: this.returnUrl } });
+        this.router.navigate(['register'], { queryParams: { returnUrl: '/' } });
     }
 }
