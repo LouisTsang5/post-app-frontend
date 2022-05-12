@@ -9,6 +9,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class MediaViewerComponent implements OnInit {
 
 	@Input() srcs?: string[];
+    @Input() height: string;
+    @Input() width: string;
     safeUrls: SafeUrl[];
     index: number;
     hovered: boolean = false;

@@ -1,15 +1,14 @@
 <!-- <img *ngFor="let url of safeUrls" [src]="url" class="w-[500px] h-auto m-3"> -->
 <div 
-    class="relative flex justify-center w-[500px] h-[300px]" 
+    class="relative flex justify-center"
+    [ngStyle]="{'height': height, 'width': width}"
     (mouseenter)="hovered=true" 
     (mouseleave)="hovered=false"
->
-    <div class="w-[100%] h-[100%]">
-        <img class="object-contain w-[100%] h-[100%]" 
+>        
+    <img class="object-contain w-[100%] h-[100%]" 
         *ngIf="safeUrls" 
         [src]="safeUrls[index]" 
-        >
-    </div>
+    >
     
     <button 
         *ngIf="hovered && safeUrls.length > 1" 
