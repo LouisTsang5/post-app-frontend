@@ -2,22 +2,30 @@
 <div 
     class="relative flex justify-center"
     [ngStyle]="{'height': height, 'width': width}"
-    (mouseenter)="hovered=true" 
-    (mouseleave)="hovered=false"
 >        
     <img class="object-contain w-[100%] h-[100%]" 
         *ngIf="safeUrls" 
         [src]="safeUrls[index]" 
     >
-    
-    <button 
-        *ngIf="hovered && safeUrls.length > 1" 
-        class="border w-[10%] absolute top-0 left-0 h-full bg-blue-100 opacity-50" 
+    <div class="absolute w-[45%] top-0 left-0 h-full hover:cursor-pointer"
+        (mouseenter)="hoveredLeft=true" 
+        (mouseleave)="hoveredLeft=false"
         (click)="onClickPrev()"
-    >Prev</button>
-    <button 
-        *ngIf="hovered && safeUrls.length > 1" 
-        class="border w-[10%] absolute top-0 right-0 h-full bg-blue-100 opacity-50" 
+    >
+        <button 
+            *ngIf="hoveredLeft && safeUrls.length > 1" 
+            class="border w-[20%] bg-blue-100 opacity-50 h-full absolute left-0" 
+        >Prev</button>
+    </div>
+
+    <div class="absolute w-[45%] top-0 right-0 h-full hover:cursor-pointer"
+        (mouseenter)="hoveredRight=true" 
+        (mouseleave)="hoveredRight=false"
         (click)="onClickNext()"
-    >Next</button>
+    >
+        <button 
+            *ngIf="hoveredRight && safeUrls.length > 1" 
+            class="border w-[20%] bg-blue-100 opacity-50 h-full absolute right-0" 
+        >Next</button>
+    </div>
 </div>

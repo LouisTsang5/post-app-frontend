@@ -13,7 +13,8 @@ export class MediaViewerComponent implements OnInit {
     @Input() width: string;
     safeUrls: SafeUrl[];
     index: number;
-    hovered: boolean = false;
+    hoveredLeft: boolean = false;
+    hoveredRight: boolean = false;
 
 	constructor(
         private sanitization: DomSanitizer,
