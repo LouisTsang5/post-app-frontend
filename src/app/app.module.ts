@@ -15,6 +15,7 @@ import { CreatePostsFormComponent } from './components/posts/create-posts-form/c
 import { FileUploadComponent } from './components/utils/file-upload/file-upload.component';
 import { PostPreviewComponent } from './components/posts/post-preview/post-preview.component';
 import { PostComponent } from './pages/post/post.component';
+import { MediaViewerComponent } from './components/utils/media-viewer/media-viewer.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { PostComponent } from './pages/post/post.component';
         CreatePostsFormComponent,
         FileUploadComponent,
         PostPreviewComponent,
-        PostComponent
+        PostComponent,
+        MediaViewerComponent,
     ],
     imports: [
         BrowserModule,
