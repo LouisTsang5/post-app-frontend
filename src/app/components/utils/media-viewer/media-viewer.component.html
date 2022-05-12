@@ -11,9 +11,10 @@
         (mouseenter)="hoveredLeft=true" 
         (mouseleave)="hoveredLeft=false"
         (click)="onClickPrev()"
+        *ngIf="safeUrls.length > 1"
     >
         <button 
-            *ngIf="hoveredLeft && safeUrls.length > 1" 
+            *ngIf="hoveredLeft" 
             class="border w-[20%] bg-blue-100 opacity-50 h-full absolute left-0" 
         >Prev</button>
     </div>
@@ -22,9 +23,10 @@
         (mouseenter)="hoveredRight=true" 
         (mouseleave)="hoveredRight=false"
         (click)="onClickNext()"
+        *ngIf="safeUrls.length > 1"
     >
         <button 
-            *ngIf="hoveredRight && safeUrls.length > 1" 
+            *ngIf="hoveredRight" 
             class="border w-[20%] bg-blue-100 opacity-50 h-full absolute right-0" 
         >Next</button>
     </div>
