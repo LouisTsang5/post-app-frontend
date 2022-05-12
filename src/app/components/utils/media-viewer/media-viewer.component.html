@@ -7,27 +7,21 @@
         *ngIf="safeUrls" 
         [src]="safeUrls[index]" 
     >
-    <div class="absolute w-[45%] top-0 left-0 h-full hover:cursor-pointer"
-        (mouseenter)="hoveredLeft=true" 
-        (mouseleave)="hoveredLeft=false"
+    <div class="absolute w-[45%] top-0 left-0 h-full hover:cursor-pointer btn-wrapper"
         (click)="onClickPrev()"
         *ngIf="safeUrls.length > 1"
     >
         <button 
-            *ngIf="hoveredLeft" 
-            class="border w-[20%] bg-blue-100 opacity-50 h-full absolute left-0" 
+            class="border w-[20%] bg-blue-100 opacity-50 h-full absolute left-0 hidden" 
         >Prev</button>
     </div>
 
-    <div class="absolute w-[45%] top-0 right-0 h-full hover:cursor-pointer"
-        (mouseenter)="hoveredRight=true" 
-        (mouseleave)="hoveredRight=false"
+    <div class="absolute w-[45%] top-0 right-0 h-full hover:cursor-pointer btn-wrapper"
         (click)="onClickNext()"
         *ngIf="safeUrls.length > 1"
     >
         <button 
-            *ngIf="hoveredRight" 
-            class="border w-[20%] bg-blue-100 opacity-50 h-full absolute right-0" 
+            class="border w-[20%] bg-blue-100 opacity-50 h-full absolute right-0 hidden" 
         >Next</button>
     </div>
 </div>
