@@ -10,14 +10,25 @@ export class MediaViewerComponent implements OnInit {
 
 	@Input() srcs?: string[];
     safeUrls: SafeUrl[];
+    index: number;
+    hovered: boolean = false;
 
 	constructor(
         private sanitization: DomSanitizer,
     ) { }
 
 	ngOnInit(): void {
-        console.log(this.srcs);
+        this.index = 0;
 		if(this.srcs) this.safeUrls = this.srcs.map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
-        console.log(this.srcs);
 	}
+
+    onClickNext() {
+        if (this.index < this.safeUrls.length - 1) this.index++;
+        console.log(this.index);
+    }
+
+    onClickPrev() {
+        if (this.index > 0) this.index--;
+        console.log(this.index);
+    }
 }

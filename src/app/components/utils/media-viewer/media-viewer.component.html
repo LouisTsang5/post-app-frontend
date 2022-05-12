@@ -1,1 +1,22 @@
-<img *ngFor="let url of safeUrls" [src]="url" class="w-[500px] h-auto m-3">
+<!-- <img *ngFor="let url of safeUrls" [src]="url" class="w-[500px] h-auto m-3"> -->
+<div 
+    class="relative w-[500px]" 
+    (mouseenter)="hovered=true" 
+    (mouseleave)="hovered=false"
+>
+    <img 
+        *ngIf="safeUrls" 
+        [src]="safeUrls[index]" 
+        class="w-full h-auto"
+    >
+    <button 
+        *ngIf="hovered" 
+        class="border w-[10%] absolute top-0 left-0 h-full bg-gray-100 opacity-50" 
+        (click)="onClickPrev()"
+    >Prev</button>
+    <button 
+        *ngIf="hovered" 
+        class="border w-[10%] absolute top-0 right-0 h-full bg-gray-100 opacity-50" 
+        (click)="onClickNext()"
+    >Next</button>
+</div>
