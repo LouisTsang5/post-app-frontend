@@ -1,7 +1,7 @@
 <p *ngIf="!post">Cannot find post</p>
 
 <div *ngIf="post">
-    <img *ngFor="let url of mediaUrls" [src]="url" class="w-[500px] h-auto m-3">
+    <app-media-viewer *ngIf="mediaUrls" [srcs]="mediaUrls"></app-media-viewer>
     <div class="m-3">
         <h1 class="text-3xl">{{post.title}}</h1>
         <p class="text-xl">{{post.content}}</p>

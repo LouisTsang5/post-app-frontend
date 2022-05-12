@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Post } from 'src/app/_models/post';
 import { PostService } from 'src/app/_services/post.service';
@@ -13,12 +12,11 @@ export class PostComponent implements OnInit {
 
     private id: string;
     post: Post;
-    mediaUrls: SafeResourceUrl[];
+    mediaUrls: string[];
 
     constructor(
         private postService: PostService,
         private route: ActivatedRoute,
-        private sanitization: DomSanitizer,
     ) { }
 
     async ngOnInit(): Promise<void> {
@@ -30,7 +28,8 @@ export class PostComponent implements OnInit {
                     return await this.postService.getMedia(this.post.id, media.index);
                 })
             );
-            this.mediaUrls = urls.map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
+            console.log(urls);
+            this.mediaUrls = urls
         }
     }
 
