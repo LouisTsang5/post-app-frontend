@@ -30,7 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
         });
         this.accessTokenSubscription = this.authenticationService.accessTokenObservable.subscribe({
             next: (token) => {
-                if (!token) this.router.navigate(['login'], { queryParams: { returnUrl: '/' } });
+                const currentRoute = this.router.url;
+                if (!token) this.router.navigate(['login'], { queryParams: { returnUrl: currentRoute } });
                 this.accessToken = token;
             }
         });
