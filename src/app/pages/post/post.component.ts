@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Post } from 'src/app/_models/post';
+import { LoggerService } from 'src/app/_services/logger.service';
 import { PostService } from 'src/app/_services/post.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class PostComponent implements OnInit {
     constructor(
         private postService: PostService,
         private route: ActivatedRoute,
+        private logger: LoggerService,
     ) { }
 
     async ngOnInit(): Promise<void> {
@@ -28,7 +30,7 @@ export class PostComponent implements OnInit {
                     return await this.postService.getMedia(this.post.id, media.index);
                 })
             );
-            console.log(urls);
+            this.logger.log(`Media urls ${urls.join(', ')}`);
             this.mediaUrls = urls
         }
     }
