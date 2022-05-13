@@ -15,7 +15,7 @@
 }
 
 .util-bar {
-    @apply flex justify-end;
+    @apply flex justify-end items-center;
     @apply w-full;
 }
 
@@ -23,6 +23,7 @@
     @apply fill-white hover:fill-blue-500;
     @apply stroke-blue-500 hover:stroke-white;
     @apply stroke-[3];
+    @apply hover:cursor-pointer;
 }
 
 .overlay {
