@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoggerService } from 'src/app/_services/logger.service';
 import { PostService } from 'src/app/_services/post.service';
 import { PostFormData } from '../../../_models/post';
 
@@ -19,7 +20,8 @@ export class CreatePostsFormComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private postService: PostService
+        private postService: PostService,
+        private logger: LoggerService,
     ) { }
 
     ngOnInit(): void {
@@ -32,6 +34,14 @@ export class CreatePostsFormComponent implements OnInit {
 
     public get formValue() {
         return this.createPostForm.controls;
+    }
+
+    @HostListener('window:keyup', ['$event'])
+    escapeKeyEvent(event: KeyboardEvent) {
+        if (event.key === 'Escape') {
+            this.logger.log('Escape key pressed, exiting');
+            this.onCancel();
+        }
     }
 
     onCancel() {
