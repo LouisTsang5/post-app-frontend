@@ -21,6 +21,7 @@
 
 .dropdown:hover .dropdown-menu {
     display: block;
+    @apply z-50;
 }
 
 .dropdown-menu .menu-item {
