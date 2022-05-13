@@ -1,7 +1,10 @@
 <div class="border-2 border-black hover:bg-gray-100 rounded m-2 shadow cursor-pointer relative"
     (click)="onClickPost($event)">
     <h1 class="p-2 bg-blue-200 text-lg text-center capitalize">{{ post.title }}</h1>
-    <p class="p-5 whitespace-pre-line">{{ post.content }}</p>
+    <div class="p-5">
+        <p class="content">{{ post.content }}</p>
+    </div>
+
     <svg width="20" height="20"
         class="cursor-pointer stroke-[3] stroke-blue-500 hover:stroke-white fill-transparent hover:fill-blue-500 absolute top-1 right-1"
         (click)="onClickDelete($event)">
