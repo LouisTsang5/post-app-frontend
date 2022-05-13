@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom, Observable } from "rxjs";
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from "../_models/user";
-import { environment } from "src/environments/environment";
-import { AccessToken } from "../_models/accessToken";
+import { User } from '../_models/user';
+import { environment } from 'src/environments/environment';
+import { AccessToken } from '../_models/accessToken';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -63,7 +63,7 @@ export class AuthenticationService {
         const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
 
         //Set the current user if the users are not the same
-        if (this.currentUserSubject.value != currentUser) this.currentUser = currentUser;
+        if (this.currentUserSubject.value !== currentUser) this.currentUser = currentUser;
 
         return currentUser;
     }
@@ -96,7 +96,7 @@ export class AuthenticationService {
     private async getCurrentUserFromServer(token?: AccessToken) {
         const url = new URL(`${this.requestUrl.pathname}/self`, this.requestUrl.origin);
         const headers = token ? new HttpHeaders({ 'x-access-token': token.token as string }) : this.requestHeader;
-        const user: User = await firstValueFrom(this.http.get(url.toString(), { headers }) as Observable<User>)
+        const user: User = await firstValueFrom(this.http.get(url.toString(), { headers }) as Observable<User>);
         return user as User;
     }
 

@@ -31,7 +31,7 @@ export class PostComponent implements OnInit {
                 })
             );
             this.logger.log(`Media urls ${urls.join(', ')}`);
-            this.mediaUrls = urls
+            this.mediaUrls = urls;
         }
     }
 

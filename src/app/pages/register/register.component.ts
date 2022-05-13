@@ -30,7 +30,7 @@ export class RegistrationComponent implements OnInit {
         const password = control.get('password')?.value;
         const passwordConfirm = control.get('passwordConfirm')?.value;
         return password === passwordConfirm ? null : { passwordNotSame: true };
-    }
+    };
 
     aliasExistsValidator: AsyncValidatorFn = (aliasControl: AbstractControl): Observable<ValidationErrors | null> => {
         const alias = aliasControl.value;
@@ -40,7 +40,7 @@ export class RegistrationComponent implements OnInit {
                     return res ? { aliasExists: true } : null;
                 })
             );
-    }
+    };
 
     emailExistsValidator: AsyncValidatorFn = (emailControl: AbstractControl): Observable<ValidationErrors | null> => {
         const email = emailControl.value;
@@ -50,7 +50,7 @@ export class RegistrationComponent implements OnInit {
                     return res ? { emailExists: true } : null;
                 })
             );
-    }
+    };
 
     constructor(
         private formBuilder: FormBuilder,

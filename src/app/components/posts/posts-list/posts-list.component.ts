@@ -41,9 +41,9 @@ export class PostsListComponent implements OnInit, OnDestroy {
 
     onCancelCreatePost = () => {
         this.displayCreatePostForm = false;
-    }
+    };
 
     onSubmitCreatePostForm = () => {
         this.displayCreatePostForm = false;
-    }
+    };
 }
