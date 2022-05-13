@@ -10,7 +10,7 @@ export class LoggerService {
 
     constructor() { }
 
-    log(object: Object) {
-        if (this.isDevMode) console.log(object);
+    log(object: Object, showInProd?: boolean) {
+        if (this.isDevMode || showInProd) console.log(object);
     }
 }
