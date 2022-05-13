@@ -1,11 +1,16 @@
-<div class="post-wrapper relative" (click)="onClickPost($event)">
-    <h1 class="post-title">{{ post.title }}</h1>
-    <p class="post-content whitespace-pre-line">{{ post.content }}</p>
-    <svg width="20" height="20" class="delete-btn absolute top-1 right-1" (click)="onClickDelete($event)">
+<div class="border-2 border-black hover:bg-gray-100 rounded m-2 shadow cursor-pointer relative"
+    (click)="onClickPost($event)">
+    <h1 class="p-2 bg-blue-200 text-lg text-center capitalize">{{ post.title }}</h1>
+    <p class="p-5 whitespace-pre-line">{{ post.content }}</p>
+    <svg width="20" height="20"
+        class="cursor-pointer stroke-[3] stroke-blue-500 hover:stroke-white fill-transparent hover:fill-blue-500 absolute top-1 right-1"
+        (click)="onClickDelete($event)">
         <rect width="20" height="20" />
         <polygon points="5,15 15,5" />
         <polygon points="15,15 5,5" />
     </svg>
+
+    <!-- Confirm delete overlay element -->
     <div *ngIf="displayConfirmDelte" (click)="$event.stopPropagation()"
         class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-100/70 hover:cursor-default">
         <div class="w-[80%] max-w-[300px] h-[80%] text-center bg-white opacity-100 rounded-xl border-2 flex flex-col">
