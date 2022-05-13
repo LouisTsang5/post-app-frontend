@@ -6,4 +6,28 @@
         <polygon points="5,15 15,5" />
         <polygon points="15,15 5,5" />
     </svg>
+    <div *ngIf="displayConfirmDelte" (click)="$event.stopPropagation()"
+        class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-100/70 hover:cursor-default">
+        <div class="w-[80%] max-w-[300px] h-[80%] text-center bg-white opacity-100 rounded-xl border-2 flex flex-col">
+            <div class="flex-grow flex items-center justify-center">
+                <div>
+                    Delete this post?
+                </div>
+            </div>
+            <div class="flex-grow flex flex-row">
+                <div class="flex-grow flex items-center justify-center">
+                    <div (click)="onClickConfirmDelete($event)"
+                        class="hover:cursor-pointer w-[70%] h-[70%] flex items-center justify-center rounded-3xl bg-white border-[1px] border-red-500 text-red-500 hover:border-white hover:bg-red-500 hover:text-white">
+                        <div>Yes</div>
+                    </div>
+                </div>
+                <div class="flex-grow flex items-center justify-center">
+                    <div (click)="onClickCancelDelete($event)"
+                        class="hover:cursor-pointer w-[70%] h-[70%] flex items-center justify-center rounded-3xl bg-white border-[1px] border-black hover: hover:bg-gray-100">
+                        <div>No</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

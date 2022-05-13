@@ -11,6 +11,7 @@ import { PostService } from 'src/app/_services/post.service';
 export class PostPreviewComponent implements OnInit {
 
     @Input() post: Post;
+    displayConfirmDelte = false;
 
     constructor(
         private postService: PostService,
@@ -24,15 +25,24 @@ export class PostPreviewComponent implements OnInit {
     onClickDelete(event: Event) {
         event.preventDefault();
         event.stopPropagation();
+        this.displayConfirmDelte = true;
+    }
 
-        const post = this.post;
-        if (confirm(`Are you sure you want to delete the post titled ${post.title}?`)) this.postService.deletePost(post.id);
+    onClickConfirmDelete(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.postService.deletePost(this.post.id);
+    }
+
+    onClickCancelDelete(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.displayConfirmDelte = false;
     }
 
     onClickPost(event: Event) {
         event.preventDefault();
         event.stopPropagation();
-
         this.router.navigate(['post'], { queryParams: { id: this.post.id } });
     }
 }
