@@ -1,11 +1,12 @@
 .form-wrapper {
     @apply bg-white;
     @apply opacity-100;
+    @apply w-full sm:w-[80%] md:w-[60%] lg:w-[50%];
+    @apply h-3/4;
 }
 
 .form-title {
     @apply text-xl text-center font-bold;
-    @apply mb-[5px];
 }
 
 .form {
@@ -13,19 +14,20 @@
     @apply shadow-md;
     @apply rounded;
     @apply p-3;
-    @apply w-[500px];
-    @apply h-[480px];
+    @apply w-full;
+    @apply h-full;
 }
 
 .field-wrapper {
-    @apply mb-[5px];
+    @apply w-full;
+    @apply mb-2;
 }
 
 .field-label {
     @apply block;
     @apply text-sm;
     @apply font-bold;
-    @apply mb-2;
+    @apply h-[50%] max-h-[20px];
 }
 
 .field-input {
