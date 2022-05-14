@@ -12,6 +12,7 @@ export class MediaViewerComponent implements OnInit {
     @Input() srcs?: string[];
     @Input() height: string;
     @Input() width: string;
+    @Input() autoPlay?: { interval?: number };
     safeUrls: SafeUrl[];
     index: number;
 
@@ -23,6 +24,9 @@ export class MediaViewerComponent implements OnInit {
     ngOnInit(): void {
         this.index = 0;
         if (this.srcs) this.safeUrls = this.srcs.map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
+        if (this.autoPlay) setInterval(() => {
+            this.index < this.safeUrls.length - 1 ? this.index++ : this.index = 0;
+        }, this.autoPlay.interval ? this.autoPlay.interval : 3000);
     }
 
     onClickNext() {
