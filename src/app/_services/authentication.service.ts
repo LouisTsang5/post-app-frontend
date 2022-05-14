@@ -1,23 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../_models/user';
 import { environment } from 'src/environments/environment';
 import { AccessToken } from '../_models/accessToken';
+import { LoggerService } from './logger.service';
 
 @Injectable({ providedIn: 'root' })
-export class AuthenticationService {
+export class AuthenticationService implements OnDestroy{
     private currentUserSubject: BehaviorSubject<User | undefined>;
     public currentUserObservable: Observable<User | undefined>;
     private currentUserKey = 'currentUser';
+
+    private accessTokenSubscription: Subscription;
 
     private accessTokenSubject: BehaviorSubject<AccessToken | undefined>;
     public accessTokenObservable: Observable<AccessToken | undefined>;
     private accessTokenKey = 'accessToken';
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private logger: LoggerService,
     ) {
         //Initialize with empty access token value
         this.accessTokenSubject = new BehaviorSubject<AccessToken | undefined>(undefined);
@@ -27,8 +31,19 @@ export class AuthenticationService {
         this.currentUserSubject = new BehaviorSubject<User | undefined>(undefined);
         this.currentUserObservable = this.currentUserSubject.asObservable();
 
+        //Subscribe to the access token obervable to set current user dynamically
+        this.accessTokenSubscription = this.accessTokenObservable.subscribe({
+            next: async (token) => {
+                this.currentUser = token ? await this.getCurrentUserFromServer(token) : undefined;
+            }
+        });
+
         //Set access token value
         this.accessToken = this.accessToken;
+    }
+
+    ngOnDestroy(): void {
+        this.accessTokenSubscription.unsubscribe();
     }
 
     public get accessToken(): AccessToken | undefined {
@@ -40,21 +55,21 @@ export class AuthenticationService {
         //Set the access token if the token is not the same
         if (!this.isTokenSame(this.accessTokenSubject.value, accessToken)) this.accessToken = accessToken;
 
+        this.logger.log(`Get access token as ${accessToken?.token}`);
         return accessToken;
     }
 
     public set accessToken(token: AccessToken | undefined) {
+        this.logger.log(`Set access token as ${token?.token}`);
         if (!token) {
             this.accessTokenSubject.next(undefined);
             localStorage.removeItem(this.accessTokenKey);
-            this.currentUser = undefined;
             return;
         }
 
         if (this.isAccessTokenExpired(token)) throw new Error('Cannot set expired access token');
         localStorage.setItem(this.accessTokenKey, JSON.stringify(token));
         this.accessTokenSubject.next(token);
-        this.setCurrentUserFromServer();
     }
 
     public get currentUser() {
@@ -62,13 +77,13 @@ export class AuthenticationService {
         const currentUserStr = this.accessToken ? localStorage.getItem(this.currentUserKey) : undefined;
         const currentUser = currentUserStr ? JSON.parse(currentUserStr) as User : undefined;
 
-        //Set the current user if the users are not the same
-        if (this.currentUserSubject.value !== currentUser) this.currentUser = currentUser;
+        this.logger.log(`Get current user as ${currentUser?.alias}`);
 
         return currentUser;
     }
 
     public set currentUser(user: User | undefined) {
+        this.logger.log(`Set current user as  ${user?.alias}`);
         if (!user) {
             this.currentUserSubject.next(undefined);
             localStorage.removeItem(this.currentUserKey);
@@ -105,10 +120,6 @@ export class AuthenticationService {
         if (!tokenA || !tokenB) return false;
         if (tokenA.token === tokenB.token && tokenA.expireDate === tokenB.expireDate) return true;
         return false;
-    }
-
-    private async setCurrentUserFromServer(token?: AccessToken) {
-        this.currentUser = await this.getCurrentUserFromServer(token);
     }
 
     public login(email: string, password: string): Observable<void> {
