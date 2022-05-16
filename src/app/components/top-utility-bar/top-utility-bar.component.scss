@@ -1,41 +1,58 @@
 .top-bar {
-    @apply flex;
+    display: flex;
     @apply bg-blue-500;
 }
 
 .title-wrap {
     @apply text-white text-lg;
-    @apply flex items-center;
+    display: flex;
+    align-items: center;
 }
 
-.dropdown-btn {
-    @apply inline-flex;
-    @apply text-sm text-white hover:text-blue-500;
-    @apply px-4 py-2;
-    @apply leading-none;
-    @apply border rounded;
-    @apply border-white hover:border-transparent;
-    @apply hover:bg-white;
-    @apply w-20;
-}
+.dropdown {
+    @apply text-sm;
 
-.dropdown:hover .dropdown-menu {
-    display: block;
-    @apply z-50;
-}
+    .dropdown-btn {
+        display: inline-flex;
+        width: 5rem;
+        @apply text-white;
+        @apply px-4 py-2;
+        @apply leading-none;
+        @apply border rounded;
+        @apply border-white;
 
-.dropdown-menu .menu-item {
-    @apply bg-gray-50 hover:bg-gray-200;
-    @apply text-sm text-gray-700;
-    @apply py-2 px-4;
-    @apply block;
-    @apply w-20;
-}
+        &:hover {
+            @apply text-blue-500;
+            @apply border-white;
+            @apply bg-white;
+        }
+    }
 
-.dropdown-menu .first-item {
-    @apply rounded-t;
-}
+    .dropdown-menu {
+        &:hover {
+            display: block;
+            z-index: 50;
+        }
+    
+        .menu-item {
+            @apply bg-gray-50 hover:bg-gray-200;
+            @apply text-gray-700;
+            @apply py-2 px-4;
+            display: block;
+            width: 5rem;
+        }
+    
+        .first-item {
+            @apply rounded-t;
+        }
+    
+        .last-item {
+            @apply rounded-b;
+        }
+    }
 
-.dropdown-menu .last-item {
-    @apply rounded-b;
+    &:hover .dropdown-menu {
+        display: block;
+        z-index: 50;
+    }
 }
