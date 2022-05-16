@@ -1,7 +1,7 @@
 <div class="cpt-root" [ngStyle]="{'height': height, 'width': width}">
     <img *ngIf="safeUrls" [src]="safeUrls[index]">
 
-    <div class="util-bar">
+    <div class="util-bar" *ngIf="srcs && srcs.length > 1">
         <div class="util-btn" (click)="onClickPrev($event)">
             <svg viewBox="0 0 100 100">
                 <polygon points="45,20 25,50 45,80 70,80 50,50 70,20"/>
