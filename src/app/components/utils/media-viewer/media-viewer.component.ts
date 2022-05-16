@@ -12,7 +12,7 @@ export class MediaViewerComponent implements OnInit {
     @Input() srcs?: string[];
     @Input() height: string;
     @Input() width: string;
-    @Input() autoPlay?: { interval?: number };
+    @Input() autoPlay?: boolean | { interval?: number };
     safeUrls: SafeUrl[];
     index: number;
 
@@ -24,9 +24,12 @@ export class MediaViewerComponent implements OnInit {
     ngOnInit(): void {
         this.index = 0;
         if (this.srcs) this.safeUrls = this.srcs.map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
+
+        const defaultInterval = 3000;
+        const interval = this.autoPlay && hasInterval(this.autoPlay) ? this.autoPlay.interval : defaultInterval;
         if (this.autoPlay) setInterval(() => {
             this.index < this.safeUrls.length - 1 ? this.index++ : this.index = 0;
-        }, this.autoPlay.interval ? this.autoPlay.interval : 3000);
+        }, interval);
     }
 
     onClickNext() {
@@ -37,4 +40,8 @@ export class MediaViewerComponent implements OnInit {
         if (this.index > 0) this.index--;
         this.logger.log(`Image index: ${this.index}`);
     }
+}
+
+function hasInterval(value: boolean | {interval?: number}): value is {interval: number} {
+    return value.hasOwnProperty('interval');
 }
