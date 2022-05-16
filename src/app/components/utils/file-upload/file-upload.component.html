@@ -2,5 +2,5 @@
     class="border-dashed border-2 border-gray-500 rounded p-2 relative text-center h-full w-full hover:bg-gray-200 flex items-center">
     <span *ngIf="!files.length" class="w-full">Click or drag and drop files here</span>
     <span *ngFor="let file of files" class="mx-1 p-1 rounded bg-blue-100">{{ file.name }}</span>
-    <input type="file" multiple class="absolute z-[2] w-[100%] h-[100%] top-0 left-0 opacity-0 cursor-pointer">
+    <input type="file" multiple class="absolute z-10 w-full h-full top-0 left-0 opacity-0 cursor-pointer">
 </div>
