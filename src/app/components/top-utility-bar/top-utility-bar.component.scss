@@ -15,9 +15,8 @@
     .dropdown-btn {
         display: inline-flex;
         width: 5rem;
-        @apply text-white;
+        @apply text-white leading-none;
         @apply px-4 py-2;
-        @apply leading-none;
         @apply border rounded;
         @apply border-white;
 
