@@ -9,4 +9,18 @@
         *ngIf="safeUrls.length > 1">
         <button class="border w-[20%] bg-blue-100 opacity-50 h-full absolute right-0 hidden">&gt;</button>
     </div>
+
+    <div class="absolute p-2 hidden util-btn">
+        <div (click)="onClickAutoPlay($event)" class="opacity-50">
+            <div class="border-2 border-blue-500 rounded-full w-8 h-8 bg-white hover:bg-blue-500 fill-blue-500 hover:fill-white stroke-white hover:stroke-blue-500 stroke-2">
+                <svg *ngIf="isAutoPlaySubject.value" viewBox="0 0 100 100">
+                    <polygon points="25,20 25,80 45,80 45,20"/>
+                    <polygon points="55,20 55,80 75,80 75,20"/>
+                </svg>
+                <svg *ngIf="!isAutoPlaySubject.value" viewBox="0 0 100 100">
+                    <polygon points="30,20 30,80 80,50"/>
+                </svg>
+            </div>
+        </div>
+    </div>
 </div>

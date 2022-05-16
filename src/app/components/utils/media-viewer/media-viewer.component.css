@@ -1,3 +1,7 @@
 .btn-wrapper:hover button {
     display: block;
 }
+
+div:hover .util-btn {
+    display: block;
+}
