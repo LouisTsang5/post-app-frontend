@@ -6,7 +6,7 @@ import { AuthenticationService } from '../../_services/authentication.service';
 @Component({
   selector: 'app-top-utility-bar',
   templateUrl: './top-utility-bar.component.html',
-  styleUrls: ['./top-utility-bar.component.css']
+  styleUrls: ['./top-utility-bar.component.scss']
 })
 export class TopUtilityBarComponent implements OnInit, OnDestroy {
 

@@ -7,7 +7,7 @@ import { PostFormData } from '../../../_models/post';
 @Component({
     selector: 'app-create-posts-form',
     templateUrl: './create-posts-form.component.html',
-    styleUrls: ['./create-posts-form.component.css']
+    styleUrls: ['./create-posts-form.component.scss']
 })
 export class CreatePostsFormComponent implements OnInit {
 

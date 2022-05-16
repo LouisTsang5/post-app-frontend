@@ -6,7 +6,7 @@ import { LoggerService } from 'src/app/_services/logger.service';
 @Component({
     selector: 'app-media-viewer',
     templateUrl: './media-viewer.component.html',
-    styleUrls: ['./media-viewer.component.css']
+    styleUrls: ['./media-viewer.component.scss']
 })
 export class MediaViewerComponent implements OnInit, OnDestroy {
 
