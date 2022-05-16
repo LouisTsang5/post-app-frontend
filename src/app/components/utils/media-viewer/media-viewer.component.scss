@@ -1,33 +1,31 @@
-.btn-wrapper:hover button {
-    display: block;
-}
-
-div .util-bar {
-    position: absolute;
+.cpt-root {
+    position: relative;
     display: flex;
-    padding: 0.5rem;
     justify-content: center;
-    gap: 0.5rem;
-    animation: fade-out 250ms ease-in-out forwards;
-    opacity: 0.5;
-    transform: translateY(0);
-}
+    align-items: flex-end;
 
-div:hover .util-bar {
-    animation: fade-in 250ms ease-in-out forwards;
-    opacity: 0;
-    transform: translateY(-30%);
-}
+    img {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+    }
 
-.util-btn {
-    border-width: 2px;
-    width: 2rem;
-    height: 2rem;
-    @apply border-blue-500 rounded-full bg-white hover:bg-blue-500 fill-blue-500 hover:fill-white stroke-white hover:stroke-blue-500 stroke-2
-}
+    .util-bar {
+        position: absolute;
+        display: flex;
+        padding: 0.5rem;
+        justify-content: center;
+        gap: 0.5rem;
+        animation: fade-out 250ms ease-in-out forwards;
+        opacity: 0.5;
+        transform: translateY(0);
+    }
 
-.util-btn:hover {
-    cursor: pointer;
+    &:hover .util-bar{
+        animation: fade-in 250ms ease-in-out forwards;
+        opacity: 0;
+        transform: translateY(-30%);
+    }
 }
 
 @keyframes fade-in {
@@ -41,5 +39,20 @@ div:hover .util-bar {
     100% {
         opacity: 0;
         transform: translateY(-30%);
+    }
+}
+
+.util-btn {
+    border-width: 2px;
+    width: 2rem;
+    height: 2rem;
+    @apply rounded-full;
+    @apply border-blue-500  bg-white fill-blue-500 stroke-white stroke-2;
+
+    &:hover {
+        cursor: pointer;
+        @apply bg-blue-500;
+        @apply fill-white;
+        @apply stroke-blue-500;
     }
 }

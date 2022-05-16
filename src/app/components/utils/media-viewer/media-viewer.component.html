@@ -1,5 +1,5 @@
-<div class="relative flex justify-center items-end" [ngStyle]="{'height': height, 'width': width}">
-    <img class="object-contain w-[100%] h-[100%]" *ngIf="safeUrls" [src]="safeUrls[index]">
+<div class="cpt-root" [ngStyle]="{'height': height, 'width': width}">
+    <img *ngIf="safeUrls" [src]="safeUrls[index]">
 
     <div class="util-bar">
         <div class="util-btn" (click)="onClickPrev($event)">
