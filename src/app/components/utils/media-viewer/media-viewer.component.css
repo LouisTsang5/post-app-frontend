@@ -2,6 +2,44 @@
     display: block;
 }
 
-div:hover .util-btn {
-    display: block;
+div .util-bar {
+    position: absolute;
+    display: flex;
+    padding: 0.5rem;
+    justify-content: center;
+    gap: 0.5rem;
+    animation: fade-out 250ms ease-in-out forwards;
+    opacity: 0.5;
+    transform: translateY(0);
+}
+
+div:hover .util-bar {
+    animation: fade-in 250ms ease-in-out forwards;
+    opacity: 0;
+    transform: translateY(-30%);
+}
+
+.util-btn {
+    border-width: 2px;
+    width: 2rem;
+    height: 2rem;
+    @apply border-blue-500 rounded-full bg-white hover:bg-blue-500 fill-blue-500 hover:fill-white stroke-white hover:stroke-blue-500 stroke-2
+}
+
+.util-btn:hover {
+    cursor: pointer;
+}
+
+@keyframes fade-in {
+    100% {
+        opacity: 0.5;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-out {
+    100% {
+        opacity: 0;
+        transform: translateY(-30%);
+    }
 }

@@ -55,16 +55,23 @@ export class MediaViewerComponent implements OnInit, OnDestroy {
     onClickAutoPlay(event: Event) {
         event.preventDefault();
         event.stopPropagation();
-
         this.isAutoPlaySubject.next(!this.isAutoPlaySubject.value);
     }
 
-    onClickNext() {
+    onClickNext(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
         if (this.index < this.safeUrls.length - 1) this.index++;
+        else this.index = 0;
+        this.isAutoPlaySubject.next(false);
         this.logger.log(`Image index: ${this.index}`);
     }
-    onClickPrev() {
+    onClickPrev(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
         if (this.index > 0) this.index--;
+        else this.index = this.safeUrls.length - 1;
+        this.isAutoPlaySubject.next(false);
         this.logger.log(`Image index: ${this.index}`);
     }
 }

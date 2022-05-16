@@ -1,26 +1,27 @@
-<div class="relative flex justify-center" [ngStyle]="{'height': height, 'width': width}">
+<div class="relative flex justify-center items-end" [ngStyle]="{'height': height, 'width': width}">
     <img class="object-contain w-[100%] h-[100%]" *ngIf="safeUrls" [src]="safeUrls[index]">
-    <div class="absolute w-[45%] top-0 left-0 h-full hover:cursor-pointer btn-wrapper" (click)="onClickPrev()"
-        *ngIf="safeUrls.length > 1">
-        <button class="border w-[20%] bg-blue-100 opacity-50 h-full absolute left-0 hidden">&lt;</button>
-    </div>
 
-    <div class="absolute w-[45%] top-0 right-0 h-full hover:cursor-pointer btn-wrapper" (click)="onClickNext()"
-        *ngIf="safeUrls.length > 1">
-        <button class="border w-[20%] bg-blue-100 opacity-50 h-full absolute right-0 hidden">&gt;</button>
-    </div>
+    <div class="util-bar">
+        <div class="util-btn" (click)="onClickPrev($event)">
+            <svg viewBox="0 0 100 100">
+                <polygon points="45,20 25,50 45,80 70,80 50,50 70,20"/>
+            </svg>
+        </div>
 
-    <div class="absolute p-2 hidden util-btn">
-        <div (click)="onClickAutoPlay($event)" class="opacity-50">
-            <div class="border-2 border-blue-500 rounded-full w-8 h-8 bg-white hover:bg-blue-500 fill-blue-500 hover:fill-white stroke-white hover:stroke-blue-500 stroke-2">
-                <svg *ngIf="isAutoPlaySubject.value" viewBox="0 0 100 100">
-                    <polygon points="25,20 25,80 45,80 45,20"/>
-                    <polygon points="55,20 55,80 75,80 75,20"/>
-                </svg>
-                <svg *ngIf="!isAutoPlaySubject.value" viewBox="0 0 100 100">
-                    <polygon points="30,20 30,80 80,50"/>
-                </svg>
-            </div>
+        <div class="util-btn" (click)="onClickAutoPlay($event)">
+            <svg *ngIf="isAutoPlaySubject.value" viewBox="0 0 100 100">
+                <polygon points="25,20 25,80 45,80 45,20"/>
+                <polygon points="55,20 55,80 75,80 75,20"/>
+            </svg>
+            <svg *ngIf="!isAutoPlaySubject.value" viewBox="0 0 100 100">
+                <polygon points="30,20 30,80 80,50"/>
+            </svg>
+        </div>
+
+        <div class="util-btn" (click)="onClickNext($event)">
+            <svg viewBox="0 0 100 100">
+                <polygon points="55,20 75,50 55,80 30,80 50,50 30,20"/>
+            </svg>
         </div>
     </div>
 </div>
