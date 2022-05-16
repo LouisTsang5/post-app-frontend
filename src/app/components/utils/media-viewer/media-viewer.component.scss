@@ -17,7 +17,7 @@
         justify-content: center;
         gap: 0.5rem;
         animation: fade-out 250ms ease-in-out forwards;
-        opacity: 0.5;
+        opacity: 1;
         transform: translateY(0);
     }
 
@@ -30,7 +30,7 @@
 
 @keyframes fade-in {
     100% {
-        opacity: 0.5;
+        opacity: 1;
         transform: translateY(0);
     }
 }
