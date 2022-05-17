@@ -1,6 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
+const themeKey = 'theme';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -16,14 +18,18 @@ export class ThemeService implements OnDestroy {
                 this.setTheme(theme);
             }
         });
+        this.theme = this.theme;
     }
 
     set theme(theme: Theme) {
         this.themeSubject.next(theme);
+        localStorage.setItem(themeKey, theme.toString());
     }
 
     get theme() {
-        return this.themeSubject.value;
+        const themeStr = localStorage.getItem(themeKey);
+        const theme = themeStr === Theme.Dark.toString() ? Theme.Dark : Theme.Light;
+        return theme;
     }
 
     private setTheme(theme: Theme) {
@@ -44,12 +50,12 @@ export class ThemeService implements OnDestroy {
             'primary-color-inverse': 'white',
             'primary-text-color': 'var(--primary-color-inverse)',
             'primary-text-color-inverse': 'var(--primary-color)',
-            'secondary-color': 'rgb(191 219 254)', //blue-200
-            'secondary-text-color': 'white',
+            'secondary-color': 'rgb(55 48 163)', //indigo-800
+            'secondary-text-color': 'rgb(//slate-400)', //slate-300
             'background-color': 'rgb(15 23 42)', //slate-900
-            'background-color-light': 'rgb(71 85 105)', //slate-600
-            'background-highlight-color': 'rgb(100 116 139)', //slate-500
-            'background-text-color': 'white',
+            'background-color-light': 'rgb(30 41 59)', //slate-800
+            'background-highlight-color': 'rgb(51 65 85)', //slate-700
+            'background-text-color': 'rgb(148 163 184)', //slate-400
         };
 
         const style = theme === Theme.Dark ? styleDark : styleLight;
