@@ -1,56 +1,72 @@
 .form-wrapper {
-    @apply bg-white;
-    @apply opacity-100;
     @apply w-full sm:w-[80%] md:w-[60%] lg:w-[50%];
     @apply h-3/4;
 }
 
 .form-title {
+    color: var(--secondary-text-color);
     @apply text-xl text-center font-bold;
 }
 
 .form {
-    @apply border-2 border-black rounded;
-    @apply shadow-md;
-    @apply rounded;
-    @apply p-3;
+    border-width: 2px;
+    background-color: var(--background-color);
+    border-color: var(--background-text-color);
+    padding: 0.75rem;
     @apply w-full;
     @apply h-full;
+    @apply shadow-md;
+    @apply rounded-lg;
 }
 
 .field-wrapper {
-    @apply w-full;
-    @apply mb-2;
+    width: 100%;
+    margin-bottom: 0.5rem;
 }
 
 .field-label {
-    @apply block;
+    display: block;
+    color: var(--background-text-color);
+    height: 50%;
+    max-height: 20px;
     @apply text-sm;
     @apply font-bold;
-    @apply h-[50%] max-h-[20px];
 }
 
 .field-input {
     @apply shadow;
-    @apply appearance-none;
-    @apply border rounded;
-    @apply w-full;
+    @apply rounded-lg;
     @apply py-2 px-3;
-    @apply border-2 border-gray-300;
+    width: 100%;
+    border-width: 2px;
+    border-color: var(--background-text-color);
+    background-color: var(--background-color);
+    color: var(--background-text-color);
 }
 
 .submit-btn {
     @apply py-1 px-2;
-    @apply bg-blue-500 hover:bg-blue-700;
-    @apply rounded-md;
-    @apply text-white;
+    @apply rounded-lg;
+    background-color: var(--secondary-color);
+    color: var(--secondary-text-color);
+
+    &:hover {
+        background-color: var(--primary-color);
+        color: var(--primary-color-inverse);
+        border-color: var(--primary-color-inverse);
+    }
 }
 
 .cancel-btn {
-    @apply fill-white hover:fill-red-500;
-    @apply stroke-red-500 hover:stroke-white;
+    fill: var(--background-color);
+    @apply stroke-red-500;
     @apply stroke-[3];
     @apply cursor-pointer;
+
+    &:hover {
+        @apply fill-red-500;
+        stroke: var(--background-color);
+    }
 }
 
 .error-message {
