@@ -36,6 +36,7 @@ export class ThemeService implements OnDestroy {
         const styleLight = {
             'primary-color': 'rgb(59 130 246)', //blue-500
             'primary-color-inverse': 'white',
+            'primary-color-highlight': 'rgb(147 197 253)', //blue-300
             'primary-text-color': 'var(--primary-color-inverse)',
             'primary-text-color-inverse': 'var(--primary-color)',
             'secondary-color': 'rgb(191 219 254)', //blue-200
@@ -49,6 +50,7 @@ export class ThemeService implements OnDestroy {
         const styleDark = {
             'primary-color': 'rgb(79 70 229)', //indigo-600
             'primary-color-inverse': 'white',
+            'primary-color-highlight': 'rgb(165 180 252)', //indigo-300
             'primary-text-color': 'var(--primary-color-inverse)',
             'primary-text-color-inverse': 'var(--primary-color)',
             'secondary-color': 'rgb(55 48 163)', //indigo-800
