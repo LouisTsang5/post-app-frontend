@@ -43,6 +43,7 @@ export class ThemeService implements OnDestroy {
             'background-color': 'white',
             'background-color-light': 'rgb(243 244 246)', //gray-100
             'background-highlight-color': 'rgb(229 231 235)', //gray-200
+            'background-opaque-color': 'rgb(255 255 255 / 0.7)', //slate-700-70
             'background-text-color': 'black',
         };
         const styleDark = {
@@ -51,10 +52,11 @@ export class ThemeService implements OnDestroy {
             'primary-text-color': 'var(--primary-color-inverse)',
             'primary-text-color-inverse': 'var(--primary-color)',
             'secondary-color': 'rgb(55 48 163)', //indigo-800
-            'secondary-text-color': 'rgb(//slate-400)', //slate-300
+            'secondary-text-color': 'rgb(203 213 225)', //slate-300
             'background-color': 'rgb(15 23 42)', //slate-900
             'background-color-light': 'rgb(30 41 59)', //slate-800
             'background-highlight-color': 'rgb(51 65 85)', //slate-700
+            'background-opaque-color': 'rgb(51 65 85 / 0.7)', //slate-700-70
             'background-text-color': 'rgb(148 163 184)', //slate-400
         };
 
