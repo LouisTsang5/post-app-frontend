@@ -1,10 +1,12 @@
-<p *ngIf="!post">Cannot find post</p>
+<div>
+    <p *ngIf="!post" class="title">Cannot find post</p>
 
-<div *ngIf="post">
-    <app-media-viewer *ngIf="mediaUrls && mediaUrls.length > 0" [srcs]="mediaUrls" [autoPlay]="true" width="100%" height="40vh">
-    </app-media-viewer>
-    <div class="m-3">
-        <h1 class="text-3xl">{{post.title}}</h1>
-        <p class="text-xl">{{post.content}}</p>
+    <div *ngIf="post">
+        <app-media-viewer *ngIf="mediaUrls && mediaUrls.length > 0" [srcs]="mediaUrls" [autoPlay]="true" width="100%" height="40vh">
+        </app-media-viewer>
+        <div class="body">
+            <h1 class="title">{{post.title}}</h1>
+            <p class="content">{{post.content}}</p>
+        </div>
     </div>
 </div>
