@@ -1,10 +1,12 @@
 .cmp-wrapper {
-    @apply border rounded;
+    @apply rounded;
     @apply p-2;
     position: relative;
+    background-color: var(--background-color);
 }
 
 .cmp-title {
+    color: var(--background-text-color);
     @apply text-3xl;
     @apply w-full;
 }
@@ -20,27 +22,36 @@
 }
 
 .util-btn {
-    @apply fill-white hover:fill-blue-500;
-    @apply stroke-blue-500 hover:stroke-white;
+    fill: var(--background-color);
+    stroke: var(--primary-color);
+
+    &:hover {
+        fill: var(--primary-color);
+        stroke: var(--primary-color-inverse);
+    }
     @apply stroke-[3];
     @apply hover:cursor-pointer;
 }
 
 .overlay {
-    position: fixed; /* Sit on top of the page content */
-    width: 100%; /* Full width (cover the whole page) */
-    height: 100%; /* Full height (cover the whole page) */
+    position: fixed;
+    /* Sit on top of the page content */
+    width: 100%;
+    /* Full width (cover the whole page) */
+    height: 100%;
+    /* Full height (cover the whole page) */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Black background with opacity */
     z-index: 2;
 }
 
 .create-form {
     position: absolute;
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
     margin: auto;
