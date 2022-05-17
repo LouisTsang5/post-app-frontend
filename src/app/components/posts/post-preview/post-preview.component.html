@@ -1,12 +1,12 @@
-<div class="border-2 border-black hover:bg-gray-100 rounded m-2 shadow cursor-pointer relative"
+<div class="post"
     (click)="onClickPost($event)">
-    <h1 class="p-2 bg-blue-200 text-lg text-center capitalize">{{ post.title }}</h1>
+    <h1 class="title">{{ post.title }}</h1>
     <div class="p-5">
         <p class="content">{{ post.content }}</p>
     </div>
 
     <svg width="20" height="20"
-        class="cursor-pointer stroke-[3] stroke-blue-500 hover:stroke-white fill-transparent hover:fill-blue-500 absolute top-1 right-1"
+        class="btn"
         (click)="onClickDelete($event)">
         <rect width="20" height="20" />
         <polygon points="5,15 15,5" />
@@ -15,8 +15,8 @@
 
     <!-- Confirm delete overlay element -->
     <div *ngIf="displayConfirmDelte" (click)="$event.stopPropagation()"
-        class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-100/70 hover:cursor-default">
-        <div class="w-[80%] max-w-[300px] h-[80%] text-center bg-white opacity-100 rounded-xl border-2 flex flex-col">
+        class="delete-box-wrapper">
+        <div class="delete-box">
             <div class="flex-grow flex items-center justify-center">
                 <div>
                     Delete this post?
@@ -25,13 +25,13 @@
             <div class="flex-grow flex flex-row">
                 <div class="flex-grow flex items-center justify-center">
                     <div (click)="onClickConfirmDelete($event)"
-                        class="hover:cursor-pointer w-[70%] h-[70%] flex items-center justify-center rounded-3xl bg-white border-[1px] border-red-500 text-red-500 hover:border-white hover:bg-red-500 hover:text-white">
+                        class="yes">
                         <div>Yes</div>
                     </div>
                 </div>
                 <div class="flex-grow flex items-center justify-center">
                     <div (click)="onClickCancelDelete($event)"
-                        class="hover:cursor-pointer w-[70%] h-[70%] flex items-center justify-center rounded-3xl bg-white border-[1px] border-black hover: hover:bg-gray-100">
+                        class="no">
                         <div>No</div>
                     </div>
                 </div>
