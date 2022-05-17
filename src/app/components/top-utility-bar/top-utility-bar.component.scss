@@ -1,10 +1,11 @@
 .top-bar {
     display: flex;
-    @apply bg-blue-500;
+    background-color: var(--primary-color);
 }
 
 .title-wrap {
-    @apply text-white text-lg;
+    @apply text-lg;
+    color: var(--primary-text-color);
     display: flex;
     align-items: center;
 }
@@ -15,36 +16,46 @@
     .dropdown-btn {
         display: inline-flex;
         width: 5rem;
-        @apply text-white leading-none;
+        color: var(--primary-text-color);
+        @apply leading-none;
         @apply px-4 py-2;
         @apply border rounded;
-        @apply border-white;
+        border-color: var(--primary-text-color);
+        // @apply bg-slate-900;
 
         &:hover {
-            @apply text-blue-500;
-            @apply border-white;
-            @apply bg-white;
+            background-color: var(--primary-color-inverse);
+            color: var(--primary-text-color-inverse);
+            border-color: var(--primary-text-color-inverse);
         }
     }
 
     .dropdown-menu {
+        @apply shadow;
+        @apply rounded;
+
         &:hover {
             display: block;
             z-index: 50;
         }
-    
+
         .menu-item {
-            @apply bg-gray-50 hover:bg-gray-200;
-            @apply text-gray-700;
+            background-color: var(--background-color-light);
+            // @apply bg-slate-600;
+            color: var(--background-text-color);
             @apply py-2 px-4;
             display: block;
             width: 5rem;
+
+            &:hover {
+                background-color: var(--background-highlight-color);
+            }
         }
-    
+
         .first-item {
             @apply rounded-t;
         }
-    
+
         .last-item {
             @apply rounded-b;
         }
