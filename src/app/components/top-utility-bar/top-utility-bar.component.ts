@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Theme, ThemeService } from 'src/app/_services/theme.service';
 import { User } from '../../_models/user';
 import { AuthenticationService } from '../../_services/authentication.service';
 
