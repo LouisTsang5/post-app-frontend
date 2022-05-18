@@ -45,7 +45,7 @@ button {
     @apply rounded-md;
 
     &:hover {
-        background-color: var(--primary-color-inverse);
+        background-color: var(--primary-color-highlight);
         color: var(--primary-color);
     }
 }
