@@ -16,6 +16,7 @@ import { FileUploadComponent } from './components/utils/file-upload/file-upload.
 import { PostPreviewComponent } from './components/posts/post-preview/post-preview.component';
 import { PostComponent } from './pages/post/post.component';
 import { MediaViewerComponent } from './components/utils/media-viewer/media-viewer.component';
+import { DayNightToggleComponent } from './components/utils/day-night-toggle/day-night-toggle.component';
 
 @NgModule({
     declarations: [
@@ -30,6 +31,7 @@ import { MediaViewerComponent } from './components/utils/media-viewer/media-view
         PostPreviewComponent,
         PostComponent,
         MediaViewerComponent,
+        DayNightToggleComponent,
     ],
     imports: [
         BrowserModule,

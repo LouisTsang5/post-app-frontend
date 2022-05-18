@@ -1,0 +1,12 @@
+.day-night {
+    cursor: pointer;
+    padding: 0.2rem;
+    fill: var(--primary-color-inverse);
+    background-color: var(--primary-color);
+    @apply rounded-full;
+
+    &:hover {
+        fill: var(--primary-color);
+        background-color: var(--primary-color-inverse);
+    }
+}
