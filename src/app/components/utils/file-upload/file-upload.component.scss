@@ -1,0 +1,36 @@
+.host {
+    position: relative;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: var(--background-text-color);
+    padding: 0.5rem;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--background-text-color);
+    
+    &:hover {
+        background-color: var(--background-highlight-color);
+    }
+    @apply rounded-lg;
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 10;
+        width: 100%;
+        height: 100%
+    }
+
+    .file {
+        padding: 0.25rem;
+        background-color: var(--background-color-light);
+        @apply mx-1 rounded;
+    }
+}

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { AccessToken } from './_models/accessToken';
 import { User } from './_models/user';
 import { AuthenticationService } from './_services/authentication.service';
+import { ThemeService } from './_services/theme.service';
 
 @Component({
     selector: 'app-root',
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     constructor(
         private authenticationService: AuthenticationService,
-        private router: Router
+        private router: Router,
+        private themeService: ThemeService
     ) { }
 
     ngOnInit(): void {

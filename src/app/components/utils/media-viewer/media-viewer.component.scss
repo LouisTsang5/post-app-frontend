@@ -47,12 +47,16 @@
     width: 2rem;
     height: 2rem;
     @apply rounded-full;
-    @apply border-blue-500  bg-white fill-blue-500 stroke-white stroke-2;
+    border-color: var(--primary-color);
+    stroke: var(--primary-color);
+    stroke-width: 2;
+    fill: var(--primary-color);
+    background-color: var(--background-color);
 
     &:hover {
         cursor: pointer;
-        @apply bg-blue-500;
-        @apply fill-white;
-        @apply stroke-blue-500;
+        background-color: var(--primary-color);
+        fill: var(--background-color);
+        stroke: var(--background-color);
     }
 }
