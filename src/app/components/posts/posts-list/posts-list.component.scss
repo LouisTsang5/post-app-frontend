@@ -26,7 +26,6 @@
     stroke: var(--primary-color);
 
     &:hover {
-        fill: var(--primary-color);
         stroke: var(--primary-color-inverse);
     }
     @apply stroke-[3];
