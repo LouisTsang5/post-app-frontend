@@ -6,3 +6,7 @@
 :root {
     background-color: var(--background-color);
 }
+
+* {
+    transition: background-color 500ms;
+}
