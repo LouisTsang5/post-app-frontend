@@ -107,9 +107,8 @@
 
         &:hover {
             cursor: pointer;
-                border: var(--background-color);
                 background-color: var(--background-highlight-color);
-                color: var(--primary-text-color);
+                color: var(--secondary-text-color);
         }
         @apply rounded-3xl;
     }
