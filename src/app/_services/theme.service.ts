@@ -14,7 +14,7 @@ export class ThemeService implements OnDestroy {
         this.themeSubject = new BehaviorSubject<Theme>(Theme.Light);
         this.themeSubscription = this.themeSubject.asObservable().subscribe({
             next: (theme) => {
-                console.log('Theming');
+                console.log(`Setting theme as ${Theme[theme]}`);
                 this.setTheme(theme);
             }
         });
