@@ -22,14 +22,27 @@
 }
 
 .util-btn {
-    fill: var(--background-color);
+    width: 2rem;
+    height: 2rem;
+    fill: var(--primary-color);
     stroke: var(--primary-color);
+    border-color: var(--primary-color);
+    border-width: 2px;
+    @apply rounded-lg;
 
     &:hover {
         stroke: var(--primary-color-inverse);
+        fill: var(--primary-color-inverse);
+        border-color: var(--primary-color-inverse);
+        cursor: pointer;
     }
-    @apply stroke-[3];
-    @apply hover:cursor-pointer;
+
+    &:active {
+        stroke: var(--background-color);
+        fill: var(--background-color);
+        border-color: var(--primary-color-inverse);
+        background-color: var(--primary-color-inverse);
+    }
 }
 
 .overlay {
