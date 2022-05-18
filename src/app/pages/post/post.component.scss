@@ -11,3 +11,16 @@
     @apply text-xl;
     color: var(--background-text-color);
 }
+
+.media-player {
+    margin: 0.5rem;
+    width: fit-content;
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 2px;
+    border-color: var(--secondary-color);
+    padding: 0.5rem;
+    @apply rounded-xl;
+}

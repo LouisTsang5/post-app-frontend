@@ -2,8 +2,9 @@
     <p *ngIf="!post" class="title">Cannot find post</p>
 
     <div *ngIf="post">
-        <app-media-viewer *ngIf="mediaUrls && mediaUrls.length > 0" [srcs]="mediaUrls" [autoPlay]="true" width="100%" height="40vh">
-        </app-media-viewer>
+        <div class="flex justify-center items-center">
+            <app-media-viewer class="media-player" *ngIf="mediaUrls && mediaUrls.length > 0" [srcs]="mediaUrls" [autoPlay]="true"></app-media-viewer>
+        </div>
         <div class="body">
             <h1 class="title">{{post.title}}</h1>
             <p class="content">{{post.content}}</p>
