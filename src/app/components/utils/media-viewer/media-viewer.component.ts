@@ -11,8 +11,6 @@ import { LoggerService } from 'src/app/_services/logger.service';
 export class MediaViewerComponent implements OnInit, OnDestroy {
 
     @Input() srcs?: string[];
-    @Input() height: string;
-    @Input() width: string;
     @Input() autoPlay?: boolean | { interval?: number };
     isAutoPlaySubject: BehaviorSubject<boolean>;
     private isAutoPlaySubscription: Subscription;
