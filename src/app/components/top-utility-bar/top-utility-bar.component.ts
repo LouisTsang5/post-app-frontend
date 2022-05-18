@@ -17,7 +17,6 @@ export class TopUtilityBarComponent implements OnInit, OnDestroy {
 
     constructor(
         private authenticationService: AuthenticationService,
-        private themeService: ThemeService,
         private router: Router,
     ) { }
 
@@ -40,9 +39,5 @@ export class TopUtilityBarComponent implements OnInit, OnDestroy {
 
     onClickHome() {
         this.router.navigate(['/']);
-    }
-
-    onClickTheme() {
-        this.themeService.theme = this.themeService.theme === Theme.Light ? Theme.Dark : Theme.Light;
     }
 }
