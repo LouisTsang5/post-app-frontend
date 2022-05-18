@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Theme, ThemeService } from 'src/app/_services/theme.service';
 import { User } from '../../_models/user';
@@ -17,6 +18,7 @@ export class TopUtilityBarComponent implements OnInit, OnDestroy {
     constructor(
         private authenticationService: AuthenticationService,
         private themeService: ThemeService,
+        private router: Router,
     ) { }
 
     ngOnInit(): void {
@@ -34,6 +36,10 @@ export class TopUtilityBarComponent implements OnInit, OnDestroy {
 
     public onLogout() {
         this.authenticationService.logout();
+    }
+
+    onClickHome() {
+        this.router.navigate(['/']);
     }
 
     onClickTheme() {
