@@ -10,3 +10,19 @@
 * {
     transition: background-color 500ms;
 }
+
+.util-btn {
+    fill: var(--primary-color);
+    stroke: var(--primary-color);
+    border-color: var(--primary-color);
+    border-width: 2px;
+    @apply rounded-lg;
+
+    &:hover {
+        stroke: var(--background-color);
+        fill: var(--background-color);
+        border-color: var(--primary-color);
+        background-color: var(--primary-color);
+        cursor: pointer;
+    }
+}
