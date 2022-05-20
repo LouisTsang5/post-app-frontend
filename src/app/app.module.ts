@@ -17,6 +17,7 @@ import { PostPreviewComponent } from './components/posts/post-preview/post-previ
 import { PostComponent } from './pages/post/post.component';
 import { MediaViewerComponent } from './components/utils/media-viewer/media-viewer.component';
 import { DayNightToggleComponent } from './components/utils/day-night-toggle/day-night-toggle.component';
+import { AutosizeModule } from 'ngx-autosize';
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import { DayNightToggleComponent } from './components/utils/day-night-toggle/day
         ]),
         ReactiveFormsModule,
         HttpClientModule,
+        AutosizeModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
