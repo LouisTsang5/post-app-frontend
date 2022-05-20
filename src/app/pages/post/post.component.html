@@ -36,8 +36,10 @@
         </div>
         <div class="body">
             <div *ngIf="editMode">
-                <textarea [autosize]="true" [minRows]="1" class="title">{{ post.title }}</textarea>
-                <textarea [autosize]="true" class="content">{{ post.content }}</textarea>
+                <form [formGroup]="editPostForm" class="flex flex-col">
+                    <textarea [autosize]="true" [minRows]="1" class="title" formControlName="title"></textarea>
+                    <textarea [autosize]="true" class="content" formControlName="content"></textarea>
+                </form>
             </div>
             <div *ngIf="!editMode">
                 <h1 class="title">{{ post.title }}</h1>
