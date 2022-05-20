@@ -15,7 +15,7 @@ export class PostComponent implements OnInit {
     private id: string;
     post: Post;
     mediaUrls: string[];
-    editMode = false;
+    isEditMode = false;
     editPostForm: FormGroup;
     isSaving = false;
     isShowConfirmCancel = false;
@@ -46,6 +46,18 @@ export class PostComponent implements OnInit {
         });
     }
 
+    get editMode() {
+        return this.isEditMode;
+    }
+
+    set editMode(bool: boolean) {
+        if (bool) this.isEditMode = true;
+        else {
+            this.isEditMode = false;
+            this.isShowConfirmCancel = false;
+        }
+    }
+
     get newPostData() {
         const originalTitle = this.post.title;
         const newTitle = this.editPostForm.controls['title'].value.toString() as string;
@@ -70,7 +82,6 @@ export class PostComponent implements OnInit {
         const { title, content } = this.newPostData;
         if (!title && !content) {
             this.editMode = false;
-            this.isShowConfirmCancel = false;
             return;
         }
 
@@ -84,7 +95,6 @@ export class PostComponent implements OnInit {
         this.editPostForm.controls['title'].setValue(this.post.title);
         this.editPostForm.controls['content'].setValue(this.post.content);
         this.editMode = false;
-        this.isShowConfirmCancel = false;
     }
 
     async onSavePost(event: Event) {
