@@ -5,9 +5,20 @@
             <app-media-viewer class="media-player" *ngIf="mediaUrls && mediaUrls.length > 0" [srcs]="mediaUrls"
                 [autoPlay]="true"></app-media-viewer>
         </div>
-        <div class="flex justify-end flex-row px-2 gap-1">
-            <svg *ngIf="editMode" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                version="1.1" class="util-btn" x="0px" y="0px" viewBox="-50 -50 456.725 456.725" xml:space="preserve">
+        <div class="flex justify-end items-center flex-row px-2 gap-1">
+            <!-- Loading Text -->
+            <span class="load-txt" *ngIf="isSaving">Saving...</span>
+
+            <!-- Confirm Cancel Edit Button -->
+            <div class="util-btn flex justify-center items-center px-1" *ngIf="isShowConfirmCancel"
+                (click)="onConfirmCancel($event)">
+                <span>Cancel Without Saving</span>
+            </div>
+
+            <!-- Save Updated Post Button -->
+            <svg *ngIf="editMode" (click)="onSavePost($event)" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="util-btn" x="0px" y="0px"
+                viewBox="-50 -50 456.725 456.725" xml:space="preserve">
                 <g>
                     <g>
                         <path
@@ -23,7 +34,9 @@
                     </g>
                 </g>
             </svg>
-            <svg (click)="toggleEditMode()" [ngClass]="{'active': editMode}" class="util-btn"
+
+            <!-- Toggle Edit Mode Button -->
+            <svg (click)="onToggleEditMode($event)" [ngClass]="{'active': editMode}" class="util-btn"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                 viewBox="-70 -70 652 652" enable-background="new 0 0 512 512">
                 <g>

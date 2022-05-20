@@ -17,6 +17,8 @@ export class PostComponent implements OnInit {
     mediaUrls: string[];
     editMode = false;
     editPostForm: FormGroup;
+    isSaving = false;
+    isShowConfirmCancel = false;
 
     constructor(
         private postService: PostService,
@@ -44,7 +46,61 @@ export class PostComponent implements OnInit {
         });
     }
 
-    toggleEditMode() {
-        this.editMode = !this.editMode;
+    get newPostData() {
+        const originalTitle = this.post.title;
+        const newTitle = this.editPostForm.controls['title'].value.toString() as string;
+        const title = originalTitle !== newTitle ? newTitle : undefined;
+        const originalContent = this.post.content;
+        const newContent = this.editPostForm.controls['content'].value.toString() as string;
+        const content = originalContent !== newContent ? newContent : undefined;
+        return { title, content };
+    }
+
+    onToggleEditMode(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        //Set edit mode to true
+        if (!this.editMode) {
+            this.editMode = true;
+            return;
+        }
+
+        //If nothing is updated, end edit mode
+        const { title, content } = this.newPostData;
+        if (!title && !content) {
+            this.editMode = false;
+            return;
+        }
+
+        //Something is edited, ask for confirmation
+        this.isShowConfirmCancel = true;
+    }
+
+    onConfirmCancel(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.editPostForm.controls['title'].setValue(this.post.title);
+        this.editPostForm.controls['content'].setValue(this.post.content);
+        this.editMode = false;
+        this.isShowConfirmCancel = false;
+    }
+
+    async onSavePost(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        //Calculate changed items
+        const { title, content } = this.newPostData;
+
+        //Update if things have changed
+        if (title || content) {
+            this.isSaving = true;
+            await this.postService.updatePost(this.post.id, title, content);
+            this.post = await this.postService.getPost(this.id);
+            this.isSaving = false;
+        }
+
+        this.editMode = false;
     }
 }
