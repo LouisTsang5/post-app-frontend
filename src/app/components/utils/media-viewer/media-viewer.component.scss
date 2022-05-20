@@ -45,20 +45,12 @@
 }
 
 .util-btn {
-    border-width: 2px;
     width: 2rem;
     height: 2rem;
     @apply rounded-full;
-    border-color: var(--primary-color);
-    stroke: var(--primary-color);
-    stroke-width: 2;
-    fill: var(--primary-color);
     background-color: var(--background-color);
 
     &:hover {
-        cursor: pointer;
         background-color: var(--primary-color);
-        fill: var(--background-color);
-        stroke: var(--background-color);
     }
 }

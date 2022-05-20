@@ -46,15 +46,6 @@
 
 .submit-btn {
     @apply py-1 px-2;
-    @apply rounded-lg;
-    background-color: var(--secondary-color);
-    color: var(--secondary-text-color);
-
-    &:hover {
-        background-color: var(--primary-color);
-        color: var(--primary-color-inverse);
-        border-color: var(--primary-color-inverse);
-    }
 }
 
 .cancel-btn {

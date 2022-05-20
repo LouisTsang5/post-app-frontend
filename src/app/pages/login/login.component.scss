@@ -38,16 +38,6 @@ input {
 
 button {
     @apply py-2 px-3 mt-2;
-    border-width: 2px;
-    border-color: var(--primary-color);
-    background-color: var(--primary-color);
-    color: var(--primary-color-inverse);
-    @apply rounded-md;
-
-    &:hover {
-        background-color: var(--primary-color-highlight);
-        color: var(--primary-color);
-    }
 }
 
 .error-message {

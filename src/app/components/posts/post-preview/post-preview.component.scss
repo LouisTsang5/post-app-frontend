@@ -20,18 +20,7 @@
         right: 0.25rem;
         width: 1.25rem;
         height: 1.25rem;
-        cursor: pointer;
         stroke-width: 3;
-        stroke: var(--primary-color);
-        border-width: 2px;
-        border-color: var(--primary-color);
-
-        &:hover {
-            stroke: var(--primary-color-inverse);
-            border-color: var(--primary-color);
-            fill: var(--primary-color);
-            background-color: var(--primary-color);
-        }
     }
 
     .content {
@@ -100,16 +89,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--background-color);
-        border-width: 1px;
-        border-color: var(--background-text-color);
-        color: var(--background-text-color);
-
-        &:hover {
-            cursor: pointer;
-                background-color: var(--background-highlight-color);
-                color: var(--secondary-text-color);
-        }
         @apply rounded-3xl;
     }
 }
