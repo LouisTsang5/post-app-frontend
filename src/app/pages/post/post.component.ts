@@ -14,6 +14,7 @@ export class PostComponent implements OnInit {
     private id: string;
     post: Post;
     mediaUrls: string[];
+    editMode = false;
 
     constructor(
         private postService: PostService,
@@ -35,4 +36,7 @@ export class PostComponent implements OnInit {
         }
     }
 
+    toggleEditMode() {
+        this.editMode = !this.editMode;
+    }
 }
