@@ -1,15 +1,19 @@
 .body {
     margin: 0.75rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .title {
     @apply text-3xl;
     color: var(--secondary-text-color);
+    flex-grow: 0;
 }
 
 .content {
     @apply text-xl;
     color: var(--background-text-color);
+    flex-grow: 1;
 }
 
 .media-player {
