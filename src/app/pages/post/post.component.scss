@@ -1,14 +1,9 @@
-.body div {
-    margin: 0.75rem;
-}
-
 .title {
     border-width: 2px;
     border-color: transparent;
     @apply text-3xl;
     color: var(--secondary-text-color);
     flex-grow: 0;
-    padding: 0.5rem;
 }
 
 .content {
@@ -17,7 +12,6 @@
     @apply text-xl;
     color: var(--background-text-color);
     flex-grow: 1;
-    padding: 0.5rem;
 }
 
 textarea.title,
@@ -29,7 +23,6 @@ textarea.content {
 }
 
 .media-player {
-    margin: 0.5rem;
     width: fit-content;
     height: 40vh;
     display: flex;

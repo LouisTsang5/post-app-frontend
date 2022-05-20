@@ -1,6 +1,6 @@
-<div>
+<div class="p-2 sm:p-4">
     <p *ngIf="!post" class="title">Cannot find post</p>
-    <div *ngIf="post">
+    <div *ngIf="post" class="flex flex-col gap-1">
         <div class="flex justify-center items-center">
             <app-media-viewer class="media-player" *ngIf="mediaUrls && mediaUrls.length > 0" [srcs]="mediaUrls"
                 [autoPlay]="true"></app-media-viewer>
@@ -47,10 +47,12 @@
                 </g>
             </svg>
         </div>
-        <div class="body">
+
+        <!-- Post Title and Content -->
+        <div>
             <div *ngIf="editMode">
                 <form [formGroup]="editPostForm" class="flex flex-col">
-                    <textarea [autosize]="true" [minRows]="1" class="title" formControlName="title"></textarea>
+                    <textarea [autosize]="true" [minRows]="1" class="title mb-2" formControlName="title"></textarea>
                     <textarea [autosize]="true" class="content" formControlName="content"></textarea>
                 </form>
             </div>
