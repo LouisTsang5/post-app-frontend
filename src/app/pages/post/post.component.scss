@@ -1,17 +1,20 @@
-.title {
-    border-width: 2px;
-    border-color: transparent;
-    @apply text-3xl;
-    color: var(--secondary-text-color);
-    flex-grow: 0;
-}
-
+.title,
 .content {
     border-width: 2px;
     border-color: transparent;
-    @apply text-xl;
-    color: var(--background-text-color);
-    flex-grow: 1;
+    @apply px-2;
+
+    &.title {
+        flex-grow: 0;
+        @apply text-3xl;
+        color: var(--secondary-text-color);
+    }
+
+    &.content {
+        flex-grow: 1;
+        @apply text-xl;
+        color: var(--background-text-color);
+    }
 }
 
 textarea.title,
