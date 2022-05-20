@@ -12,6 +12,7 @@
 }
 
 .util-btn {
+    user-select: none;
     color: var(--primary-color);
     fill: var(--primary-color);
     stroke: var(--primary-color);
