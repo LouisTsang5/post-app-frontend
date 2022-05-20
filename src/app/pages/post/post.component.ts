@@ -70,6 +70,7 @@ export class PostComponent implements OnInit {
         const { title, content } = this.newPostData;
         if (!title && !content) {
             this.editMode = false;
+            this.isShowConfirmCancel = false;
             return;
         }
 
