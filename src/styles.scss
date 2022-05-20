@@ -12,6 +12,7 @@
 }
 
 .util-btn {
+    color: var(--primary-color);
     fill: var(--primary-color);
     stroke: var(--primary-color);
     border-color: var(--primary-color);
@@ -19,6 +20,7 @@
     @apply rounded-lg;
 
     &:hover {
+        color: var(--background-color);
         stroke: var(--background-color);
         fill: var(--background-color);
         border-color: var(--primary-color);
