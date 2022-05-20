@@ -89,12 +89,22 @@ export class PostService {
     async getMedia(postId: string, index: number) {
         const url = new URL(`${this.requestUrl.pathname}/${postId}/media/${index}`, this.requestUrl.origin);
         const res = await firstValueFrom(this.http.get(
-            url.toString(), 
+            url.toString(),
             {
-                headers: this.requestHeader, 
+                headers: this.requestHeader,
                 responseType: 'blob',
             }
         ));
         return URL.createObjectURL(res);
+    }
+
+    async updatePost(id: string, title?: string, content?: string) {
+        const apiUrl = new URL(this.requestUrl);
+        const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
+        const requestBody: { [key: string]: string } = {};
+        if (title) requestBody['title'] = title;
+        if (content) requestBody['content'] = content;
+        const requestObservable = this.http.patch(url, requestBody, { headers: this.requestHeader });
+        await firstValueFrom(requestObservable);
     }
 }
