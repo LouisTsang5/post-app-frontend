@@ -108,5 +108,6 @@ export class PostService implements OnDestroy {
         if (content) requestBody['content'] = content;
         const requestObservable = this.http.patch(url, requestBody, { headers: this.requestHeader });
         await firstValueFrom(requestObservable);
+        this.getPosts();
     }
 }
