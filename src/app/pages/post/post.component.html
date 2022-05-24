@@ -2,7 +2,7 @@
     <p *ngIf="!post" class="title">Cannot find post</p>
     <div *ngIf="post" class="flex flex-col gap-1">
         <div class="flex justify-center items-center">
-            <app-media-viewer class="media-player" *ngIf="mediaUrls && mediaUrls.length > 0" [srcs]="mediaUrls"
+            <app-media-viewer class="media-player" *ngIf="mediaFiles && mediaFiles.length > 0" [mediaFiles]="mediaFiles"
                 [autoPlay]="true"></app-media-viewer>
         </div>
         <div class="flex justify-end items-center flex-row gap-1">

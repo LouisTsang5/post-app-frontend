@@ -17,7 +17,7 @@ export class PostComponent implements OnInit, OnDestroy {
     private mediaSubscription: Subscription;
     private id: string;
     post?: Post;
-    mediaUrls: string[];
+    mediaFiles: File[];
     isEditMode = false;
     editPostForm: FormGroup;
     isSaving = false;
@@ -45,7 +45,7 @@ export class PostComponent implements OnInit, OnDestroy {
         });
 
         this.mediaSubscription = this.postService.currentPostMediaUrlsObservable.subscribe({
-            next: (urls) => { this.mediaUrls = urls; }
+            next: (file) => { this.mediaFiles = file; }
         });
 
         this.id = this.route.snapshot.queryParams['id'];

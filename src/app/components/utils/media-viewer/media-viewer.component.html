@@ -1,26 +1,26 @@
 <div class="cpt-root">
     <img *ngIf="safeUrls" [src]="safeUrls[index]">
 
-    <div class="util-bar" *ngIf="srcs && srcs.length > 1">
+    <div class="util-bar" *ngIf="mediaFiles && mediaFiles.length > 1">
         <div class="util-btn" (click)="onClickPrev($event)">
             <svg viewBox="0 0 100 100">
-                <polygon points="45,20 25,50 45,80 70,80 50,50 70,20"/>
+                <polygon points="45,20 25,50 45,80 70,80 50,50 70,20" />
             </svg>
         </div>
 
         <div class="util-btn" (click)="onClickAutoPlay($event)">
             <svg *ngIf="isAutoPlaySubject.value" viewBox="0 0 100 100">
-                <polygon points="25,20 25,80 45,80 45,20"/>
-                <polygon points="55,20 55,80 75,80 75,20"/>
+                <polygon points="25,20 25,80 45,80 45,20" />
+                <polygon points="55,20 55,80 75,80 75,20" />
             </svg>
             <svg *ngIf="!isAutoPlaySubject.value" viewBox="0 0 100 100">
-                <polygon points="30,20 30,80 80,50"/>
+                <polygon points="30,20 30,80 80,50" />
             </svg>
         </div>
 
         <div class="util-btn" (click)="onClickNext($event)">
             <svg viewBox="0 0 100 100">
-                <polygon points="55,20 75,50 55,80 30,80 50,50 30,20"/>
+                <polygon points="55,20 75,50 55,80 30,80 50,50 30,20" />
             </svg>
         </div>
     </div>

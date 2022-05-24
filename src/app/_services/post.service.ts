@@ -19,7 +19,7 @@ export class PostService implements OnDestroy {
     private currentPostSubject = new BehaviorSubject<Post | undefined>(undefined);;
     public currentPostObservable = this.currentPostSubject.asObservable();
 
-    private currentPostMediaUrlsSubject = new BehaviorSubject<string[]>([]);
+    private currentPostMediaUrlsSubject = new BehaviorSubject<File[]>([]);
     public currentPostMediaUrlsObservable = this.currentPostMediaUrlsSubject.asObservable();
 
     constructor(
@@ -37,12 +37,12 @@ export class PostService implements OnDestroy {
             next: async (post) => {
                 if (!post || !post.multiMedia) return this.currentPostMediaUrlsSubject.next([]);
 
-                const urls = await Promise.all(
+                const files = await Promise.all(
                     post.multiMedia.map((media) => {
                         return this.getMedia(post.id, media.index);
                     })
                 );
-                this.currentPostMediaUrlsSubject.next(urls);
+                this.currentPostMediaUrlsSubject.next(files);
             }
         });
     }
@@ -102,7 +102,9 @@ export class PostService implements OnDestroy {
                 responseType: 'blob',
             }
         ));
-        return URL.createObjectURL(res);
+        const fileName = `${(crypto as any).randomUUID()}.${res.type}`;
+        console.log(fileName);
+        return new File([res], fileName);
     }
 
     set currentPostId(id: string) {

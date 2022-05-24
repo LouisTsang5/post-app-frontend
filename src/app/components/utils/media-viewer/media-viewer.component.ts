@@ -10,7 +10,7 @@ import { LoggerService } from 'src/app/_services/logger.service';
 })
 export class MediaViewerComponent implements OnInit, OnDestroy {
 
-    @Input() srcs?: string[];
+    @Input() mediaFiles?: File[];
     @Input() autoPlay?: boolean | { interval?: number };
     isAutoPlaySubject: BehaviorSubject<boolean>;
     private isAutoPlaySubscription: Subscription;
@@ -26,14 +26,14 @@ export class MediaViewerComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.index = 0;
-        if (this.srcs) this.safeUrls = this.srcs.map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
+        if (this.mediaFiles) this.safeUrls = this.mediaFiles.map((file) => URL.createObjectURL(file)).map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
 
         this.isAutoPlaySubject = new BehaviorSubject<boolean>(!!this.autoPlay);
         this.isAutoPlaySubscription = this.isAutoPlaySubject.asObservable().subscribe({
             next: (isAutoPlay) => {
                 this.logger.log(`Auto play is ${isAutoPlay}`);
                 if (isAutoPlay) this.setAutoPlayInterval();
-                else if(this.autoPlayIntervalId) window.clearInterval(this.autoPlayIntervalId);
+                else if (this.autoPlayIntervalId) window.clearInterval(this.autoPlayIntervalId);
             }
         });
     }
@@ -74,6 +74,6 @@ export class MediaViewerComponent implements OnInit, OnDestroy {
     }
 }
 
-function hasInterval(value: boolean | {interval?: number}): value is {interval: number} {
+function hasInterval(value: boolean | { interval?: number }): value is { interval: number } {
     return value.hasOwnProperty('interval');
 }
