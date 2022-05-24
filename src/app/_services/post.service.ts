@@ -15,6 +15,9 @@ export class PostService implements OnDestroy {
     private postsSubject: BehaviorSubject<Post[]>;
     public postsObservable: Observable<Post[]>;
 
+    private currentPostSubject: BehaviorSubject<Post | undefined>;
+    public currentPostObservable: Observable<Post | undefined>;
+
     constructor(
         private http: HttpClient,
         private authenticationService: AuthenticationService,
@@ -22,9 +25,12 @@ export class PostService implements OnDestroy {
         this.postsSubject = new BehaviorSubject<Post[]>([]);
         this.postsObservable = this.postsSubject.asObservable();
 
+        this.currentPostSubject = new BehaviorSubject<Post | undefined>(undefined);
+        this.currentPostObservable = this.currentPostSubject.asObservable();
+
         this.tokenSubscrption = this.authenticationService.accessTokenObservable.subscribe({
             next: (token) => {
-                if (token) this.getPosts();
+                if (token) this.onPostUpdate();
                 else this.postsSubject.next([]);
             }
         });
@@ -44,7 +50,12 @@ export class PostService implements OnDestroy {
         return new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
     }
 
-    async getPosts() {
+    async onPostUpdate(id?: string) {
+        this.getPosts();
+        if (id && this.currentPostSubject.value?.id === id) this.getCurrentPost(id);
+    }
+
+    private async getPosts() {
         const reqObs = this.http.get(this.requestUrl.toString(), { headers: this.requestHeader })
             .pipe(
                 first(),
@@ -64,10 +75,14 @@ export class PostService implements OnDestroy {
         this.postsSubject.next(posts);
     }
 
-    async getPost(id: string) {
+    private async getCurrentPost(id: string) {
         const url = new URL(`${this.requestUrl.pathname}/${id}`, this.requestUrl.origin);
         const post = await firstValueFrom(this.http.get(url.toString(), { headers: this.requestHeader })) as Post;
-        return post;
+        this.currentPostSubject.next(post);
+    }
+
+    set currentPostId(id: string) {
+        this.getCurrentPost(id);
     }
 
     async createPost(post: PostFormData) {
@@ -78,14 +93,25 @@ export class PostService implements OnDestroy {
 
         //Post to api
         await firstValueFrom(this.http.post(this.requestUrl.toString(), formData, { headers: this.requestHeader }));
-        this.getPosts();
+        this.onPostUpdate();
     }
 
     async deletePost(id: string) {
         const apiUrl = new URL(this.requestUrl);
         const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
         await firstValueFrom(this.http.delete(url, { headers: this.requestHeader }));
-        this.getPosts();
+        this.onPostUpdate(id);
+    }
+
+    async updatePost(id: string, title?: string, content?: string) {
+        const apiUrl = new URL(this.requestUrl);
+        const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
+        const requestBody: { [key: string]: string } = {};
+        if (title) requestBody['title'] = title;
+        if (content) requestBody['content'] = content;
+        const requestObservable = this.http.patch(url, requestBody, { headers: this.requestHeader });
+        await firstValueFrom(requestObservable);
+        this.onPostUpdate(id);
     }
 
     async getMedia(postId: string, index: number) {
@@ -98,16 +124,5 @@ export class PostService implements OnDestroy {
             }
         ));
         return URL.createObjectURL(res);
-    }
-
-    async updatePost(id: string, title?: string, content?: string) {
-        const apiUrl = new URL(this.requestUrl);
-        const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
-        const requestBody: { [key: string]: string } = {};
-        if (title) requestBody['title'] = title;
-        if (content) requestBody['content'] = content;
-        const requestObservable = this.http.patch(url, requestBody, { headers: this.requestHeader });
-        await firstValueFrom(requestObservable);
-        this.getPosts();
     }
 }
