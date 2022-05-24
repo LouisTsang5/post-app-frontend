@@ -12,22 +12,16 @@ export class PostService implements OnDestroy {
 
     private tokenSubscrption: Subscription;
 
-    private postsSubject: BehaviorSubject<Post[]>;
-    public postsObservable: Observable<Post[]>;
+    private postsSubject = new BehaviorSubject<Post[]>([]);
+    public postsObservable = this.postsSubject.asObservable();
 
-    private currentPostSubject: BehaviorSubject<Post | undefined>;
-    public currentPostObservable: Observable<Post | undefined>;
+    private currentPostSubject = new BehaviorSubject<Post | undefined>(undefined);;
+    public currentPostObservable = this.currentPostSubject.asObservable();
 
     constructor(
         private http: HttpClient,
         private authenticationService: AuthenticationService,
     ) {
-        this.postsSubject = new BehaviorSubject<Post[]>([]);
-        this.postsObservable = this.postsSubject.asObservable();
-
-        this.currentPostSubject = new BehaviorSubject<Post | undefined>(undefined);
-        this.currentPostObservable = this.currentPostSubject.asObservable();
-
         this.tokenSubscrption = this.authenticationService.accessTokenObservable.subscribe({
             next: (token) => {
                 if (token) this.onPostUpdate();
