@@ -11,12 +11,16 @@ import { AuthenticationService } from './authentication.service';
 export class PostService implements OnDestroy {
 
     private tokenSubscrption: Subscription;
+    private currentPostSubscription: Subscription;
 
     private postsSubject = new BehaviorSubject<Post[]>([]);
     public postsObservable = this.postsSubject.asObservable();
 
     private currentPostSubject = new BehaviorSubject<Post | undefined>(undefined);;
     public currentPostObservable = this.currentPostSubject.asObservable();
+
+    private currentPostMediaUrlsSubject = new BehaviorSubject<string[]>([]);
+    public currentPostMediaUrlsObservable = this.currentPostMediaUrlsSubject.asObservable();
 
     constructor(
         private http: HttpClient,
@@ -28,10 +32,24 @@ export class PostService implements OnDestroy {
                 else this.postsSubject.next([]);
             }
         });
+
+        this.currentPostSubscription = this.currentPostObservable.subscribe({
+            next: async (post) => {
+                if (!post || !post.multiMedia) return this.currentPostMediaUrlsSubject.next([]);
+
+                const urls = await Promise.all(
+                    post.multiMedia.map((media) => {
+                        return this.getMedia(post.id, media.index);
+                    })
+                );
+                this.currentPostMediaUrlsSubject.next(urls);
+            }
+        });
     }
 
     ngOnDestroy(): void {
         this.tokenSubscrption.unsubscribe();
+        this.currentPostSubscription.unsubscribe();
     }
 
     private get requestUrl() {
@@ -75,6 +93,18 @@ export class PostService implements OnDestroy {
         this.currentPostSubject.next(post);
     }
 
+    private async getMedia(postId: string, index: number) {
+        const url = new URL(`${this.requestUrl.pathname}/${postId}/media/${index}`, this.requestUrl.origin);
+        const res = await firstValueFrom(this.http.get(
+            url.toString(),
+            {
+                headers: this.requestHeader,
+                responseType: 'blob',
+            }
+        ));
+        return URL.createObjectURL(res);
+    }
+
     set currentPostId(id: string) {
         this.getCurrentPost(id);
     }
@@ -106,17 +136,5 @@ export class PostService implements OnDestroy {
         const requestObservable = this.http.patch(url, requestBody, { headers: this.requestHeader });
         await firstValueFrom(requestObservable);
         this.onPostUpdate(id);
-    }
-
-    async getMedia(postId: string, index: number) {
-        const url = new URL(`${this.requestUrl.pathname}/${postId}/media/${index}`, this.requestUrl.origin);
-        const res = await firstValueFrom(this.http.get(
-            url.toString(),
-            {
-                headers: this.requestHeader,
-                responseType: 'blob',
-            }
-        ));
-        return URL.createObjectURL(res);
     }
 }

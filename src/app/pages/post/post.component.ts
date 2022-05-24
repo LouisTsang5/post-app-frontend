@@ -13,7 +13,8 @@ import { PostService } from 'src/app/_services/post.service';
 })
 export class PostComponent implements OnInit, OnDestroy {
 
-    private currentPostSubscription: Subscription;
+    private postSubscription: Subscription;
+    private mediaSubscription: Subscription;
     private id: string;
     post?: Post;
     mediaUrls: string[];
@@ -35,8 +36,16 @@ export class PostComponent implements OnInit, OnDestroy {
             content: '',
         });
 
-        this.currentPostSubscription = this.postService.currentPostObservable.subscribe({
-            next: async (post) => this.onCurrentPostChange(post)
+        this.postSubscription = this.postService.currentPostObservable.subscribe({
+            next: async (post) => {
+                this.post = post;
+                this.editPostForm.controls['title'].setValue(post?.title);
+                this.editPostForm.controls['content'].setValue(post?.content);
+            }
+        });
+
+        this.mediaSubscription = this.postService.currentPostMediaUrlsObservable.subscribe({
+            next: (urls) => { this.mediaUrls = urls; }
         });
 
         this.id = this.route.snapshot.queryParams['id'];
@@ -44,24 +53,8 @@ export class PostComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.currentPostSubscription.unsubscribe();
-    }
-
-    private async onCurrentPostChange(post?: Post) {
-        this.post = post;
-
-        if (post && post.multiMedia) {
-            const urls = await Promise.all(
-                post.multiMedia.map(async (media) => {
-                    return await this.postService.getMedia(post.id, media.index);
-                })
-            );
-            this.logger.log(`Media urls ${urls.join(', ')}`);
-            this.mediaUrls = urls;
-        }
-
-        this.editPostForm.controls['title'].setValue(post?.title);
-        this.editPostForm.controls['content'].setValue(post?.content);
+        this.postSubscription.unsubscribe();
+        this.mediaSubscription.unsubscribe();
     }
 
     get editMode() {
