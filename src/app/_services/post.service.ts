@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, first, firstValueFrom, map, Observable } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, first, firstValueFrom, map, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post, PostFormData } from '../_models/post';
 import { AuthenticationService } from './authentication.service';
@@ -8,17 +8,30 @@ import { AuthenticationService } from './authentication.service';
 @Injectable({
     providedIn: 'root'
 })
-export class PostService {
+export class PostService implements OnDestroy {
 
-    private userPostsSubject: BehaviorSubject<Post[]>;
-    public userPostsObservable: Observable<Post[]>;
+    private tokenSubscrption: Subscription;
+
+    private postsSubject: BehaviorSubject<Post[]>;
+    public postsObservable: Observable<Post[]>;
 
     constructor(
         private http: HttpClient,
         private authenticationService: AuthenticationService,
     ) {
-        this.userPostsSubject = new BehaviorSubject<Post[]>([]);
-        this.userPostsObservable = this.userPostsSubject.asObservable();
+        this.postsSubject = new BehaviorSubject<Post[]>([]);
+        this.postsObservable = this.postsSubject.asObservable();
+
+        this.tokenSubscrption = this.authenticationService.accessTokenObservable.subscribe({
+            next: (token) => {
+                if (token) this.getPosts();
+                else this.postsSubject.next([]);
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.tokenSubscrption.unsubscribe();
     }
 
     private get requestUrl() {
@@ -31,8 +44,8 @@ export class PostService {
         return new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
     }
 
-    getUserPosts() {
-        this.http.get(this.requestUrl.toString(), { headers: this.requestHeader })
+    async getPosts() {
+        const reqObs = this.http.get(this.requestUrl.toString(), { headers: this.requestHeader })
             .pipe(
                 first(),
                 map((res: any) => {
@@ -45,12 +58,10 @@ export class PostService {
                         posts.push(post);
                     }
                     return posts;
-                }),
-                map((posts) => {
-                    this.userPostsSubject.next(posts);
-                    return posts;
                 })
-            ).subscribe();
+            );
+        const posts = await firstValueFrom(reqObs);
+        this.postsSubject.next(posts);
     }
 
     async getPost(id: string) {
@@ -59,31 +70,22 @@ export class PostService {
         return post;
     }
 
-    createPost(post: PostFormData) {
-        //Transform post form data to form data
+    async createPost(post: PostFormData) {
         const formData = new FormData();
         formData.append('title', post.title);
         formData.append('content', post.content);
         if (post.multimedia) post.multimedia.map((file) => formData.append('multimedia', file, file.name));
 
         //Post to api
-        this.http.post(this.requestUrl.toString(), formData, { headers: this.requestHeader })
-            .pipe(
-                first(),
-                map((res) => {
-                    this.getUserPosts();
-                })
-            ).subscribe();
+        await firstValueFrom(this.http.post(this.requestUrl.toString(), formData, { headers: this.requestHeader }));
+        this.getPosts();
     }
 
-    deletePost(id: string) {
+    async deletePost(id: string) {
         const apiUrl = new URL(this.requestUrl);
         const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
-        this.http.delete(url, { headers: this.requestHeader })
-            .pipe(
-                first(),
-                map(() => this.getUserPosts())
-            ).subscribe();
+        await firstValueFrom(this.http.delete(url, { headers: this.requestHeader }));
+        this.getPosts();
     }
 
     async getMedia(postId: string, index: number) {

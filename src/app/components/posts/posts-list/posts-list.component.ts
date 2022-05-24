@@ -23,12 +23,11 @@ export class PostsListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         if (!this.authenticationService.accessToken) return;
-        this.postsSubscription = this.postService.userPostsObservable.subscribe({
+        this.postsSubscription = this.postService.postsObservable.subscribe({
             next: (posts) => {
                 this.posts = posts;
             }
         });
-        this.postService.getUserPosts();
     }
 
     ngOnDestroy(): void {
