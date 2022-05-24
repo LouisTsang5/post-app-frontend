@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, first, firstValueFrom, map, Observable } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, first, firstValueFrom, map, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post, PostFormData } from '../_models/post';
 import { AuthenticationService } from './authentication.service';
@@ -8,17 +8,48 @@ import { AuthenticationService } from './authentication.service';
 @Injectable({
     providedIn: 'root'
 })
-export class PostService {
+export class PostService implements OnDestroy {
 
-    private userPostsSubject: BehaviorSubject<Post[]>;
-    public userPostsObservable: Observable<Post[]>;
+    private tokenSubscrption: Subscription;
+    private currentPostSubscription: Subscription;
+
+    private postsSubject = new BehaviorSubject<Post[]>([]);
+    public postsObservable = this.postsSubject.asObservable();
+
+    private currentPostSubject = new BehaviorSubject<Post | undefined>(undefined);;
+    public currentPostObservable = this.currentPostSubject.asObservable();
+
+    private currentPostMediaUrlsSubject = new BehaviorSubject<string[]>([]);
+    public currentPostMediaUrlsObservable = this.currentPostMediaUrlsSubject.asObservable();
 
     constructor(
         private http: HttpClient,
         private authenticationService: AuthenticationService,
     ) {
-        this.userPostsSubject = new BehaviorSubject<Post[]>([]);
-        this.userPostsObservable = this.userPostsSubject.asObservable();
+        this.tokenSubscrption = this.authenticationService.accessTokenObservable.subscribe({
+            next: (token) => {
+                if (token) this.onPostUpdate();
+                else this.postsSubject.next([]);
+            }
+        });
+
+        this.currentPostSubscription = this.currentPostObservable.subscribe({
+            next: async (post) => {
+                if (!post || !post.multiMedia) return this.currentPostMediaUrlsSubject.next([]);
+
+                const urls = await Promise.all(
+                    post.multiMedia.map((media) => {
+                        return this.getMedia(post.id, media.index);
+                    })
+                );
+                this.currentPostMediaUrlsSubject.next(urls);
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.tokenSubscrption.unsubscribe();
+        this.currentPostSubscription.unsubscribe();
     }
 
     private get requestUrl() {
@@ -31,8 +62,13 @@ export class PostService {
         return new HttpHeaders({ 'x-access-token': this.authenticationService.accessToken?.token as string });
     }
 
-    getUserPosts() {
-        this.http.get(this.requestUrl.toString(), { headers: this.requestHeader })
+    async onPostUpdate(id?: string) {
+        this.getPosts();
+        if (id && this.currentPostSubject.value?.id === id) this.getCurrentPost(id);
+    }
+
+    private async getPosts() {
+        const reqObs = this.http.get(this.requestUrl.toString(), { headers: this.requestHeader })
             .pipe(
                 first(),
                 map((res: any) => {
@@ -45,48 +81,19 @@ export class PostService {
                         posts.push(post);
                     }
                     return posts;
-                }),
-                map((posts) => {
-                    this.userPostsSubject.next(posts);
-                    return posts;
                 })
-            ).subscribe();
+            );
+        const posts = await firstValueFrom(reqObs);
+        this.postsSubject.next(posts);
     }
 
-    async getPost(id: string) {
+    private async getCurrentPost(id: string) {
         const url = new URL(`${this.requestUrl.pathname}/${id}`, this.requestUrl.origin);
         const post = await firstValueFrom(this.http.get(url.toString(), { headers: this.requestHeader })) as Post;
-        return post;
+        this.currentPostSubject.next(post);
     }
 
-    createPost(post: PostFormData) {
-        //Transform post form data to form data
-        const formData = new FormData();
-        formData.append('title', post.title);
-        formData.append('content', post.content);
-        if (post.multimedia) post.multimedia.map((file) => formData.append('multimedia', file, file.name));
-
-        //Post to api
-        this.http.post(this.requestUrl.toString(), formData, { headers: this.requestHeader })
-            .pipe(
-                first(),
-                map((res) => {
-                    this.getUserPosts();
-                })
-            ).subscribe();
-    }
-
-    deletePost(id: string) {
-        const apiUrl = new URL(this.requestUrl);
-        const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
-        this.http.delete(url, { headers: this.requestHeader })
-            .pipe(
-                first(),
-                map(() => this.getUserPosts())
-            ).subscribe();
-    }
-
-    async getMedia(postId: string, index: number) {
+    private async getMedia(postId: string, index: number) {
         const url = new URL(`${this.requestUrl.pathname}/${postId}/media/${index}`, this.requestUrl.origin);
         const res = await firstValueFrom(this.http.get(
             url.toString(),
@@ -98,6 +105,28 @@ export class PostService {
         return URL.createObjectURL(res);
     }
 
+    set currentPostId(id: string) {
+        this.getCurrentPost(id);
+    }
+
+    async createPost(post: PostFormData) {
+        const formData = new FormData();
+        formData.append('title', post.title);
+        formData.append('content', post.content);
+        if (post.multimedia) post.multimedia.map((file) => formData.append('multimedia', file, file.name));
+
+        //Post to api
+        await firstValueFrom(this.http.post(this.requestUrl.toString(), formData, { headers: this.requestHeader }));
+        this.onPostUpdate();
+    }
+
+    async deletePost(id: string) {
+        const apiUrl = new URL(this.requestUrl);
+        const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
+        await firstValueFrom(this.http.delete(url, { headers: this.requestHeader }));
+        this.onPostUpdate(id);
+    }
+
     async updatePost(id: string, title?: string, content?: string) {
         const apiUrl = new URL(this.requestUrl);
         const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
@@ -106,5 +135,6 @@ export class PostService {
         if (content) requestBody['content'] = content;
         const requestObservable = this.http.patch(url, requestBody, { headers: this.requestHeader });
         await firstValueFrom(requestObservable);
+        this.onPostUpdate(id);
     }
 }

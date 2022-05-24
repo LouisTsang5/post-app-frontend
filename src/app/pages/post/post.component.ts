@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Post } from 'src/app/_models/post';
 import { LoggerService } from 'src/app/_services/logger.service';
 import { PostService } from 'src/app/_services/post.service';
@@ -10,10 +11,12 @@ import { PostService } from 'src/app/_services/post.service';
     templateUrl: './post.component.html',
     styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnDestroy {
 
+    private postSubscription: Subscription;
+    private mediaSubscription: Subscription;
     private id: string;
-    post: Post;
+    post?: Post;
     mediaUrls: string[];
     isEditMode = false;
     editPostForm: FormGroup;
@@ -28,22 +31,30 @@ export class PostComponent implements OnInit {
     ) { }
 
     async ngOnInit(): Promise<void> {
-        this.id = this.route.snapshot.queryParams['id'];
-        this.post = await this.postService.getPost(this.id);
-        if (this.post.multiMedia) {
-            const urls = await Promise.all(
-                this.post.multiMedia.map(async (media) => {
-                    return await this.postService.getMedia(this.post.id, media.index);
-                })
-            );
-            this.logger.log(`Media urls ${urls.join(', ')}`);
-            this.mediaUrls = urls;
-        }
-        console.dir(this.post);
         this.editPostForm = this.formBuilder.group({
-            title: this.post.title,
-            content: this.post.content,
+            title: '',
+            content: '',
         });
+
+        this.postSubscription = this.postService.currentPostObservable.subscribe({
+            next: async (post) => {
+                this.post = post;
+                this.editPostForm.controls['title'].setValue(post?.title);
+                this.editPostForm.controls['content'].setValue(post?.content);
+            }
+        });
+
+        this.mediaSubscription = this.postService.currentPostMediaUrlsObservable.subscribe({
+            next: (urls) => { this.mediaUrls = urls; }
+        });
+
+        this.id = this.route.snapshot.queryParams['id'];
+        this.postService.currentPostId = this.id;
+    }
+
+    ngOnDestroy(): void {
+        this.postSubscription.unsubscribe();
+        this.mediaSubscription.unsubscribe();
     }
 
     get editMode() {
@@ -59,10 +70,10 @@ export class PostComponent implements OnInit {
     }
 
     get newPostData() {
-        const originalTitle = this.post.title;
+        const originalTitle = this.post?.title;
         const newTitle = this.editPostForm.controls['title'].value.toString() as string;
         const title = originalTitle !== newTitle ? newTitle : undefined;
-        const originalContent = this.post.content;
+        const originalContent = this.post?.content;
         const newContent = this.editPostForm.controls['content'].value.toString() as string;
         const content = originalContent !== newContent ? newContent : undefined;
         return { title, content };
@@ -92,8 +103,8 @@ export class PostComponent implements OnInit {
     onConfirmCancel(event: Event) {
         event.preventDefault();
         event.stopPropagation();
-        this.editPostForm.controls['title'].setValue(this.post.title);
-        this.editPostForm.controls['content'].setValue(this.post.content);
+        this.editPostForm.controls['title'].setValue(this.post?.title);
+        this.editPostForm.controls['content'].setValue(this.post?.content);
         this.editMode = false;
     }
 
@@ -107,8 +118,7 @@ export class PostComponent implements OnInit {
         //Update if things have changed
         if (title || content) {
             this.isSaving = true;
-            await this.postService.updatePost(this.post.id, title, content);
-            this.post = await this.postService.getPost(this.id);
+            await this.postService.updatePost(this.id, title, content);
             this.isSaving = false;
         }
 
