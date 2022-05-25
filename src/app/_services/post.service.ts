@@ -36,7 +36,9 @@ export class PostService implements OnDestroy {
 
         this.currentPostSubscription = this.currentPostObservable.subscribe({
             next: async (post) => {
-                if (!post || !post.multiMedia) return this.currentPostMediaUrlsSubject.next([]);
+                this.currentPostMediaUrlsSubject.next([]);
+
+                if (!post || !post.multiMedia) return;
 
                 const files = await Promise.all(
                     post.multiMedia.map((media) => {
@@ -89,6 +91,7 @@ export class PostService implements OnDestroy {
     }
 
     private async getCurrentPost(id: string) {
+        this.currentPostSubject.next(undefined);
         const url = new URL(`${this.requestUrl.pathname}/${id}`, this.requestUrl.origin);
         const post = await firstValueFrom(this.http.get(url.toString(), { headers: this.requestHeader })) as Post;
         this.currentPostSubject.next(post);
@@ -129,13 +132,16 @@ export class PostService implements OnDestroy {
         this.onPostUpdate(id);
     }
 
-    async updatePost(id: string, title?: string, content?: string) {
+    async updatePost(id: string, title?: string, content?: string, mediaFiles?: File[]) {
         const apiUrl = new URL(this.requestUrl);
         const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
-        const requestBody: { [key: string]: string } = {};
-        if (title) requestBody['title'] = title;
-        if (content) requestBody['content'] = content;
-        const requestObservable = this.http.patch(url, requestBody, { headers: this.requestHeader });
+
+        const formData = new FormData();
+        if (title) formData.append('title', title);
+        if (content) formData.append('content', content);
+        if (mediaFiles) mediaFiles.map(f => formData.append('multimedia', f, f.name));
+
+        const requestObservable = this.http.patch(url, formData, { headers: this.requestHeader });
         await firstValueFrom(requestObservable);
         this.onPostUpdate(id);
     }
