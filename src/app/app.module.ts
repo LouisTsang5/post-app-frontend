@@ -18,6 +18,7 @@ import { PostComponent } from './pages/post/post.component';
 import { MediaViewerComponent } from './components/utils/media-viewer/media-viewer.component';
 import { DayNightToggleComponent } from './components/utils/day-night-toggle/day-night-toggle.component';
 import { AutosizeModule } from 'ngx-autosize';
+import { LilyComponent } from './components/svgs/lily/lily.component';
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { AutosizeModule } from 'ngx-autosize';
         PostComponent,
         MediaViewerComponent,
         DayNightToggleComponent,
+        LilyComponent,
     ],
     imports: [
         BrowserModule,
