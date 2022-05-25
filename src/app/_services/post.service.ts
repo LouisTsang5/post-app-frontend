@@ -4,6 +4,7 @@ import { BehaviorSubject, first, firstValueFrom, map, Observable, Subscription }
 import { environment } from 'src/environments/environment';
 import { Post, PostFormData } from '../_models/post';
 import { AuthenticationService } from './authentication.service';
+import { getExtension } from 'mime';
 
 @Injectable({
     providedIn: 'root'
@@ -102,8 +103,7 @@ export class PostService implements OnDestroy {
                 responseType: 'blob',
             }
         ));
-        const fileName = `${(crypto as any).randomUUID()}.${res.type}`;
-        console.log(fileName);
+        const fileName = `${(crypto as any).randomUUID()}.${getExtension(res.type)}`;
         return new File([res], fileName);
     }
 
