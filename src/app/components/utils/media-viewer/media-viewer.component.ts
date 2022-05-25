@@ -12,6 +12,7 @@ export class MediaViewerComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() mediaFiles: File[];
     @Input() autoPlay?: boolean | { interval?: number };
+    @Input() displayIndex?: number;
     isAutoPlaySubject: BehaviorSubject<boolean>;
     private isAutoPlaySubscription: Subscription;
 
@@ -43,6 +44,11 @@ export class MediaViewerComponent implements OnInit, OnDestroy, OnChanges {
         if (changes['mediaFiles']) {
             this.safeUrls = this.mediaFiles.map((file) => URL.createObjectURL(file)).map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
             if (this.index >= this.safeUrls.length - 1) this.index = this.safeUrls.length - 1;
+        }
+
+        if (changes['displayIndex']) {
+            this.index = this.displayIndex !== undefined ? this.displayIndex : this.index;
+            this.logger.log(`New index: ${this.index}`);
         }
     }
 
