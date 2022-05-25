@@ -31,8 +31,6 @@ textarea.content {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-width: 2px;
-    border-color: var(--secondary-color);
     padding: 0.5rem;
     @apply rounded-xl;
 }
