@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { LoggerService } from 'src/app/_services/logger.service';
@@ -8,16 +8,16 @@ import { LoggerService } from 'src/app/_services/logger.service';
     templateUrl: './media-viewer.component.html',
     styleUrls: ['./media-viewer.component.scss']
 })
-export class MediaViewerComponent implements OnInit, OnDestroy {
+export class MediaViewerComponent implements OnInit, OnDestroy, OnChanges {
 
-    @Input() mediaFiles?: File[];
+    @Input() mediaFiles: File[];
     @Input() autoPlay?: boolean | { interval?: number };
     isAutoPlaySubject: BehaviorSubject<boolean>;
     private isAutoPlaySubscription: Subscription;
 
     private autoPlayIntervalId?: number;
     safeUrls: SafeUrl[];
-    index: number;
+    index: number = 0;
 
     constructor(
         private sanitization: DomSanitizer,
@@ -25,9 +25,6 @@ export class MediaViewerComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-        this.index = 0;
-        if (this.mediaFiles) this.safeUrls = this.mediaFiles.map((file) => URL.createObjectURL(file)).map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
-
         this.isAutoPlaySubject = new BehaviorSubject<boolean>(!!this.autoPlay);
         this.isAutoPlaySubscription = this.isAutoPlaySubject.asObservable().subscribe({
             next: (isAutoPlay) => {
@@ -40,6 +37,12 @@ export class MediaViewerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.isAutoPlaySubscription.unsubscribe();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['mediaFiles']) {
+            this.safeUrls = this.mediaFiles.map((file) => URL.createObjectURL(file)).map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
+        }
     }
 
     setAutoPlayInterval() {
