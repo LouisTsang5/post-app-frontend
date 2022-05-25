@@ -22,6 +22,7 @@ export class PostComponent implements OnInit, OnDestroy {
     editPostForm: FormGroup;
     isSaving = false;
     isShowConfirmCancel = false;
+    activeFileIndex: number | undefined = undefined;
 
     constructor(
         private postService: PostService,

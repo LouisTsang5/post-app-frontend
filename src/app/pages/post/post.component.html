@@ -48,7 +48,8 @@
         <div class="flex justify-center items-center">
             <app-media-viewer class="media-player" *ngIf="mediaFiles && mediaFiles.length > 0 && !isEditMode"
                 [mediaFiles]="mediaFiles" [autoPlay]="true"></app-media-viewer>
-            <app-media-viewer class="media-player" *ngIf="formFiles.length > 0 && isEditMode" [mediaFiles]="formFiles">
+            <app-media-viewer class="media-player" *ngIf="formFiles.length > 0 && isEditMode" [mediaFiles]="formFiles"
+                [displayIndex]="activeFileIndex">
             </app-media-viewer>
         </div>
 
@@ -56,7 +57,8 @@
             <form [formGroup]="editPostForm" class="flex flex-col">
                 <app-file-upload formControlName="file" [allowedExtensions]="['.jpg','.png']"></app-file-upload>
                 <div class="flex flex-col gap-1">
-                    <div *ngFor="let file of formFiles; let i = index" class="file" (click)="onRemoveFile($event, i)">
+                    <div *ngFor="let file of formFiles; let i = index" class="file" (mouseenter)="activeFileIndex = i"
+                        (mouseleave)="activeFileIndex = undefined" (click)="onRemoveFile($event, i)">
                         {{ file.name }}
                     </div>
                 </div>
