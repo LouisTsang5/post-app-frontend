@@ -41,7 +41,7 @@
             <app-file-upload formControlName="file"></app-file-upload>
         </div>
 
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col gap-1 mb-1" *ngIf="files.length > 0">
             <div *ngFor="let file of files" class="file">{{ file.name }}</div>
         </div>
 
