@@ -43,7 +43,7 @@
 
         <!-- Drag and drop area -->
         <div class="flex-grow-[4] mb-1">
-            <app-file-upload formControlName="file"></app-file-upload>
+            <app-file-upload formControlName="file" [allowedExtensions]="['.jpg','.png']"></app-file-upload>
         </div>
 
         <!-- File name list -->

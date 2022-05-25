@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
@@ -8,6 +8,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 })
 export class FileUploadComponent implements ControlValueAccessor {
 
+    @Input() allowedExtensions: string[];
     onChange: Function;
 
     private setFiles(fileList: FileList) {
