@@ -84,10 +84,17 @@ export class PostComponent implements OnInit, OnDestroy {
 
         const originalFiles = this.mediaFiles;
         const newFiles = this.formFiles;
-        const files = originalFiles.length === newFiles.length
+        const isFilesChanged = originalFiles.length === newFiles.length
+            && originalFiles.length > 0
             && originalFiles
-                .map((originalFile, index) => originalFile.name === newFiles[index].name)
-                .reduce((acc, cur) => acc && cur) ? undefined : newFiles;
+                .map((originalFile, index) => {
+                    const newFile = newFiles[index];
+                    return originalFile.name === newFile.name
+                        && originalFile.size === newFile.size;
+                    ;
+                })
+                .reduce((acc, cur) => acc && cur);
+        const files = isFilesChanged ? undefined : newFiles;
 
         return { title, content, files };
     }
@@ -143,12 +150,12 @@ export class PostComponent implements OnInit, OnDestroy {
         event.stopPropagation();
 
         //Calculate changed items
-        const { title, content } = this.newPostData;
+        const { title, content, files } = this.newPostData;
 
         //Update if things have changed
-        if (title || content) {
+        if (title || content || files) {
             this.isSaving = true;
-            await this.postService.updatePost(this.id, title, content);
+            await this.postService.updatePost(this.id, title, content, files);
             this.isSaving = false;
         }
 
