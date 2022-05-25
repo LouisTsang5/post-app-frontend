@@ -34,6 +34,7 @@ export class PostComponent implements OnInit, OnDestroy {
         this.editPostForm = this.formBuilder.group({
             title: '',
             content: '',
+            file: '',
         });
 
         this.postSubscription = this.postService.currentPostObservable.subscribe({
@@ -45,7 +46,10 @@ export class PostComponent implements OnInit, OnDestroy {
         });
 
         this.mediaSubscription = this.postService.currentPostMediaUrlsObservable.subscribe({
-            next: (file) => { this.mediaFiles = file; }
+            next: (files) => {
+                this.mediaFiles = files;
+                this.formFiles = files;
+            }
         });
 
         this.id = this.route.snapshot.queryParams['id'];
@@ -73,10 +77,35 @@ export class PostComponent implements OnInit, OnDestroy {
         const originalTitle = this.post?.title;
         const newTitle = this.editPostForm.controls['title'].value.toString() as string;
         const title = originalTitle !== newTitle ? newTitle : undefined;
+
         const originalContent = this.post?.content;
         const newContent = this.editPostForm.controls['content'].value.toString() as string;
         const content = originalContent !== newContent ? newContent : undefined;
-        return { title, content };
+
+        const originalFiles = this.mediaFiles;
+        const newFiles = this.formFiles;
+        const files = originalFiles.length === newFiles.length
+            && originalFiles
+                .map((originalFile, index) => originalFile.name === newFiles[index].name)
+                .reduce((acc, cur) => acc && cur) ? undefined : newFiles;
+
+        return { title, content, files };
+    }
+
+    get formFiles() {
+        return this.editPostForm.controls['file'].value as File[];
+    }
+
+    set formFiles(files: File[]) {
+        this.editPostForm.controls['file'].setValue([...files]);
+    }
+
+    onRemoveFile(event: Event, index: number) {
+        event.preventDefault();
+        event.stopPropagation();
+        const files = this.formFiles;
+        files.splice(index, 1);
+        this.formFiles = files;
     }
 
     onToggleEditMode(event: Event) {
@@ -90,8 +119,8 @@ export class PostComponent implements OnInit, OnDestroy {
         }
 
         //If nothing is updated, end edit mode
-        const { title, content } = this.newPostData;
-        if (!title && !content) {
+        const { title, content, files } = this.newPostData;
+        if (!title && !content && !files) {
             this.editMode = false;
             return;
         }
@@ -105,6 +134,7 @@ export class PostComponent implements OnInit, OnDestroy {
         event.stopPropagation();
         this.editPostForm.controls['title'].setValue(this.post?.title);
         this.editPostForm.controls['content'].setValue(this.post?.content);
+        this.editPostForm.controls['file'].setValue(this.mediaFiles);
         this.editMode = false;
     }
 

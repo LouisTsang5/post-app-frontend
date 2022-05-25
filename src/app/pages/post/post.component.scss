@@ -53,3 +53,20 @@ textarea.content {
     @apply text-lg;
     color: var(--background-text-color);
 }
+
+.file {
+    padding: 0.25rem;
+    background-color: var(--background-color-light);
+    color: var(--background-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @apply rounded text-sm;
+
+    &:hover {
+        user-select: none;
+        cursor: pointer;
+        background-color: var(--secondary-color);
+        color: var(--secondary-text-color);
+    }
+}
