@@ -1,5 +1,10 @@
 <div class="form-wrapper">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="flex justify-center">
+            <div class="svg-icon">
+                <app-svg-lily></app-svg-lily>
+            </div>
+        </div>
         <div>
             <label for="email">
                 Email
@@ -9,7 +14,7 @@
                 <div *ngIf="formValue['email'].errors['required']">Please enter password</div>
             </div>
         </div>
-    
+
         <div>
             <label for="password">
                 Password
@@ -19,7 +24,7 @@
                 <div *ngIf="formValue['password'].errors['required']">Please enter password</div>
             </div>
         </div>
-    
+
         <div>
             <button class="util-btn">
                 Login
@@ -28,7 +33,7 @@
                 Loading...
             </p>
             <p class="inline error-message" *ngIf="errorMessage">
-                {{ errorMessage }} 
+                {{ errorMessage }}
             </p>
         </div>
 

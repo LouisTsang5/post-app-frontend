@@ -52,3 +52,12 @@ button {
         color: var(--primary-color-highlight);
     }
 }
+
+.svg-icon {
+    width: 10rem;
+    height: 10rem;
+    padding: 1rem;
+    fill: var(--primary-color-inverse);
+    background-color: var(--primary-color);
+    @apply rounded-3xl;
+}
