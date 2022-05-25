@@ -1,29 +1,24 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, HostListener } from '@angular/core';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
     selector: 'app-file-upload',
     templateUrl: './file-upload.component.html',
     styleUrls: ['./file-upload.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: FileUploadComponent,
-            multi: true,
-        }
-    ]
 })
-export class FileUploadComponent implements OnInit, ControlValueAccessor {
+export class FileUploadComponent implements ControlValueAccessor {
 
     onChange: Function;
 
     private setFiles(fileList: FileList) {
-        const files: File[] = [];
+        const newFiles: File[] = [];
         for (let i = 0; i < fileList.length; i++) {
             const file = fileList.item(i);
-            if (file) files.push(file);
+            if (file) newFiles.push(file);
         }
-        this.onChange(files);
+        const currentFiles = this.ngControl.value as File[];
+        const allFiles = [...currentFiles, ...newFiles];
+        this.onChange(allFiles);
     }
 
     @HostListener('change', ['$event.target.files']) emitFiles(fileList: FileList) {
@@ -37,15 +32,13 @@ export class FileUploadComponent implements OnInit, ControlValueAccessor {
     }
 
     constructor(
-        private host: ElementRef<HTMLInputElement>
-    ) { }
-
-    ngOnInit(): void {
-        return;
+        public ngControl: NgControl
+    ) {
+        ngControl.valueAccessor = this;
     }
 
     writeValue(obj: any): void {
-        this.host.nativeElement.value = '';
+        return;
     }
 
     registerOnChange(fn: any): void {
