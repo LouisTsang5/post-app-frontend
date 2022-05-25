@@ -36,6 +36,10 @@ export class CreatePostsFormComponent implements OnInit {
         return this.createPostForm.controls;
     }
 
+    public get files() {
+        return this.formValue['file'].value as File[];
+    }
+
     @HostListener('window:keyup', ['$event'])
     escapeKeyEvent(event: KeyboardEvent) {
         if (event.key === 'Escape') {
