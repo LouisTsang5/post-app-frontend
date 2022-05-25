@@ -1,9 +1,11 @@
 <div class="form-wrapper">
     <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()" class="form flex flex-col">
 
+        <!-- Form Title -->
         <div class="form-title relative flex-grow-0">
             Create a post
 
+            <!-- Cancel button -->
             <div class="flex justify-end absolute top-0 right-0">
                 <svg width="20" height="20" class="cancel-btn" (click)="onCancel()">
                     <rect width="20" height="20" />
@@ -13,6 +15,7 @@
             </div>
         </div>
 
+        <!-- Post Title -->
         <div class="field-wrapper flex flex-col flex-grow-[0]">
             <label for="title" class="field-label flex">
                 <div class="inline-block w-[20%]">Title</div>
@@ -25,6 +28,7 @@
             <input class="field-input flex-grow" type="text" formControlName="title">
         </div>
 
+        <!-- Post Content -->
         <div class="field-wrapper flex flex-col flex-grow-[20]">
             <label for="content" class="field-label flex">
                 <div class="inline-block w-[20%]">Content</div>
@@ -37,14 +41,17 @@
             <textarea class="field-input flex-grow resize-none" formControlName="content" cols="40"></textarea>
         </div>
 
+        <!-- Drag and drop area -->
         <div class="flex-grow-[4] mb-1">
             <app-file-upload formControlName="file"></app-file-upload>
         </div>
 
+        <!-- File name list -->
         <div class="flex flex-col gap-1 mb-1" *ngIf="files.length > 0">
             <div *ngFor="let file of files" class="file">{{ file.name }}</div>
         </div>
 
+        <!-- Submit button -->
         <button class="util-btn submit-btn flex-grow-0">Submit</button>
     </form>
 </div>
