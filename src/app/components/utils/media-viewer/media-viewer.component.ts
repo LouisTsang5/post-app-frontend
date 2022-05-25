@@ -42,6 +42,7 @@ export class MediaViewerComponent implements OnInit, OnDestroy, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['mediaFiles']) {
             this.safeUrls = this.mediaFiles.map((file) => URL.createObjectURL(file)).map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
+            if (this.index >= this.safeUrls.length - 1) this.index = this.safeUrls.length - 1;
         }
     }
 
