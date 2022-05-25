@@ -16,7 +16,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class FileUploadComponent implements OnInit, ControlValueAccessor {
 
     onChange: Function;
-    files: File[];
 
     private setFiles(fileList: FileList) {
         const files: File[] = [];
@@ -25,20 +24,11 @@ export class FileUploadComponent implements OnInit, ControlValueAccessor {
             if (file) files.push(file);
         }
         this.onChange(files);
-        this.files = files;
     }
 
     @HostListener('change', ['$event.target.files']) emitFiles(fileList: FileList) {
         this.setFiles(fileList);
     }
-
-    // @HostListener('dragover', ['$event']) onDragOver(event: DragEvent) {
-    //     console.log(`Dragover: ${event}`);
-    // }
-
-    // @HostListener('dragleave', ['$event']) onDragLeave(event: DragEvent) {
-    //     console.log(`Dragleave: ${event}`);
-    // }
 
     @HostListener('drop', ['$event']) onDrop(event: DragEvent) {
         event.preventDefault();
@@ -51,12 +41,11 @@ export class FileUploadComponent implements OnInit, ControlValueAccessor {
     ) { }
 
     ngOnInit(): void {
-        this.files = [];
+        return;
     }
 
     writeValue(obj: any): void {
         this.host.nativeElement.value = '';
-        this.files = [];
     }
 
     registerOnChange(fn: any): void {
