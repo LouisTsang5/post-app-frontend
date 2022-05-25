@@ -17,11 +17,12 @@ export class PostComponent implements OnInit, OnDestroy {
     private mediaSubscription: Subscription;
     private id: string;
     post?: Post;
-    mediaUrls: string[];
+    mediaFiles: File[];
     isEditMode = false;
     editPostForm: FormGroup;
     isSaving = false;
     isShowConfirmCancel = false;
+    activeFileIndex: number | undefined = undefined;
 
     constructor(
         private postService: PostService,
@@ -34,6 +35,7 @@ export class PostComponent implements OnInit, OnDestroy {
         this.editPostForm = this.formBuilder.group({
             title: '',
             content: '',
+            file: '',
         });
 
         this.postSubscription = this.postService.currentPostObservable.subscribe({
@@ -45,7 +47,10 @@ export class PostComponent implements OnInit, OnDestroy {
         });
 
         this.mediaSubscription = this.postService.currentPostMediaUrlsObservable.subscribe({
-            next: (urls) => { this.mediaUrls = urls; }
+            next: (files) => {
+                this.mediaFiles = files;
+                this.formFiles = files;
+            }
         });
 
         this.id = this.route.snapshot.queryParams['id'];
@@ -73,10 +78,42 @@ export class PostComponent implements OnInit, OnDestroy {
         const originalTitle = this.post?.title;
         const newTitle = this.editPostForm.controls['title'].value.toString() as string;
         const title = originalTitle !== newTitle ? newTitle : undefined;
+
         const originalContent = this.post?.content;
         const newContent = this.editPostForm.controls['content'].value.toString() as string;
         const content = originalContent !== newContent ? newContent : undefined;
-        return { title, content };
+
+        const originalFiles = this.mediaFiles;
+        const newFiles = this.formFiles;
+        const isFilesChanged = originalFiles.length === newFiles.length
+            && originalFiles.length > 0
+            && originalFiles
+                .map((originalFile, index) => {
+                    const newFile = newFiles[index];
+                    return originalFile.name === newFile.name
+                        && originalFile.size === newFile.size;
+                    ;
+                })
+                .reduce((acc, cur) => acc && cur);
+        const files = isFilesChanged ? undefined : newFiles;
+
+        return { title, content, files };
+    }
+
+    get formFiles() {
+        return this.editPostForm.controls['file'].value as File[];
+    }
+
+    set formFiles(files: File[]) {
+        this.editPostForm.controls['file'].setValue([...files]);
+    }
+
+    onRemoveFile(event: Event, index: number) {
+        event.preventDefault();
+        event.stopPropagation();
+        const files = this.formFiles;
+        files.splice(index, 1);
+        this.formFiles = files;
     }
 
     onToggleEditMode(event: Event) {
@@ -90,8 +127,8 @@ export class PostComponent implements OnInit, OnDestroy {
         }
 
         //If nothing is updated, end edit mode
-        const { title, content } = this.newPostData;
-        if (!title && !content) {
+        const { title, content, files } = this.newPostData;
+        if (!title && !content && !files) {
             this.editMode = false;
             return;
         }
@@ -105,6 +142,7 @@ export class PostComponent implements OnInit, OnDestroy {
         event.stopPropagation();
         this.editPostForm.controls['title'].setValue(this.post?.title);
         this.editPostForm.controls['content'].setValue(this.post?.content);
+        this.editPostForm.controls['file'].setValue(this.mediaFiles);
         this.editMode = false;
     }
 
@@ -113,12 +151,12 @@ export class PostComponent implements OnInit, OnDestroy {
         event.stopPropagation();
 
         //Calculate changed items
-        const { title, content } = this.newPostData;
+        const { title, content, files } = this.newPostData;
 
         //Update if things have changed
-        if (title || content) {
+        if (title || content || files) {
             this.isSaving = true;
-            await this.postService.updatePost(this.id, title, content);
+            await this.postService.updatePost(this.id, title, content, files);
             this.isSaving = false;
         }
 

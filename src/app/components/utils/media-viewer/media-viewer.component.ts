@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { LoggerService } from 'src/app/_services/logger.service';
@@ -8,16 +8,17 @@ import { LoggerService } from 'src/app/_services/logger.service';
     templateUrl: './media-viewer.component.html',
     styleUrls: ['./media-viewer.component.scss']
 })
-export class MediaViewerComponent implements OnInit, OnDestroy {
+export class MediaViewerComponent implements OnInit, OnDestroy, OnChanges {
 
-    @Input() srcs?: string[];
+    @Input() mediaFiles: File[];
     @Input() autoPlay?: boolean | { interval?: number };
+    @Input() displayIndex?: number;
     isAutoPlaySubject: BehaviorSubject<boolean>;
     private isAutoPlaySubscription: Subscription;
 
     private autoPlayIntervalId?: number;
     safeUrls: SafeUrl[];
-    index: number;
+    index: number = 0;
 
     constructor(
         private sanitization: DomSanitizer,
@@ -25,21 +26,30 @@ export class MediaViewerComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-        this.index = 0;
-        if (this.srcs) this.safeUrls = this.srcs.map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
-
         this.isAutoPlaySubject = new BehaviorSubject<boolean>(!!this.autoPlay);
         this.isAutoPlaySubscription = this.isAutoPlaySubject.asObservable().subscribe({
             next: (isAutoPlay) => {
                 this.logger.log(`Auto play is ${isAutoPlay}`);
                 if (isAutoPlay) this.setAutoPlayInterval();
-                else if(this.autoPlayIntervalId) window.clearInterval(this.autoPlayIntervalId);
+                else if (this.autoPlayIntervalId) window.clearInterval(this.autoPlayIntervalId);
             }
         });
     }
 
     ngOnDestroy(): void {
         this.isAutoPlaySubscription.unsubscribe();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['mediaFiles']) {
+            this.safeUrls = this.mediaFiles.map((file) => URL.createObjectURL(file)).map((url) => this.sanitization.bypassSecurityTrustResourceUrl(url));
+            if (this.index >= this.safeUrls.length - 1) this.index = this.safeUrls.length - 1;
+        }
+
+        if (changes['displayIndex']) {
+            this.index = this.displayIndex !== undefined ? this.displayIndex : this.index;
+            this.logger.log(`New index: ${this.index}`);
+        }
     }
 
     setAutoPlayInterval() {
@@ -74,6 +84,6 @@ export class MediaViewerComponent implements OnInit, OnDestroy {
     }
 }
 
-function hasInterval(value: boolean | {interval?: number}): value is {interval: number} {
+function hasInterval(value: boolean | { interval?: number }): value is { interval: number } {
     return value.hasOwnProperty('interval');
 }

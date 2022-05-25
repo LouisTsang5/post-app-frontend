@@ -36,6 +36,14 @@ export class CreatePostsFormComponent implements OnInit {
         return this.createPostForm.controls;
     }
 
+    public get files() {
+        return this.formValue['file'].value as File[];
+    }
+
+    public set files(files: File[]) {
+        this.formValue['file'].setValue(files);
+    }
+
     @HostListener('window:keyup', ['$event'])
     escapeKeyEvent(event: KeyboardEvent) {
         if (event.key === 'Escape') {
@@ -67,5 +75,14 @@ export class CreatePostsFormComponent implements OnInit {
         this.submitting = false;
 
         if (this.cbSubmit) this.cbSubmit();
+    }
+
+    onRemoveFile(event: Event, index: number) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const files = this.files;
+        files.splice(index, 1);
+        this.files = files;
     }
 }

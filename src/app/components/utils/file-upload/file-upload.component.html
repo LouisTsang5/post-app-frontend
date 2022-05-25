@@ -1,6 +1,4 @@
-<div
-    class="host">
-    <span *ngIf="!files.length">Click or drag and drop files here</span>
-    <span *ngFor="let file of files" class="file">{{ file.name }}</span>
-    <input type="file" multiple>
+<div class="host">
+    <span>Click or drag and drop files here</span>
+    <input type="file" multiple [accept]="allowedExtensions">
 </div>

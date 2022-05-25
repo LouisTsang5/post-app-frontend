@@ -1,10 +1,7 @@
 <div class="p-2 sm:p-4">
     <p *ngIf="!post" class="title">Cannot find post</p>
     <div *ngIf="post" class="flex flex-col gap-1">
-        <div class="flex justify-center items-center">
-            <app-media-viewer class="media-player" *ngIf="mediaUrls && mediaUrls.length > 0" [srcs]="mediaUrls"
-                [autoPlay]="true"></app-media-viewer>
-        </div>
+        <!-- Top Util Bar -->
         <div class="flex justify-end items-center flex-row gap-1">
             <!-- Loading Text -->
             <span class="load-txt" *ngIf="isSaving">Saving...</span>
@@ -16,8 +13,8 @@
             </div>
 
             <!-- Save Updated Post Button -->
-            <svg *ngIf="editMode" (click)="onSavePost($event)" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="util-btn" x="0px" y="0px"
+            <svg class="util-btn" *ngIf="editMode" (click)="onSavePost($event)" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px"
                 viewBox="-50 -50 456.725 456.725" xml:space="preserve">
                 <g>
                     <g>
@@ -46,6 +43,26 @@
                     </g>
                 </g>
             </svg>
+        </div>
+
+        <div class="flex justify-center items-center">
+            <app-media-viewer class="media-player" *ngIf="mediaFiles && mediaFiles.length > 0 && !isEditMode"
+                [mediaFiles]="mediaFiles" [autoPlay]="true"></app-media-viewer>
+            <app-media-viewer class="media-player" *ngIf="formFiles.length > 0 && isEditMode" [mediaFiles]="formFiles"
+                [displayIndex]="activeFileIndex">
+            </app-media-viewer>
+        </div>
+
+        <div *ngIf="isEditMode">
+            <form [formGroup]="editPostForm" class="flex flex-col">
+                <app-file-upload formControlName="file" [allowedExtensions]="['.jpg','.png']"></app-file-upload>
+                <div class="flex flex-col gap-1">
+                    <div *ngFor="let file of formFiles; let i = index" class="file" (mouseenter)="activeFileIndex = i"
+                        (mouseleave)="activeFileIndex = undefined" (click)="onRemoveFile($event, i)">
+                        {{ file.name }}
+                    </div>
+                </div>
+            </form>
         </div>
 
         <!-- Post Title and Content -->

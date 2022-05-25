@@ -4,6 +4,7 @@ import { BehaviorSubject, first, firstValueFrom, map, Observable, Subscription }
 import { environment } from 'src/environments/environment';
 import { Post, PostFormData } from '../_models/post';
 import { AuthenticationService } from './authentication.service';
+import { getExtension } from 'mime';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +20,7 @@ export class PostService implements OnDestroy {
     private currentPostSubject = new BehaviorSubject<Post | undefined>(undefined);;
     public currentPostObservable = this.currentPostSubject.asObservable();
 
-    private currentPostMediaUrlsSubject = new BehaviorSubject<string[]>([]);
+    private currentPostMediaUrlsSubject = new BehaviorSubject<File[]>([]);
     public currentPostMediaUrlsObservable = this.currentPostMediaUrlsSubject.asObservable();
 
     constructor(
@@ -35,14 +36,16 @@ export class PostService implements OnDestroy {
 
         this.currentPostSubscription = this.currentPostObservable.subscribe({
             next: async (post) => {
-                if (!post || !post.multiMedia) return this.currentPostMediaUrlsSubject.next([]);
+                this.currentPostMediaUrlsSubject.next([]);
 
-                const urls = await Promise.all(
+                if (!post || !post.multiMedia) return;
+
+                const files = await Promise.all(
                     post.multiMedia.map((media) => {
                         return this.getMedia(post.id, media.index);
                     })
                 );
-                this.currentPostMediaUrlsSubject.next(urls);
+                this.currentPostMediaUrlsSubject.next(files);
             }
         });
     }
@@ -88,6 +91,7 @@ export class PostService implements OnDestroy {
     }
 
     private async getCurrentPost(id: string) {
+        this.currentPostSubject.next(undefined);
         const url = new URL(`${this.requestUrl.pathname}/${id}`, this.requestUrl.origin);
         const post = await firstValueFrom(this.http.get(url.toString(), { headers: this.requestHeader })) as Post;
         this.currentPostSubject.next(post);
@@ -102,7 +106,8 @@ export class PostService implements OnDestroy {
                 responseType: 'blob',
             }
         ));
-        return URL.createObjectURL(res);
+        const fileName = `${(crypto as any).randomUUID()}.${getExtension(res.type)}`;
+        return new File([res], fileName);
     }
 
     set currentPostId(id: string) {
@@ -127,13 +132,16 @@ export class PostService implements OnDestroy {
         this.onPostUpdate(id);
     }
 
-    async updatePost(id: string, title?: string, content?: string) {
+    async updatePost(id: string, title?: string, content?: string, mediaFiles?: File[]) {
         const apiUrl = new URL(this.requestUrl);
         const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
-        const requestBody: { [key: string]: string } = {};
-        if (title) requestBody['title'] = title;
-        if (content) requestBody['content'] = content;
-        const requestObservable = this.http.patch(url, requestBody, { headers: this.requestHeader });
+
+        const formData = new FormData();
+        if (title) formData.append('title', title);
+        if (content) formData.append('content', content);
+        if (mediaFiles) mediaFiles.map(f => formData.append('multimedia', f, f.name));
+
+        const requestObservable = this.http.patch(url, formData, { headers: this.requestHeader });
         await firstValueFrom(requestObservable);
         this.onPostUpdate(id);
     }

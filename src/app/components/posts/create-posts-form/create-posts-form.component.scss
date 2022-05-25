@@ -64,7 +64,19 @@
     @apply text-red-500;
 }
 
-.register {
-    @apply text-blue-500 hover:text-blue-700;
-    @apply cursor-pointer;
+.file {
+    padding: 0.25rem;
+    background-color: var(--background-color-light);
+    color: var(--background-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @apply rounded text-sm;
+
+    &:hover {
+        user-select: none;
+        cursor: pointer;
+        background-color: var(--secondary-color);
+        color: var(--secondary-text-color);
+    }
 }

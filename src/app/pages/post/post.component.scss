@@ -31,8 +31,6 @@ textarea.content {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-width: 2px;
-    border-color: var(--secondary-color);
     padding: 0.5rem;
     @apply rounded-xl;
 }
@@ -52,4 +50,21 @@ textarea.content {
 .load-txt {
     @apply text-lg;
     color: var(--background-text-color);
+}
+
+.file {
+    padding: 0.25rem;
+    background-color: var(--background-color-light);
+    color: var(--background-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @apply rounded text-sm;
+
+    &:hover {
+        user-select: none;
+        cursor: pointer;
+        background-color: var(--secondary-color);
+        color: var(--secondary-text-color);
+    }
 }
