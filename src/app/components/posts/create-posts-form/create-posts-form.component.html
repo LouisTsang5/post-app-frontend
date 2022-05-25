@@ -48,7 +48,9 @@
 
         <!-- File name list -->
         <div class="flex flex-col gap-1 mb-1" *ngIf="files.length > 0">
-            <div *ngFor="let file of files" class="file">{{ file.name }}</div>
+            <div *ngFor="let file of files; let i = index" class="file" (click)="onRemoveFile($event, i)">
+                {{ file.name }}
+            </div>
         </div>
 
         <!-- Submit button -->
