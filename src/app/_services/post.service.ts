@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, first, firstValueFrom, map, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -93,8 +93,13 @@ export class PostService implements OnDestroy {
     private async getCurrentPost(id: string) {
         this.currentPostSubject.next(undefined);
         const url = new URL(`${this.requestUrl.pathname}/${id}`, this.requestUrl.origin);
-        const post = await firstValueFrom(this.http.get(url.toString(), { headers: this.requestHeader })) as Post;
-        this.currentPostSubject.next(post);
+        try {
+            const post = await firstValueFrom(this.http.get(url.toString(), { headers: this.requestHeader })) as Post;
+            this.currentPostSubject.next(post);
+        } catch (error) {
+            if (error instanceof HttpErrorResponse && error.status === 404) this.currentPostSubject.next(undefined);
+            else throw error;
+        }
     }
 
     private async getMedia(postId: string, index: number) {
