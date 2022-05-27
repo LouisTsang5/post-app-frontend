@@ -85,7 +85,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
         const originalFiles = this.mediaFiles;
         const newFiles = this.formFiles;
-        const isFilesChanged = originalFiles.length === newFiles.length
+        const isFilesNotChanged = originalFiles.length === newFiles.length
             && originalFiles.length > 0
             && originalFiles
                 .map((originalFile, index) => {
@@ -95,7 +95,7 @@ export class PostComponent implements OnInit, OnDestroy {
                     ;
                 })
                 .reduce((acc, cur) => acc && cur);
-        const files = isFilesChanged ? undefined : newFiles;
+        const files = isFilesNotChanged ? undefined : newFiles;
 
         return { title, content, files };
     }
