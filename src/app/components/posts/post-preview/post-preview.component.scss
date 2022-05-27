@@ -1,4 +1,5 @@
 .post {
+    height: 100%;
     border-width: 2px;
     border-color: var(--background-text-color);
     @apply rounded m-2 shadow cursor-pointer relative;
@@ -10,7 +11,7 @@
     .title {
         background-color: var(--secondary-color);
         color: var(--secondary-text-color);
-        @apply p-2 text-lg text-center capitalize;
+        @apply p-2 text-lg text-center;
     }
 
     .btn {
@@ -28,9 +29,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
         line-height: 1.2em;
-        height: 3.6em;
+        height: 6.0em;
         display: -webkit-box;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 5;
         -webkit-box-orient: vertical;
     }
 }
@@ -53,7 +54,7 @@
     .delete-box {
         width: 80%;
         max-width: 16rem;
-        height: 80%;
+        height: 60%;
         text-align: center;
         display: flex;
         flex-direction: column;
