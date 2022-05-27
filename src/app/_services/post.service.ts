@@ -134,15 +134,25 @@ export class PostService implements OnDestroy {
 
     async updatePost(id: string, title?: string, content?: string, mediaFiles?: File[]) {
         const apiUrl = new URL(this.requestUrl);
-        const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
 
-        const formData = new FormData();
-        if (title) formData.append('title', title);
-        if (content) formData.append('content', content);
-        if (mediaFiles) mediaFiles.map(f => formData.append('multimedia', f, f.name));
+        if (title || content) {
+            const url = new URL(`${apiUrl.pathname}/${id}`, apiUrl.origin).toString();
+            const formData = new FormData();
+            if (title) formData.append('title', title);
+            if (content) formData.append('content', content);
+            const requestObservable = this.http.patch(url, formData, { headers: this.requestHeader });
+            await firstValueFrom(requestObservable);
+        }
 
-        const requestObservable = this.http.patch(url, formData, { headers: this.requestHeader });
-        await firstValueFrom(requestObservable);
+        if (mediaFiles) {
+            const url = new URL(`${apiUrl.pathname}/${id}/media`, apiUrl.origin).toString();
+            const formData = new FormData();
+            mediaFiles.map(f => {
+                formData.append('multimedia', f, f.name);
+            });
+            const requestObservable = this.http.put(url, formData, { headers: this.requestHeader });
+            await firstValueFrom(requestObservable);
+        }
         this.onPostUpdate(id);
     }
 }
